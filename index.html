@@ -158,6 +158,16 @@ body {
 .nutrition-table td { font-variant-numeric: tabular-nums; }
 .nutrition-table td:not(:first-child) { text-align: right; }
 .nutrition-table th:not(:first-child) { text-align: right; }
+.summary-grid { display: grid; grid-template-columns: 3fr 2fr; gap: 16px; margin-top: 12px; }
+@media (max-width: 768px) {
+  .route-columns { grid-template-columns: 1fr; }
+  .route-comp-row { grid-template-columns: 1fr; }
+  .summary-grid { grid-template-columns: 1fr; }
+  .header { flex-direction: column; align-items: flex-start; gap: 8px; }
+  .patient-bar { gap: 10px; }
+  .modal { max-width: 100%; border-radius: 8px; }
+  .modal-overlay { padding: 16px 8px; }
+}
 .footer { text-align: center; padding: 16px; font-size: 12px; color: var(--gray-400); }
 .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.5); z-index: 1000; justify-content: center; align-items: flex-start; padding: 40px 16px; overflow-y: auto; }
 .modal-overlay.open { display: flex; }
@@ -217,7 +227,7 @@ body {
     <div class="card-header result" id="result-header">輸液組成 合計</div>
     <div class="card-body">
       <div class="result-grid" id="result-summary"></div>
-      <div style="display:grid;grid-template-columns:3fr 2fr;gap:16px;margin-top:12px">
+      <div class="summary-grid">
         <div class="result-detail"><div class="result-detail-title">電解質・成分 詳細</div>
           <table class="detail-table"><thead><tr><th>成分</th><th>1日投与量</th><th>投与量/kg/day</th></tr></thead><tbody id="electrolyte-tbody"></tbody></table></div>
         <div class="result-detail"><div class="result-detail-title">栄養組成</div>

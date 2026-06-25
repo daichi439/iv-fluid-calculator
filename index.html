@@ -297,7 +297,7 @@ body {
 <body>
 <div class="header">
   <div class="header-left"><h1>輸液・経腸栄養 組成計算シート</h1><p>IVルート・経腸栄養を設定し、組成を計算できます。</p></div>
-  <div class="header-right"><button class="btn-header" onclick="openSettings()">&#9881; 製剤設定</button></div>
+  <div class="header-right"><button class="btn-header" onclick="clearAll()">&#8635; クリア</button><button class="btn-header" onclick="openSettings()">&#9881; 製剤設定</button></div>
 </div>
 <div class="container">
   <div class="patient-card">
@@ -950,6 +950,8 @@ function loadState(){try{var r=localStorage.getItem(STORAGE_PREFIX+'state');if(!
     nextRouteId=d.nextRouteId||routes.length+1;nextSideId=d.nextSideId||1;return true}
   if(d.lines&&d.lines.length>0){routes=d.lines.map(function(l,i){return{id:'r'+(i+1),name:l.name||'ルート '+(i+1),main:{fluids:l.fluids.filter(function(e){return getFluidById(e.id)}),rate:l.rate||0,hours:l.hours!=null?l.hours:24},sides:[]}});
     nextRouteId=routes.length+1;return true}}catch(e){}return false}
+
+function clearAll(){if(!confirm('入力内容をすべてクリアしますか？'))return;document.getElementById('height').value='';document.getElementById('weight').value='';routes=[];nextRouteId=1;nextSideId=1;addRoute('iv');renderAll();recalc()}
 
 // Init
 document.getElementById('height').addEventListener('input',recalc);

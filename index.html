@@ -234,30 +234,45 @@ body {
 var LINE_COLORS=6, nextRouteId=1, nextSideId=1;
 var COMP_KEYS=["glu","na","k","cl","ca","mg","p","aa","fat","hco3","heparin"];
 var DEFAULT_FLUIDS=[
+  // ── 細胞外液補充液 ──
   {id:"ns",name:"生理食塩液",defaultVol:500,enabled:true,glu:0,na:154,k:0,cl:154,ca:0,mg:0,p:0,aa:0,fat:0,hco3:0,heparin:0},
-  {id:"d5",name:"5%ブドウ糖液",defaultVol:500,enabled:true,glu:50,na:0,k:0,cl:0,ca:0,mg:0,p:0,aa:0,fat:0,hco3:0,heparin:0},
-  {id:"veend",name:"ヴィーンD",defaultVol:500,enabled:true,glu:50,na:130,k:4,cl:109,ca:3,mg:0,p:0,aa:0,fat:0,hco3:28,heparin:0},
   {id:"solulyte",name:"ソリューゲンF",defaultVol:500,enabled:true,glu:0,na:130,k:4,cl:109,ca:3,mg:0,p:0,aa:0,fat:0,hco3:28,heparin:0},
-  {id:"soldem1",name:"ソルデム1輸液",defaultVol:500,enabled:true,glu:26,na:90,k:0,cl:70,ca:0,mg:0,p:0,aa:0,fat:0,hco3:20,heparin:0},
-  {id:"hartmann",name:"ハルトマン",defaultVol:500,enabled:true,glu:43,na:35,k:20,cl:35,ca:0,mg:0,p:0,aa:0,fat:0,hco3:20,heparin:0},
   {id:"physio140",name:"フィジオ140",defaultVol:500,enabled:true,glu:10,na:140,k:4,cl:115,ca:3,mg:2,p:0,aa:0,fat:0,hco3:34,heparin:0},
+  // ── 開始液（1号液） ──
+  {id:"soldem1",name:"ソルデム1輸液",defaultVol:500,enabled:true,glu:26,na:90,k:0,cl:70,ca:0,mg:0,p:0,aa:0,fat:0,hco3:20,heparin:0},
+  // ── 維持液（3号液） ──
+  {id:"veend",name:"ヴィーンD",defaultVol:500,enabled:true,glu:50,na:130,k:4,cl:109,ca:3,mg:0,p:0,aa:0,fat:0,hco3:28,heparin:0},
+  {id:"hartmann",name:"ハルトマン",defaultVol:500,enabled:true,glu:43,na:35,k:20,cl:35,ca:0,mg:0,p:0,aa:0,fat:0,hco3:20,heparin:0},
   {id:"physio35",name:"フィジオ35",defaultVol:500,enabled:true,glu:100,na:35,k:20,cl:28,ca:5,mg:3,p:0,aa:0,fat:0,hco3:25,heparin:0},
+  // ── ブドウ糖液 ──
+  {id:"d5",name:"5%ブドウ糖液",defaultVol:500,enabled:true,glu:50,na:0,k:0,cl:0,ca:0,mg:0,p:0,aa:0,fat:0,hco3:0,heparin:0},
+  {id:"d10",name:"10%ブドウ糖液",defaultVol:500,enabled:true,glu:100,na:0,k:0,cl:0,ca:0,mg:0,p:0,aa:0,fat:0,hco3:0,heparin:0},
+  // ── 末梢静脈栄養（PPN） ──
   {id:"bfluid",name:"ビーフリード",defaultVol:500,enabled:true,glu:75,na:35,k:20,cl:35,ca:5,mg:5,p:301,aa:30,fat:0,hco3:42,heparin:0},
+  // ── 中心静脈栄養（TPN） ──
   {id:"fulcaliq1",name:"フルカリック1号液(903ml)",defaultVol:903,enabled:true,glu:133,na:55.4,k:33.2,cl:54.3,ca:9.4,mg:11.1,p:277,aa:22.1,fat:0,hco3:55.81,heparin:0},
   {id:"fulcaliq2",name:"フルカリック2号液(1003ml)",defaultVol:1003,enabled:true,glu:175,na:50,k:30,cl:49,ca:8.5,mg:10,p:250,aa:30,fat:0,hco3:50.25,heparin:0},
+  {id:"elneopa1",name:"エルネオパNF1号(1000ml)",defaultVol:1000,enabled:true,glu:120,na:35,k:20,cl:35,ca:5,mg:5,p:310,aa:20,fat:20,hco3:25,heparin:0},
+  {id:"elneopa2",name:"エルネオパNF2号(1000ml)",defaultVol:1000,enabled:true,glu:175,na:50,k:27,cl:50,ca:5,mg:5,p:310,aa:30,fat:20,hco3:30,heparin:0},
+  // ── 高濃度補正液 ──
   {id:"d50",name:"50%ブドウ糖",defaultVol:20,enabled:true,glu:500,na:0,k:0,cl:0,ca:0,mg:0,p:0,aa:0,fat:0,hco3:0,heparin:0},
   {id:"nacl10",name:"10%NaCl",defaultVol:20,enabled:true,glu:0,na:1700,k:0,cl:1700,ca:0,mg:0,p:0,aa:0,fat:0,hco3:0,heparin:0},
   {id:"kcl",name:"KCl注20mEqキット",defaultVol:20,enabled:true,glu:0,na:0,k:1000,cl:1000,ca:0,mg:0,p:0,aa:0,fat:0,hco3:0,heparin:0},
+  // ── アミノ酸製剤 ──
   {id:"preamine",name:"プレアミン",defaultVol:200,enabled:true,glu:0,na:3,k:0,cl:0,ca:0,mg:0,p:0,aa:76,fat:0,hco3:0,heparin:0},
+  // ── 脂肪乳剤 ──
+  {id:"intralipid",name:"20%イントラリポス",defaultVol:100,enabled:true,glu:0,na:0,k:0,cl:0,ca:0,mg:0,p:0,aa:0,fat:200,hco3:0,heparin:0},
+  // ── ビタミン・微量元素 ──
   {id:"multamin",name:"マルタミン",defaultVol:5,enabled:true,glu:0,na:0,k:0,cl:0,ca:0,mg:0,p:0,aa:0,fat:0,hco3:0,heparin:0},
   {id:"elezect",name:"エレジェクト",defaultVol:2,enabled:true,glu:0,na:0,k:0,cl:0,ca:0,mg:0,p:0,aa:0,fat:0,hco3:0,heparin:0},
+  // ── 電解質補正液 ──
   {id:"calcicol",name:"カルチコール",defaultVol:5,enabled:true,glu:0,na:0,k:0,cl:0,ca:390,mg:0,p:0,aa:0,fat:0,hco3:0,heparin:0},
   {id:"napo4",name:"リン酸Na補正液",defaultVol:5,enabled:true,glu:0,na:750,k:0,cl:0,ca:0,mg:0,p:15500,aa:0,fat:0,hco3:0,heparin:0},
   {id:"mgso4",name:"硫酸Mg補正液",defaultVol:5,enabled:true,glu:0,na:0,k:0,cl:0,ca:0,mg:1000,p:0,aa:0,fat:0,hco3:1000,heparin:0},
+  // ── その他 ──
   {id:"meylon",name:"メイロン静注7%",defaultVol:20,enabled:true,glu:0,na:833,k:0,cl:0,ca:0,mg:0,p:0,aa:0,fat:0,hco3:833,heparin:0},
   {id:"heparin",name:"ヘパリンNa 5千単位/5mL",defaultVol:1,enabled:true,glu:0,na:68,k:0,cl:0,ca:0,mg:0,p:0,aa:0,fat:0,hco3:0,heparin:1000},
   {id:"water",name:"注射用水",defaultVol:100,enabled:true,glu:0,na:0,k:0,cl:0,ca:0,mg:0,p:0,aa:0,fat:0,hco3:0,heparin:0},
-  {id:"intralipid",name:"20%イントラリポス",defaultVol:100,enabled:true,glu:0,na:0,k:0,cl:0,ca:0,mg:0,p:0,aa:0,fat:200,hco3:0,heparin:0},
 ];
 var fluids=JSON.parse(JSON.stringify(DEFAULT_FLUIDS)), routes=[];
 function getEnabledFluids(){return fluids.filter(function(f){return f.enabled})}

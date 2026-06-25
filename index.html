@@ -205,12 +205,12 @@ body {
     <div class="card-header result" id="result-header">輸液組成 合計</div>
     <div class="card-body">
       <div class="result-grid" id="result-summary"></div>
-      <div class="result-detail"><div class="result-detail-title">電解質・成分 詳細</div>
-        <table class="detail-table"><thead><tr><th>成分</th><th>1日投与量</th><th>投与量/kg/day</th></tr></thead><tbody id="electrolyte-tbody"></tbody></table></div>
-      <div class="result-detail" style="margin-top:16px"><div class="result-detail-title">栄養組成</div>
-        <table class="nutrition-table"><thead><tr><th>成分</th><th>投与量 (g/kg/day)</th><th>カロリー比</th></tr></thead><tbody id="nutrition-tbody"></tbody></table></div>
-      <div class="result-detail" style="margin-top:16px"><div class="result-detail-title">補正液 投与量</div>
-        <table class="detail-table"><thead><tr><th>薬剤</th><th>投与量 (ml/kg/day)</th></tr></thead><tbody id="supplement-tbody"></tbody></table></div>
+      <div style="display:grid;grid-template-columns:3fr 2fr;gap:16px;margin-top:12px">
+        <div class="result-detail"><div class="result-detail-title">電解質・成分 詳細</div>
+          <table class="detail-table"><thead><tr><th>成分</th><th>1日投与量</th><th>投与量/kg/day</th></tr></thead><tbody id="electrolyte-tbody"></tbody></table></div>
+        <div class="result-detail"><div class="result-detail-title">栄養組成</div>
+          <table class="nutrition-table"><thead><tr><th>成分</th><th>投与量 (g/kg/day)</th><th>カロリー比</th></tr></thead><tbody id="nutrition-tbody"></tbody></table></div>
+      </div>
     </div>
   </div>
 </div>
@@ -337,6 +337,7 @@ function buildRoute(rt,idx){
   h+='<label>流量 <input type="number" id="rate-'+rid+'" value="'+(rt.main.rate||'')+'" step="0.1" placeholder="ml/h" oninput="onMR(\''+rid+'\',this.value)"> <span class="unit">ml/h</span></label>';
   h+='<label>投与時間 <input type="number" id="hours-'+rid+'" value="'+rt.main.hours+'" step="1" oninput="onMH(\''+rid+'\',this.value)"> <span class="unit">h</span></label>';
   h+='<button class="btn-24h" id="btn24-'+rid+'" onclick="setMH(\''+rid+'\',24)">&#8592; 24hに戻す</button>';
+  h+='<span id="eff-hours-'+rid+'" style="display:none;font-size:12px;color:var(--warning);font-weight:600"></span>';
   h+='</div>';
   h+='<div class="flow-row"><span class="calc-val" id="bag-'+rid+'">1本あたり: — h</span></div>';
   h+='<div class="ch-summary"><span>合計: <span class="val" id="total-'+rid+'-main">0 ml</span></span>';
@@ -380,9 +381,9 @@ function buildSide(rid,s){
   if(isCont){
     h+='<label>投与時間 <input type="number" value="'+s.hours+'" step="1" oninput="onSH(\''+rid+'\',\''+sid+'\',this.value)"> <span class="unit">h</span></label>';
   } else {
-    h+='<label><input type="number" value="'+s.duration+'" step="0.5" style="width:35px" oninput="onSD(\''+rid+'\',\''+sid+'\',this.value)"> <span class="unit">h</span></label>';
+    h+='<label><input type="number" value="'+s.duration+'" step="0.5" style="width:45px" oninput="onSD(\''+rid+'\',\''+sid+'\',this.value)"> <span class="unit">h</span></label>';
     h+='<span class="unit">×</span>';
-    h+='<label><input type="number" value="'+s.timesPerDay+'" step="1" style="width:30px" oninput="onST(\''+rid+'\',\''+sid+'\',this.value)"> <span class="unit">回/日</span></label>';
+    h+='<label><input type="number" value="'+s.timesPerDay+'" step="1" style="width:45px" oninput="onST(\''+rid+'\',\''+sid+'\',this.value)"> <span class="unit">回/日</span></label>';
     h+='<span style="color:var(--gray-300);margin:0 2px">|</span>';
     h+='<label>投与中メイン <input type="number" value="'+(s.mainRateDuring!==null?s.mainRateDuring:'')+'" placeholder="変更なし" style="width:55px" oninput="onSMR(\''+rid+'\',\''+sid+'\',this.value)"> <span class="unit">ml/h</span></label>';
   }
@@ -425,16 +426,17 @@ function updateBag(rid,bh,ch){
 
 function calcRouteCompNorm(rt){
   var mc=chComp(rt.main),mr=rt.main.rate;
-  var totalRate=mr,w={};
+  var totalRate=mr,w={},parts=[{name:'メイン',rate:mr}];
   COMP_KEYS.forEach(function(k){w[k]=mc[k]*mr});
   rt.sides.forEach(function(s){
     if(s.mode==='continuous'&&s.rate>0){
       var sc=chComp(s);totalRate+=s.rate;
       COMP_KEYS.forEach(function(k){w[k]+=sc[k]*s.rate});
+      parts.push({name:s.name,rate:s.rate});
     }
   });
   var comp={};COMP_KEYS.forEach(function(k){comp[k]=totalRate>0?w[k]/totalRate:0});
-  return{comp:comp,totalRate:totalRate};
+  return{comp:comp,totalRate:totalRate,parts:parts};
 }
 
 function calcRouteCompInt(rt){
@@ -448,22 +450,24 @@ function calcRouteCompInt(rt){
     }
   });
   if(!hasInt)return null;
-  var totalRate=effMainRate,w={};
+  var totalRate=effMainRate,w={},parts=[{name:'メイン',rate:effMainRate}];
   COMP_KEYS.forEach(function(k){w[k]=mc[k]*effMainRate});
   rt.sides.forEach(function(s){
     if(s.mode==='continuous'&&s.rate>0){
       var sc=chComp(s);totalRate+=s.rate;
       COMP_KEYS.forEach(function(k){w[k]+=sc[k]*s.rate});
+      parts.push({name:s.name,rate:s.rate});
     }
   });
   rt.sides.forEach(function(s){
     if(s.mode==='intermittent'&&s.rate>0){
       var sc=chComp(s);totalRate+=s.rate;
       COMP_KEYS.forEach(function(k){w[k]+=sc[k]*s.rate});
+      parts.push({name:s.name,rate:s.rate});
     }
   });
   var comp={};COMP_KEYS.forEach(function(k){comp[k]=totalRate>0?w[k]/totalRate:0});
-  return{comp:comp,totalRate:totalRate,effMainRate:effMainRate};
+  return{comp:comp,totalRate:totalRate,effMainRate:effMainRate,parts:parts};
 }
 
 function recalc(){
@@ -490,11 +494,24 @@ function recalc(){
     updateBag(rid,mr>0?mt/mr:0,mh);
     renderComp('comp-'+rid+'-main',mc,mr,wt);
 
+    var hasIntChange=rt.sides.some(function(s){return s.mode==='intermittent'&&s.mainRateDuring!==null});
     var effEl=document.getElementById('eff-'+rid);
-    if(effEl){
-      var hasIntChange=rt.sides.some(function(s){return s.mode==='intermittent'&&s.mainRateDuring!==null});
-      if(hasIntChange&&mr>0){effEl.style.display='inline';effEl.textContent='実効1日量: '+fmt(mainVolDay,0)+' ml'}
-      else effEl.style.display='none';
+    var ehEl=document.getElementById('eff-hours-'+rid);
+    if(hasIntChange&&mr>0){
+      var reducedTime=0;
+      rt.sides.forEach(function(s){if(s.mode==='intermittent'&&s.mainRateDuring!==null)reducedTime+=s.duration*s.timesPerDay});
+      var normalTime=Math.max(0,mh-reducedTime);
+      if(ehEl){ehEl.style.display='inline';ehEl.textContent='(実効 '+fmt(normalTime,1)+'h)'}
+      if(effEl){
+        var desc=fmt(normalTime,1)+'h通常';
+        var minMRD=mr;rt.sides.forEach(function(s){if(s.mode==='intermittent'&&s.mainRateDuring!==null)minMRD=Math.min(minMRD,s.mainRateDuring)});
+        if(minMRD===0)desc+=' + '+fmt(reducedTime,1)+'h停止';
+        else desc+=' + '+fmt(reducedTime,1)+'h('+fmt(minMRD,1)+'ml/h)';
+        effEl.style.display='inline';effEl.textContent='実効: '+desc+' → '+fmt(mainVolDay,0)+' ml/日';
+      }
+    } else {
+      if(ehEl)ehEl.style.display='none';
+      if(effEl)effEl.style.display='none';
     }
 
     COMP_KEYS.forEach(function(k){dayAmt[k]+=mc[k]*mainVolDay});
@@ -524,7 +541,10 @@ function recalc(){
       var norm=calcRouteCompNorm(rt);
       renderComp('comp-'+rid+'-norm',norm.comp,norm.totalRate,wt);
       var nrEl=document.getElementById('route-rate-norm-'+rid);
-      if(nrEl)nrEl.textContent='('+fmt(norm.totalRate,1)+' ml/h)';
+      if(nrEl){
+        if(norm.parts.length>1){var pd=norm.parts.map(function(p){return p.name+':'+fmt(p.rate,1)}).join(' + ');nrEl.textContent='('+fmt(norm.totalRate,1)+' ml/h = '+pd+')';}
+        else nrEl.textContent='('+fmt(norm.totalRate,1)+' ml/h)';
+      }
     }
     // Route composition: intermittent (間欠時)
     var intEl=document.getElementById('comp-'+rid+'-int');
@@ -534,9 +554,8 @@ function recalc(){
         renderComp('comp-'+rid+'-int',intR.comp,intR.totalRate,wt);
         var irEl=document.getElementById('route-rate-int-'+rid);
         if(irEl){
-          var detail=fmt(intR.totalRate,1)+' ml/h';
-          if(intR.effMainRate!==mr) detail+=' メイン:'+fmt(intR.effMainRate,1);
-          irEl.textContent='('+detail+')';
+          var pd=intR.parts.map(function(p){return p.name+':'+fmt(p.rate,1)}).join(' + ');
+          irEl.textContent='('+fmt(intR.totalRate,1)+' ml/h = '+pd+')';
         }
       }
     }
@@ -573,17 +592,6 @@ function recalc(){
   [{n:"タンパク+Aa",v:aKg,r:pR},{n:"脂質",v:fKg,r:fR},{n:"糖質",v:gKg,r:gR}].forEach(function(x){
     var tr=document.createElement('tr');tr.innerHTML='<td>'+x.n+'</td><td>'+fmt(x.v,2)+'</td><td>'+(eqK>0?fmt(x.r*100,1)+'%':'—')+'</td>';nT.appendChild(tr)});
 
-  // Supplements
-  var sT=document.getElementById('supplement-tbody');sT.innerHTML='';var supIds=["multamin","elezect","calcicol","napo4","mgso4"],hasSup=false;
-  supIds.forEach(function(sid){var mlKg=0;routes.forEach(function(rt){
-    var me=rt.main.fluids.find(function(e){return e.id===sid});
-    if(me&&wt>0){var mt=chTotal(rt.main);var mvd=rt.main.rate*rt.main.hours;
-      rt.sides.forEach(function(s){if(s.mode==='intermittent'&&s.mainRateDuring!==null)mvd+=(s.mainRateDuring-rt.main.rate)*s.duration*s.timesPerDay});
-      mvd=Math.max(0,mvd);if(mt>0)mlKg+=me.volume/mt*mvd/wt}
-    rt.sides.forEach(function(s){var se=s.fluids.find(function(e){return e.id===sid});
-      if(se&&wt>0){var st=chTotal(s);var sv=s.mode==='continuous'?s.rate*(s.hours||rt.main.hours):s.rate*s.duration*s.timesPerDay;if(st>0)mlKg+=se.volume/st*sv/wt}})});
-    if(mlKg>0){hasSup=true;var f=getFluidById(sid);var tr=document.createElement('tr');tr.innerHTML='<td>'+(f?f.name:sid)+'</td><td>'+fmt(mlKg,2)+' ml/kg/day</td>';sT.appendChild(tr)}});
-  if(!hasSup){var tr=document.createElement('tr');tr.innerHTML='<td colspan="2" style="color:var(--gray-400);text-align:center">補正液なし</td>';sT.appendChild(tr)}
   saveState();
 }
 

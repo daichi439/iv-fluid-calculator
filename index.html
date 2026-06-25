@@ -72,7 +72,7 @@ body {
 .container { max-width: 1200px; margin: 0 auto; padding: 16px; }
 .patient-card { background: #fff; border-radius: var(--radius-lg); box-shadow: var(--shadow-md); overflow: hidden; margin-bottom: 20px; border: none; position: relative; }
 .patient-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, #0891b2, #22d3ee, #06b6d4); border-radius: var(--radius-lg) var(--radius-lg) 0 0; }
-.patient-card-header { padding: 10px 20px; background: transparent; font-size: 14px; font-weight: 700; color: var(--gray-600); border-bottom: 2px solid var(--gray-100); }
+.patient-card-header { padding: 14px 20px; font-size: 15px; font-weight: 700; color: #0e7490; border-bottom: 2px solid var(--gray-100); background: linear-gradient(135deg, #f0f9ff, #ecfeff); border-left: 4px solid #06b6d4; }
 .patient-bar { display: flex; align-items: center; gap: 24px; flex-wrap: wrap; padding: 16px 24px; }
 .patient-bar label { font-size: 13px; font-weight: 600; color: var(--gray-600); display: flex; align-items: center; gap: 6px; }
 .patient-bar input { width: 70px; padding: 6px 10px; border: 1.5px solid var(--gray-200); border-radius: var(--radius-sm); font-size: 14px; text-align: right; background: #fff; transition: border-color .2s, box-shadow .2s; }
@@ -116,7 +116,7 @@ body {
 .btn-danger { background: var(--danger-light); color: var(--danger); }
 .btn-danger:hover { background: #fecaca; }
 .btn-sm { padding: 2px 8px; font-size: 12px; }
-.main-section { padding: 14px; background: linear-gradient(135deg, #f0f9ff, #ecfeff); border-radius: var(--radius); border-left: 4px solid var(--iv); }
+.main-section { padding: 14px; background: linear-gradient(135deg, #f0f9ff, #ecfeff); border-radius: var(--radius); border-left: 4px solid var(--iv); align-self: start; }
 .ch-section { margin-top: 12px; padding: 14px; border-top: none; background: linear-gradient(135deg, #fffbeb, #fff7ed); border-radius: var(--radius); border-left: 4px solid #f59e0b; }
 .ch-section:first-child { margin-top: 0; }
 .ch-header { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
@@ -237,9 +237,11 @@ body {
 .modal-body::-webkit-scrollbar-track { background: transparent; }
 .modal-body::-webkit-scrollbar-thumb { background: var(--gray-300); border-radius: 3px; }
 .modal-footer { padding: 16px 24px; border-top: 1px solid var(--gray-200); display: flex; justify-content: flex-end; gap: 8px; flex-shrink: 0; }
-.fluid-edit-table { width: 100%; border-collapse: collapse; font-size: 12px; }
-.fluid-edit-table th, .fluid-edit-table td { padding: 4px 4px; border: 1px solid var(--gray-200); text-align: center; }
-.fluid-edit-table th { background: var(--gray-100); font-weight: 600; color: var(--gray-600); font-size: 11px; position: sticky; top: 0; z-index: 1; }
+.fluid-edit-table { width: 100%; border-collapse: separate; border-spacing: 0; font-size: 12px; }
+.fluid-edit-table th, .fluid-edit-table td { padding: 4px 4px; border-right: 1px solid var(--gray-200); border-bottom: 1px solid var(--gray-200); text-align: center; }
+.fluid-edit-table th:first-child, .fluid-edit-table td:first-child { border-left: 1px solid var(--gray-200); }
+.fluid-edit-table thead tr:first-child th { border-top: 1px solid var(--gray-300); }
+.fluid-edit-table th { background: var(--gray-100); font-weight: 600; color: var(--gray-600); font-size: 11px; position: sticky; top: 0; z-index: 3; border-right-color: var(--gray-300); border-bottom-color: var(--gray-300); }
 .fluid-edit-table input { width: 100%; min-width: 45px; padding: 2px 4px; border: 1px solid var(--gray-200); border-radius: 3px; font-size: 12px; text-align: right; background: #fff; }
 .fluid-edit-table input:focus { outline: none; border-color: var(--primary); }
 .fluid-edit-table input.name-input { text-align: left; min-width: 100px; }
@@ -247,10 +249,10 @@ body {
 .fluid-edit-table .toggle-btn { width: 22px; height: 22px; border: none; border-radius: 3px; cursor: pointer; font-size: 13px; line-height: 1; }
 .fluid-edit-table .toggle-btn.on { background: var(--success-light); color: var(--success); }
 .fluid-edit-table .toggle-btn.off { background: var(--gray-200); color: var(--gray-400); }
-.fluid-edit-table .section-row td { color: #fff; font-weight: 700; font-size: 13px; padding: 8px 12px; text-align: left; border: none; position: sticky; top: 26px; z-index: 2; letter-spacing: .5px; }
+.fluid-edit-table .section-row td { color: #fff; font-weight: 700; font-size: 13px; padding: 8px 12px; text-align: left; border: none; letter-spacing: .5px; }
 .fluid-edit-table .section-row.iv-section td { background: #0e7490; }
 .fluid-edit-table .section-row.en-section td { background: var(--en-dark); }
-.fluid-edit-table .cat-row td { background: var(--gray-700); color: #fff; font-weight: 700; font-size: 12px; padding: 5px 8px; text-align: left; border: none; position: sticky; top: 54px; z-index: 1; }
+.fluid-edit-table .cat-row td { background: var(--gray-200); color: var(--gray-700); font-weight: 700; font-size: 12px; padding: 5px 8px; text-align: left; border-right: none; }
 .fluid-edit-table .move-btns { display: flex; flex-direction: column; gap: 1px; }
 .fluid-edit-table .move-btn { width: 20px; height: 14px; border: 1px solid var(--gray-200); background: #fff; color: var(--gray-500); border-radius: 2px; cursor: pointer; font-size: 9px; line-height: 1; padding: 0; display: flex; align-items: center; justify-content: center; }
 .fluid-edit-table .move-btn:hover { background: var(--primary-light); color: var(--primary); border-color: var(--primary); }
@@ -265,9 +267,9 @@ body {
 .line-c0 { background: linear-gradient(135deg, #f0f9ff, #e0f2fe); color: #0369a1; border-left-color: #0ea5e9; }
 .line-c1 { background: linear-gradient(135deg, #ecfeff, #cffafe); color: #0e7490; border-left-color: #06b6d4; }
 .line-c2 { background: linear-gradient(135deg, #eff6ff, #dbeafe); color: #1e40af; border-left-color: #3b82f6; }
-.line-c3 { background: linear-gradient(135deg, #fdf2f8, #fce7f3); color: #9d174d; border-left-color: #ec4899; }
-.line-c4 { background: linear-gradient(135deg, #f0fdfa, #ccfbf1); color: #0f766e; border-left-color: #14b8a6; }
-.line-c5 { background: linear-gradient(135deg, #fffbeb, #fef3c7); color: #92400e; border-left-color: #f59e0b; }
+.line-c3 { background: linear-gradient(135deg, #f8fafc, #e2e8f0); color: #334155; border-left-color: #64748b; }
+.line-c4 { background: linear-gradient(135deg, #e0f2fe, #bae6fd); color: #0c4a6e; border-left-color: #0284c7; }
+.line-c5 { background: linear-gradient(135deg, #cffafe, #a5f3fc); color: #155e75; border-left-color: #22d3ee; }
 .no-int-msg { color: var(--gray-400); font-size: 12px; padding: 8px 0; text-align: center; }
 .route-add-group { display: flex; gap: 16px; margin-bottom: 20px; }
 .route-add-group .btn-add-route { flex: 1; }
@@ -282,6 +284,15 @@ body {
 .en-summary { margin-top: 12px; font-size: 13px; display: flex; gap: 12px; flex-wrap: wrap; color: var(--gray-600); padding: 8px 14px; background: var(--gray-50); border-radius: var(--radius-sm); }
 .en-summary .val { font-weight: 700; }
 .comp-box.en-comp { background: linear-gradient(135deg, #ecfdf5, #d1fae5); border: 1px solid var(--en-border); border-left: 4px solid var(--en); }
+.custom-alert-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.35); backdrop-filter: blur(4px); z-index: 2000; justify-content: center; align-items: center; }
+.custom-alert-overlay.open { display: flex; }
+.custom-alert { background: #fff; border-radius: var(--radius-lg); box-shadow: 0 20px 60px rgba(0,0,0,.2); max-width: 440px; width: calc(100% - 32px); padding: 28px 28px 20px; text-align: center; animation: alertIn .2s ease-out; }
+@keyframes alertIn { from { transform: scale(.9); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+.custom-alert .alert-icon { font-size: 36px; margin-bottom: 12px; }
+.custom-alert .alert-title { font-size: 16px; font-weight: 700; color: var(--gray-800); margin-bottom: 8px; }
+.custom-alert .alert-msg { font-size: 14px; color: var(--gray-600); line-height: 1.7; margin-bottom: 20px; }
+.custom-alert .alert-btn { padding: 10px 32px; border: none; border-radius: var(--radius-sm); font-size: 14px; font-weight: 600; cursor: pointer; background: linear-gradient(135deg, #0891b2, #06b6d4); color: #fff; box-shadow: 0 2px 8px rgba(8,145,178,.25); transition: all .15s; }
+.custom-alert .alert-btn:hover { background: linear-gradient(135deg, #0e7490, #0891b2); box-shadow: 0 4px 12px rgba(8,145,178,.35); }
 </style>
 </head>
 <body>
@@ -299,7 +310,7 @@ body {
     </div>
   </div>
   <div class="routes-list" id="routes-container"></div>
-  <div class="route-add-group"><button class="btn-add-route" onclick="addRoute('iv')">＋ IVルートを追加</button><button class="btn-add-route enteral" onclick="addRoute('enteral')">＋ 経腸栄養を追加</button></div>
+  <div class="route-add-group"><button class="btn-add-route" onclick="addRoute('iv')">＋ ルートを追加</button><button class="btn-add-route enteral" onclick="addRoute('enteral')">＋ 経腸栄養を追加</button></div>
   <div class="card">
     <div class="card-header result" id="result-header">輸液組成 合計</div>
     <div class="card-body">
@@ -392,7 +403,7 @@ function chComp(ch){
 }
 function nextName(prefix,items,key){var u={};items.forEach(function(i){var m=(i[key]||'').match(new RegExp('^'+prefix+'\\s*(\\d+)$'));if(m)u[parseInt(m[1])]=true});var n=1;while(u[n])n++;return prefix+' '+n}
 
-function addRoute(type){var rid='r'+nextRouteId++;if(type==='enteral'){routes.push({id:rid,type:'enteral',name:nextName('経腸',routes,'name'),main:{fluids:[],rate:0,hours:24},enDailyVol:0,enUnitsPerDay:0,sides:[]})}else{routes.push({id:rid,type:'iv',name:nextName('ライン',routes,'name'),main:{fluids:[],rate:0,hours:24},sides:[]})}renderAll();recalc()}
+function addRoute(type){var rid='r'+nextRouteId++;if(type==='enteral'){routes.push({id:rid,type:'enteral',name:nextName('経腸',routes,'name'),main:{fluids:[],rate:0,hours:24},enDailyVol:0,enUnitsPerDay:0,sides:[]})}else{routes.push({id:rid,type:'iv',name:nextName('ルート',routes,'name'),main:{fluids:[],rate:0,hours:24},sides:[]})}renderAll();recalc()}
 function removeRoute(rid){if(routes.length<=1)return;routes=routes.filter(function(r){return r.id!==rid});renderAll();recalc()}
 function renameRoute(rid,v){var rt=R(rid);if(rt)rt.name=v;updateResultHeader();saveState()}
 function addSide(rid){var rt=R(rid);if(!rt)return;var sid='s'+nextSideId++;rt.sides.push({id:sid,name:nextName('側管',rt.sides,'name'),fluids:[],rate:0,mode:'continuous',hours:24,duration:1,timesPerDay:3,mainRateDuring:null});renderAll();recalc()}
@@ -453,6 +464,7 @@ function selectFSS(fid){
   if(!fssAnchor)return;
   var rid=fssAnchor.dataset.rid,ct=fssAnchor.dataset.ct,cid=fssAnchor.dataset.cid;
   var fl=getFluidById(fid),ch=CH(rid,ct,cid);if(!fl||!ch)return;
+  if(ct==='side'&&fl.cat==='lipid'){showCustomAlert('脂肪乳剤の投与経路',fl.name+'は単独で末梢ルートから投与する製剤です。側管からの投与は推奨されません。');return}
   ch.fluids.push({id:fid,volume:fl.defaultVol});closeFSS();renderFL(rid,ct,cid);recalc();
   var items=document.querySelectorAll('#flist-'+CK(rid,ct,cid)+' .fluid-item');
   if(items.length>0){var inp=items[items.length-1].querySelector('input');if(inp)inp.select()}
@@ -482,7 +494,10 @@ function onSMR(rid,sid,v){var s=S(rid,sid);if(s)s.mainRateDuring=v===''?null:(pa
 
 function renderAll(){
   var c=document.getElementById('routes-container');c.innerHTML='';
-  routes.forEach(function(rt,idx){var card=document.createElement('div');
+  var ivRoutes=routes.filter(function(r){return r.type!=='enteral'});
+  var enRoutes=routes.filter(function(r){return r.type==='enteral'});
+  var ordered=ivRoutes.concat(enRoutes);
+  ordered.forEach(function(rt,idx){var card=document.createElement('div');
     if(rt.type==='enteral'){card.className='card route-en';card.innerHTML=buildEnteralRoute(rt);c.appendChild(card);renderFL(rt.id,'main',null)}
     else{card.className='card route-iv';card.innerHTML=buildRoute(rt,idx);c.appendChild(card);renderFL(rt.id,'main',null);rt.sides.forEach(function(s){renderFL(rt.id,'side',s.id)})}});
 }
@@ -598,6 +613,10 @@ function getEnteralUnitVol(rt){
   var t=0;rt.main.fluids.forEach(function(e){t+=e.volume});return t;
 }
 
+function showCustomAlert(title,msg){document.getElementById('custom-alert-title').textContent=title;document.getElementById('custom-alert-msg').textContent=msg;document.getElementById('custom-alert-overlay').classList.add('open')}
+function closeCustomAlert(){document.getElementById('custom-alert-overlay').classList.remove('open')}
+function isLipidOnly(ch){if(ch.fluids.length===0)return false;return ch.fluids.every(function(e){var f=getFluidById(e.id);return f&&f.cat==='lipid'})}
+function renderLipidComp(elId,comp,dayVol,wt){var g=document.getElementById(elId);if(!g)return;if(comp.fat<=0){g.innerHTML='<div style="color:var(--gray-400);font-size:12px">—</div>';return}var fatDay=comp.fat*dayVol/1000,fatKg=wt>0?fatDay/wt:0,kcal=fatDay*9;g.innerHTML='<div class="comp-row-group cols-3">'+cr('脂肪濃度',fmt(comp.fat/10,0)+'%')+cr('1日量',fmt(fatDay,1)+' g/day')+cr('投与量/kg',fmt(fatKg,2)+' g/kg/day',fatKg>2?'warn':null)+'</div><div class="comp-row-group cols-3">'+cr('カロリー',fmt(kcal,0)+' kcal/day')+'<div></div><div></div></div>'}
 function fmt(v,d){if(v===null||v===undefined||isNaN(v)||!isFinite(v))return"—";return v.toFixed(d!==undefined?d:2)}
 function esc(s){return s.replace(/&/g,"&amp;").replace(/"/g,"&quot;").replace(/</g,"&lt;").replace(/>/g,"&gt;")}
 function cr(l,v,al){var c=al==='warn'?' alert-warn':al==='info'?' alert-info':'';return'<div class="comp-row'+c+'"><span class="label">'+l+'</span><span class="value">'+v+(al?' &#9888;':'')+'</span></div>'}
@@ -729,7 +748,7 @@ function recalc(){
     document.getElementById('total-'+rid+'-main').textContent=mt+' ml';
     document.getElementById('dayvol-'+rid+'-main').textContent=fmt(mr*mh,0)+' ml';
     updateBag(rid,mr>0?mt/mr:0,mh);
-    renderComp('comp-'+rid+'-main',mc,mr,wt,false);
+    if(isLipidOnly(rt.main))renderLipidComp('comp-'+rid+'-main',mc,mainVolDay,wt);else renderComp('comp-'+rid+'-main',mc,mr,wt,false);
 
     var hasIntChange=rt.sides.some(function(s){return s.mode==='intermittent'&&s.mainRateDuring!==null});
     var effEl=document.getElementById('eff-'+rid);
@@ -768,7 +787,7 @@ function recalc(){
           smEl.innerHTML='<span>1回量: <span class="val">'+fmt(dose,0)+' ml</span></span><span>1日量: <span class="val">'+fmt(sVolDay,0)+' ml</span></span><span>合計(バッグ): <span class="val">'+st+' ml</span></span>';
         }
       }
-      renderComp('comp-'+rid+'-'+s.id,sc,s.rate,wt,false);
+      if(isLipidOnly(s))renderLipidComp('comp-'+rid+'-'+s.id,sc,sVolDay,wt);else renderComp('comp-'+rid+'-'+s.id,sc,s.rate,wt,false);
       COMP_KEYS.forEach(function(k){dayAmt[k]+=sc[k]*sVolDay});
       ivDayGlu+=sc.glu*sVolDay;
       ivWater+=sVolDay;totalFreeWater+=sVolDay;
@@ -856,7 +875,7 @@ function recalc(){
 function updateResultHeader(){
   var hasIV=routes.some(function(r){return r.type!=='enteral'});
   var hasEN=routes.some(function(r){return r.type==='enteral'});
-  var ns=routes.map(function(r){return r.name||(r.type==='enteral'?'経腸':'ライン')});
+  var ns=routes.map(function(r){return r.name||(r.type==='enteral'?'経腸':'ルート')});
   var prefix=hasIV&&hasEN?'輸液・経腸栄養':hasEN?'経腸栄養':'輸液組成';
   document.getElementById('result-header').textContent=ns.length>0?prefix+'（'+ns.join(' + ')+'）合計':prefix+' 合計';
 }
@@ -866,7 +885,7 @@ function openSettings(){renderSettingsTable();document.getElementById('settings-
 function closeSettings(){document.getElementById('settings-modal').classList.remove('open');renderAll();recalc()}
 function renderSettingsTable(){
   var b=document.getElementById('settings-body');
-  var cols=["Glu(g/L)","Na(mEq/L)","K(mEq/L)","Cl(mEq/L)","Ca(mEq/L)","Mg(mEq/L)","P(mg/L)","Aa(g/L)","脂肪(g/L)","HCO3(mEq/L)","Hep(U/mL)","繊維(g/L)","水(mL/L)"];
+  var cols=["Glu<br>(g/L)","Na<br>(mEq/L)","K<br>(mEq/L)","Cl<br>(mEq/L)","Ca<br>(mEq/L)","Mg<br>(mEq/L)","P<br>(mg/L)","Aa<br>(g/L)","脂肪<br>(g/L)","HCO3<br>(mEq/L)","Hep<br>(U/mL)","繊維<br>(g/L)","水<br>(mL/L)"];
   var keys=["glu","na","k","cl","ca","mg","p","aa","fat","hco3","heparin","fiber","water"];
   var ncol=cols.length+4;
   var h='<table class="fluid-edit-table"><thead><tr><th></th><th>★</th><th>製剤名</th><th>ml</th>';
@@ -930,7 +949,7 @@ function loadState(){try{var r=localStorage.getItem(STORAGE_PREFIX+'state');if(!
     if(!rt.sides)rt.sides=[];rt.sides.forEach(function(s){s.fluids=s.fluids.filter(function(e){return getFluidById(e.id)});
     if(!s.mode)s.mode='continuous';if(s.mainRateDuring===undefined)s.mainRateDuring=null;if(!s.hours)s.hours=24;if(!s.duration)s.duration=1;if(!s.timesPerDay)s.timesPerDay=1});return rt});
     nextRouteId=d.nextRouteId||routes.length+1;nextSideId=d.nextSideId||1;return true}
-  if(d.lines&&d.lines.length>0){routes=d.lines.map(function(l,i){return{id:'r'+(i+1),name:l.name||'ライン '+(i+1),main:{fluids:l.fluids.filter(function(e){return getFluidById(e.id)}),rate:l.rate||0,hours:l.hours!=null?l.hours:24},sides:[]}});
+  if(d.lines&&d.lines.length>0){routes=d.lines.map(function(l,i){return{id:'r'+(i+1),name:l.name||'ルート '+(i+1),main:{fluids:l.fluids.filter(function(e){return getFluidById(e.id)}),rate:l.rate||0,hours:l.hours!=null?l.hours:24},sides:[]}});
     nextRouteId=routes.length+1;return true}}catch(e){}return false}
 
 // Init
@@ -939,5 +958,8 @@ document.getElementById('weight').addEventListener('input',recalc);
 loadFluids();var hs=loadState();if(!hs)addRoute();renderAll();recalc();
 </script>
 <div id="fss-portal" class="fss-dropdown"></div>
+<div class="custom-alert-overlay" id="custom-alert-overlay" onclick="if(event.target===this)closeCustomAlert()">
+  <div class="custom-alert"><div class="alert-icon">⚠️</div><div class="alert-title" id="custom-alert-title"></div><div class="alert-msg" id="custom-alert-msg"></div><button class="alert-btn" onclick="closeCustomAlert()">OK</button></div>
+</div>
 </body>
 </html>

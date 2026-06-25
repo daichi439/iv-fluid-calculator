@@ -234,9 +234,7 @@ body {
     <div class="modal-footer">
       <div style="display:flex;gap:8px;flex:1">
         <button class="btn-outline danger" onclick="resetFluidsToDefault()">デフォルトに戻す</button>
-        <button class="btn-outline" onclick="exportSettings()">エクスポート</button>
-        <button class="btn-outline" onclick="document.getElementById('import-file').click()">インポート</button>
-        <input type="file" id="import-file" accept=".json" style="display:none" onchange="importSettings(event)">
+        <button class="btn-outline" style="font-weight:700" onclick="downloadConfiguredHTML()">&#128190; 設定込みHTMLを保存</button>
       </div>
       <button class="btn btn-primary" onclick="closeSettings()">閉じる</button>
     </div>
@@ -701,17 +699,22 @@ function addFluid(){var o={id:'c_'+Date.now(),cat:'other',name:'新規製剤',de
   var tb=document.querySelector('.fluid-edit-table tbody');if(tb&&tb.lastElementChild){var inp=tb.lastElementChild.querySelector('.name-input');if(inp){inp.focus();inp.select()}}}
 function resetFluidsToDefault(){if(!confirm('デフォルトに戻しますか？'))return;fluids=JSON.parse(JSON.stringify(DEFAULT_FLUIDS));saveFluids();
   routes.forEach(function(rt){rt.main.fluids=[];rt.sides.forEach(function(s){s.fluids=[]})});renderSettingsTable();renderAll();recalc()}
-function exportSettings(){var b=new Blob([JSON.stringify(fluids,null,2)],{type:'application/json'});var u=URL.createObjectURL(b);var a=document.createElement('a');a.href=u;a.download='iv-calc-fluids.json';a.click();URL.revokeObjectURL(u)}
-function importSettings(ev){var f=ev.target.files[0];if(!f)return;var r=new FileReader();r.onload=function(e){try{var d=JSON.parse(e.target.result);if(!Array.isArray(d))throw 0;fluids=d;saveFluids();renderSettingsTable();renderAll();recalc();alert('インポート完了')}catch(e){alert('形式が正しくありません')}};r.readAsText(f);ev.target.value=''}
+function downloadConfiguredHTML(){
+  var html=document.documentElement.outerHTML;
+  html=html.replace(/var DEFAULT_FLUIDS=\[[\s\S]*?\];/,'var DEFAULT_FLUIDS='+JSON.stringify(fluids)+';');
+  var blob=new Blob(['<!DOCTYPE html>\n<html lang="ja">\n'+html.slice(html.indexOf('<head'))],{type:'text/html;charset=utf-8'});
+  var a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='輸液組成計算シート.html';a.click();URL.revokeObjectURL(a.href);
+}
 
 // Persistence
-function saveFluids(){try{localStorage.setItem('iv-calc-fluids',JSON.stringify(fluids))}catch(e){}}
-function loadFluids(){try{var r=localStorage.getItem('iv-calc-fluids');if(r){var p=JSON.parse(r);
+var STORAGE_PREFIX='iv-calc_'+location.pathname+'_';
+function saveFluids(){try{localStorage.setItem(STORAGE_PREFIX+'fluids',JSON.stringify(fluids))}catch(e){}}
+function loadFluids(){try{var r=localStorage.getItem(STORAGE_PREFIX+'fluids');if(r){var p=JSON.parse(r);
   var defCat={};DEFAULT_FLUIDS.forEach(function(df){defCat[df.id]=df.cat});
   p.forEach(function(f){COMP_KEYS.forEach(function(k){if(f[k]===undefined)f[k]=0});if(!f.cat)f.cat=defCat[f.id]||'other'});
   var ids={};p.forEach(function(f){ids[f.id]=true});DEFAULT_FLUIDS.forEach(function(df){if(!ids[df.id])p.push(JSON.parse(JSON.stringify(df)))});fluids=p}}catch(e){}}
-function saveState(){try{localStorage.setItem('iv-calc-state',JSON.stringify({height:document.getElementById('height').value,weight:document.getElementById('weight').value,routes:routes,nextRouteId:nextRouteId,nextSideId:nextSideId}))}catch(e){}}
-function loadState(){try{var r=localStorage.getItem('iv-calc-state');if(!r)return false;var d=JSON.parse(r);
+function saveState(){try{localStorage.setItem(STORAGE_PREFIX+'state',JSON.stringify({height:document.getElementById('height').value,weight:document.getElementById('weight').value,routes:routes,nextRouteId:nextRouteId,nextSideId:nextSideId}))}catch(e){}}
+function loadState(){try{var r=localStorage.getItem(STORAGE_PREFIX+'state');if(!r)return false;var d=JSON.parse(r);
   if(d.height)document.getElementById('height').value=d.height;if(d.weight)document.getElementById('weight').value=d.weight;
   if(d.routes&&d.routes.length>0){routes=d.routes.map(function(rt){rt.main.fluids=rt.main.fluids.filter(function(e){return getFluidById(e.id)});
     if(!rt.sides)rt.sides=[];rt.sides.forEach(function(s){s.fluids=s.fluids.filter(function(e){return getFluidById(e.id)});

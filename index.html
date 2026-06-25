@@ -256,6 +256,33 @@ body {
   padding: 2px 8px;
   border-radius: 4px;
 }
+.flow-inputs .calc-val.clickable {
+  cursor: pointer;
+  border: 1px dashed var(--gray-300);
+  transition: all .15s;
+}
+.flow-inputs .calc-val.clickable:hover {
+  background: var(--primary-light);
+  border-color: var(--primary);
+  color: var(--primary-dark);
+}
+.btn-24h {
+  padding: 2px 8px;
+  border: 1px solid var(--gray-300);
+  border-radius: 4px;
+  background: #fff;
+  color: var(--gray-500);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all .15s;
+  display: none;
+}
+.btn-24h:hover {
+  background: var(--primary-light);
+  border-color: var(--primary);
+  color: var(--primary-dark);
+}
 .result-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
@@ -559,6 +586,7 @@ body {
         <div class="flow-inputs">
           <label>流量 <input type="number" id="rate-tpn1" value="" step="0.1" placeholder="ml/h"> <span class="unit">ml/h</span></label>
           <label>投与時間 <input type="number" id="hours-tpn1" value="24" step="1"> <span class="unit">h</span></label>
+          <button class="btn-24h" id="btn24-tpn1" onclick="setHours('tpn1',24)">&#8592; 24hに戻す</button>
           <span class="calc-val" id="bag-hours-tpn1">1本あたり: — h</span>
         </div>
         <div class="line-summary">
@@ -578,6 +606,7 @@ body {
         <div class="flow-inputs">
           <label>流量 <input type="number" id="rate-tpn2" value="" step="0.1" placeholder="ml/h"> <span class="unit">ml/h</span></label>
           <label>投与時間 <input type="number" id="hours-tpn2" value="24" step="1"> <span class="unit">h</span></label>
+          <button class="btn-24h" id="btn24-tpn2" onclick="setHours('tpn2',24)">&#8592; 24hに戻す</button>
           <span class="calc-val" id="bag-hours-tpn2">1本あたり: — h</span>
         </div>
         <div class="line-summary">
@@ -796,8 +825,8 @@ function recalc() {
 
   const bagHours1 = rateTpn1 > 0 ? totalTpn1 / rateTpn1 : 0;
   const bagHours2 = rateTpn2 > 0 ? totalTpn2 / rateTpn2 : 0;
-  document.getElementById("bag-hours-tpn1").textContent = bagHours1 > 0 ? "1本あたり: " + fmt(bagHours1, 1) + " h" : "1本あたり: — h";
-  document.getElementById("bag-hours-tpn2").textContent = bagHours2 > 0 ? "1本あたり: " + fmt(bagHours2, 1) + " h" : "1本あたり: — h";
+  updateBagHoursEl("tpn1", bagHours1, hoursTpn1);
+  updateBagHoursEl("tpn2", bagHours2, hoursTpn2);
 
   renderLineComp("tpn1", compTpn1, totalTpn1, rateTpn1, hoursTpn1);
   renderLineComp("tpn2", compTpn2, totalTpn2, rateTpn2, hoursTpn2);
@@ -900,6 +929,36 @@ function recalc() {
   }
 
   saveState();
+}
+
+function updateBagHoursEl(line, bagHours, currentHours) {
+  const el = document.getElementById("bag-hours-" + line);
+  const btn24 = document.getElementById("btn24-" + line);
+  btn24.style.display = Math.abs(currentHours - 24) < 0.05 ? "none" : "inline-block";
+  if (bagHours <= 0) {
+    el.textContent = "1本あたり: — h";
+    el.className = "calc-val";
+    el.onclick = null;
+    el.title = "";
+    return;
+  }
+  const rounded = Math.round(bagHours * 10) / 10;
+  const isSame = Math.abs(rounded - currentHours) < 0.05;
+  el.textContent = "1本あたり: " + fmt(bagHours, 1) + " h";
+  if (isSame) {
+    el.className = "calc-val";
+    el.onclick = null;
+    el.title = "";
+  } else {
+    el.className = "calc-val clickable";
+    el.title = "クリックで投与時間を " + fmt(bagHours, 1) + " h に設定";
+    el.onclick = function() { setHours(line, rounded); };
+  }
+}
+
+function setHours(line, hours) {
+  document.getElementById("hours-" + line).value = hours;
+  recalc();
 }
 
 function calcMixedConc(key, c1, c2, r1, r2) {

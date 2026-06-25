@@ -158,7 +158,7 @@ body {
 .modal-header h2 { font-size: 16px; font-weight: 700; }
 .modal-close { width: 28px; height: 28px; border: none; background: var(--gray-100); border-radius: 4px; cursor: pointer; font-size: 16px; color: var(--gray-500); display: flex; align-items: center; justify-content: center; }
 .modal-close:hover { background: var(--gray-200); }
-.modal-body { padding: 16px 20px; overflow-y: auto; flex: 1; }
+.modal-body { padding: 0 20px 16px; overflow: auto; flex: 1; }
 .modal-footer { padding: 12px 20px; border-top: 1px solid var(--gray-200); display: flex; justify-content: flex-end; gap: 8px; flex-shrink: 0; }
 .fluid-edit-table { width: 100%; border-collapse: collapse; font-size: 12px; }
 .fluid-edit-table th, .fluid-edit-table td { padding: 4px 4px; border: 1px solid var(--gray-200); text-align: center; }
@@ -341,6 +341,7 @@ function buildRoute(rt,idx){
   h+='</div>';
   h+='<div class="flow-row"><span class="calc-val" id="bag-'+rid+'">1本あたり: — h</span></div>';
   h+='<div class="ch-summary"><span>合計: <span class="val" id="total-'+rid+'-main">0 ml</span></span>';
+  h+='<span>1日量: <span class="val" id="dayvol-'+rid+'-main">0 ml</span></span>';
   h+='<span class="eff" id="eff-'+rid+'" style="display:none"></span></div>';
   h+='<div class="comp-box"><div class="comp-title">組成（メイン）</div><div class="comp-grid" id="comp-'+rid+'-main"></div></div>';
   h+='</div>';
@@ -397,7 +398,7 @@ function fmt(v,d){if(v===null||v===undefined||isNaN(v)||!isFinite(v))return"—"
 function esc(s){return s.replace(/&/g,"&amp;").replace(/"/g,"&quot;").replace(/</g,"&lt;").replace(/>/g,"&gt;")}
 function cr(l,v,al){var c=al==='warn'?' alert-warn':al==='info'?' alert-info':'';return'<div class="comp-row'+c+'"><span class="label">'+l+'</span><span class="value">'+v+(al?' &#9888;':'')+'</span></div>'}
 function calcOsm(c){return c.na+c.k+c.cl+c.ca/2+c.mg/2+c.hco3+c.glu*5.56+(c.aa||0)*10+(c.fat||0)*0.7}
-function calcCaP(c){return(c.ca/2)*(c.p/31)}
+function calcCaP(c){return c.ca*(c.p/31)}
 
 function renderComp(elId,comp,rate,wt){
   var g=document.getElementById(elId);if(!g)return;
@@ -491,6 +492,7 @@ function recalc(){
     mainVolDay=Math.max(0,mainVolDay);
 
     document.getElementById('total-'+rid+'-main').textContent=mt+' ml';
+    document.getElementById('dayvol-'+rid+'-main').textContent=fmt(mr*mh,0)+' ml';
     updateBag(rid,mr>0?mt/mr:0,mh);
     renderComp('comp-'+rid+'-main',mc,mr,wt);
 
@@ -520,7 +522,7 @@ function recalc(){
     // Sides
     rt.sides.forEach(function(s){
       var sc=chComp(s),st=chTotal(s);
-      var sVolDay=s.mode==='continuous'?s.rate*(s.hours||mh):s.rate*s.duration*s.timesPerDay;
+      var sVolDay=s.mode==='continuous'?s.rate*(s.hours!=null?s.hours:mh):s.rate*s.duration*s.timesPerDay;
       var smEl=document.getElementById('sidesm-'+rid+'-'+s.id);
       if(smEl){
         if(s.mode==='continuous'){
@@ -571,7 +573,7 @@ function recalc(){
   updateResultHeader();
   var fC=fOver?'result-box warn':'result-box',gC=girAvg>12?'result-box warn':'result-box highlight';
   document.getElementById('result-summary').innerHTML=
-    '<div class="result-box highlight"><div class="r-title">水分量</div><div class="r-value">'+fmt(totalWater,0)+' <span class="r-unit">ml/day</span></div><div class="r-sub">'+(bsa>0?fmt(totalWater/bsa,0)+' ml/㎡/day':'—')+'</div></div>'+
+    '<div class="result-box highlight"><div class="r-title">水分量</div><div class="r-value">'+fmt(totalWater,0)+' <span class="r-unit">ml/day</span></div><div class="r-sub">'+(wt>0?fmt(totalWater/wt,1)+' ml/kg/day':'—')+(bsa>0?' / '+fmt(totalWater/bsa,0)+' ml/㎡/day':'')+'</div></div>'+
     '<div class="result-box highlight"><div class="r-title">カロリー</div><div class="r-value">'+fmt(eqK,1)+' <span class="r-unit">kcal/kg/day</span></div><div class="r-sub">'+fmt(tK,0)+' kcal/day</div></div>'+
     '<div class="'+gC+'"><div class="r-title">GIR（平均）</div><div class="r-value">'+fmt(girAvg,2)+' <span class="r-unit">mg/kg/min</span></div>'+(girAvg>12?'<div class="r-sub" style="color:var(--danger)">&#9888; 高血糖リスク</div>':'')+'</div>'+
     '<div class="result-box"><div class="r-title">アミノ酸</div><div class="r-value">'+fmt(aKg,2)+' <span class="r-unit">g/kg/day</span></div></div>'+
@@ -607,14 +609,14 @@ function renderSettingsTable(){
   var b=document.getElementById('settings-body');
   var cols=["Glu(g/L)","Na","K","Cl","Ca","Mg","P(mg/L)","Aa(g/L)","脂肪(g/L)","HCO3","Hep(U/mL)"];
   var keys=["glu","na","k","cl","ca","mg","p","aa","fat","hco3","heparin"];
-  var h='<div style="overflow-x:auto"><table class="fluid-edit-table"><thead><tr><th>★</th><th>製剤名</th><th>ml</th>';
+  var h='<table class="fluid-edit-table"><thead><tr><th>★</th><th>製剤名</th><th>ml</th>';
   cols.forEach(function(c){h+='<th>'+c+'</th>'});h+='<th></th></tr></thead><tbody>';
   fluids.forEach(function(f,i){h+='<tr><td><button class="toggle-btn '+(f.enabled?'on':'off')+'" onclick="toggleFluid('+i+')">'+(f.enabled?'★':'☆')+'</button></td>';
     h+='<td><input class="name-input" value="'+esc(f.name)+'" onchange="updFP('+i+',\'name\',this.value)"></td>';
     h+='<td><input type="number" value="'+f.defaultVol+'" min="0" onchange="updFP('+i+',\'defaultVol\',parseFloat(this.value)||0)"></td>';
     keys.forEach(function(k){h+='<td><input type="number" value="'+(f[k]||0)+'" step="any" onchange="updFP('+i+',\''+k+'\',parseFloat(this.value)||0)"></td>'});
     h+='<td><button class="del-btn" onclick="delFluid('+i+')">&#10005;</button></td></tr>'});
-  h+='</tbody></table></div><button class="btn-add-row" onclick="addFluid()">＋ 新しい製剤を追加</button>';b.innerHTML=h;
+  h+='</tbody></table><button class="btn-add-row" onclick="addFluid()">＋ 新しい製剤を追加</button>';b.innerHTML=h;
 }
 function toggleFluid(i){fluids[i].enabled=!fluids[i].enabled;saveFluids();renderSettingsTable()}
 function updFP(i,p,v){fluids[i][p]=v;saveFluids()}

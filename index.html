@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>輸液組成計算シート</title>
+<title>輸液・経腸栄養 組成計算シート</title>
 <style>
 :root {
   --primary: #2563eb;
@@ -134,7 +134,7 @@ body {
 .btn-add-side:hover { border-color: var(--primary); color: var(--primary); }
 .btn-add-route { width: 100%; padding: 12px; border: 2px dashed var(--gray-300); border-radius: var(--radius); background: #fff; color: var(--gray-500); font-size: 14px; font-weight: 600; cursor: pointer; transition: all .15s; margin-bottom: 16px; }
 .btn-add-route:hover { border-color: var(--primary); color: var(--primary); background: var(--primary-light); }
-.result-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 8px; }
+.result-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
 .result-box { padding: 10px 12px; background: var(--gray-50); border-radius: 6px; border: 1px solid var(--gray-200); }
 .result-box .r-title { font-size: 11px; font-weight: 600; color: var(--gray-500); text-transform: uppercase; letter-spacing: .3px; margin-bottom: 4px; }
 .result-box .r-value { font-size: 20px; font-weight: 700; color: var(--gray-800); font-variant-numeric: tabular-nums; }
@@ -162,6 +162,7 @@ body {
 @media (max-width: 768px) {
   .route-columns { grid-template-columns: 1fr; }
   .route-comp-row { grid-template-columns: 1fr; }
+  .result-grid { grid-template-columns: repeat(2, 1fr); }
   .summary-grid { grid-template-columns: 1fr; }
   .header { flex-direction: column; align-items: flex-start; gap: 8px; }
   .patient-bar { gap: 10px; }
@@ -205,11 +206,24 @@ body {
 .line-c4 { background: #fce7f3; color: #db2777; }
 .line-c5 { background: #ccfbf1; color: #0d9488; }
 .no-int-msg { color: var(--gray-400); font-size: 12px; padding: 8px 0; text-align: center; }
+.route-add-group { display: flex; gap: 12px; margin-bottom: 16px; }
+.route-add-group .btn-add-route { flex: 1; }
+.btn-add-route.enteral { border-color: #059669; color: #059669; }
+.btn-add-route.enteral:hover { background: #d1fae5; border-color: #059669; }
+.line-en { background: #d1fae5; color: #065f46; }
+.en-vol-row { margin-top: 8px; display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+.en-vol-row label { font-size: 13px; color: var(--gray-600); font-weight: 600; display: flex; align-items: center; gap: 4px; }
+.en-vol-row input { width: 70px; padding: 4px 6px; border: 1px solid var(--gray-300); border-radius: 4px; font-size: 14px; text-align: right; background: var(--warning-light); }
+.en-vol-row input:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 2px var(--primary-light); }
+.en-vol-row .sync-indicator { font-size: 12px; color: var(--gray-400); }
+.en-summary { margin-top: 6px; font-size: 12px; display: flex; gap: 10px; flex-wrap: wrap; color: var(--gray-600); }
+.en-summary .val { font-weight: 700; }
+.comp-box.en-comp { background: #ecfdf5; border: 1px solid #a7f3d0; }
 </style>
 </head>
 <body>
 <div class="header">
-  <div class="header-left"><h1>輸液組成計算シート</h1><p>ルートごとにメイン・側管を設定し、輸液の組成を計算できます。</p></div>
+  <div class="header-left"><h1>輸液・経腸栄養 組成計算シート</h1><p>IVルート・経腸栄養を設定し、組成を計算できます。</p></div>
   <div class="header-right"><button class="btn-header" onclick="openSettings()">&#9881; 製剤設定</button></div>
 </div>
 <div class="container">
@@ -222,7 +236,7 @@ body {
     </div>
   </div>
   <div class="routes-list" id="routes-container"></div>
-  <button class="btn-add-route" onclick="addRoute()">＋ ルートを追加</button>
+  <div class="route-add-group"><button class="btn-add-route" onclick="addRoute('iv')">＋ IVルートを追加</button><button class="btn-add-route enteral" onclick="addRoute('enteral')">＋ 経腸栄養を追加</button></div>
   <div class="card">
     <div class="card-header result" id="result-header">輸液組成 合計</div>
     <div class="card-body">
@@ -230,13 +244,13 @@ body {
       <div class="summary-grid">
         <div class="result-detail"><div class="result-detail-title">電解質・成分 詳細</div>
           <table class="detail-table"><thead><tr><th>成分</th><th>1日投与量</th><th>投与量/kg/day</th></tr></thead><tbody id="electrolyte-tbody"></tbody></table></div>
-        <div class="result-detail"><div class="result-detail-title">栄養組成</div>
+        <div class="result-detail" id="nutrition-section"><div class="result-detail-title">栄養組成</div>
           <table class="nutrition-table"><thead><tr><th>成分</th><th>投与量 (g/kg/day)</th><th>カロリー比</th></tr></thead><tbody id="nutrition-tbody"></tbody></table></div>
       </div>
     </div>
   </div>
 </div>
-<div class="footer">輸液組成計算シート — 臨床参考用（処方は必ず医師の判断に基づいてください）</div>
+<div class="footer">輸液・経腸栄養 組成計算シート — 臨床参考用（処方は必ず医師の判断に基づいてください）</div>
 <div class="modal-overlay" id="settings-modal">
   <div class="modal">
     <div class="modal-header"><h2>製剤リスト設定</h2><button class="modal-close" onclick="closeSettings()">&#10005;</button></div>
@@ -252,41 +266,53 @@ body {
 </div>
 <script>
 var LINE_COLORS=6, nextRouteId=1, nextSideId=1;
-var COMP_KEYS=["glu","na","k","cl","ca","mg","p","aa","fat","hco3","heparin"];
+var COMP_KEYS=["glu","na","k","cl","ca","mg","p","aa","fat","hco3","heparin","fiber","water"];
 var FLUID_CATS=[
   {key:'ecf',label:'細胞外液補充液'},{key:'start',label:'開始液（1号液）'},{key:'maint',label:'維持液（3号液）'},
   {key:'glu',label:'ブドウ糖液'},{key:'ppn',label:'末梢静脈栄養（PPN）'},{key:'tpn',label:'中心静脈栄養（TPN）'},
   {key:'conc',label:'高濃度補正液'},{key:'amino',label:'アミノ酸製剤'},{key:'lipid',label:'脂肪乳剤'},
-  {key:'vitmin',label:'ビタミン・微量元素'},{key:'elyte',label:'電解質補正液'},{key:'other',label:'その他'}
+  {key:'vitmin',label:'ビタミン・微量元素'},{key:'elyte',label:'電解質補正液'},{key:'other',label:'その他'},
+  {key:'en_semi',label:'半消化態栄養剤'},{key:'en_elem',label:'成分栄養剤'},{key:'en_conc',label:'高濃度栄養剤'},{key:'en_other',label:'経腸栄養その他'}
 ];
+var EN_CATS=['en_semi','en_elem','en_conc','en_other'];
+function isEnteralCat(cat){return EN_CATS.indexOf(cat)>=0}
 var DEFAULT_FLUIDS=[
-  {id:"ns",cat:"ecf",name:"生理食塩液",defaultVol:500,enabled:true,glu:0,na:154,k:0,cl:154,ca:0,mg:0,p:0,aa:0,fat:0,hco3:0,heparin:0},
-  {id:"solulyte",cat:"ecf",name:"ソリューゲンF",defaultVol:500,enabled:true,glu:0,na:130,k:4,cl:109,ca:3,mg:0,p:0,aa:0,fat:0,hco3:28,heparin:0},
-  {id:"physio140",cat:"ecf",name:"フィジオ140",defaultVol:500,enabled:true,glu:10,na:140,k:4,cl:115,ca:3,mg:2,p:0,aa:0,fat:0,hco3:34,heparin:0},
-  {id:"soldem1",cat:"start",name:"ソルデム1輸液",defaultVol:500,enabled:true,glu:26,na:90,k:0,cl:70,ca:0,mg:0,p:0,aa:0,fat:0,hco3:20,heparin:0},
-  {id:"veend",cat:"ecf",name:"ヴィーンD",defaultVol:500,enabled:true,glu:50,na:130,k:4,cl:109,ca:3,mg:0,p:0,aa:0,fat:0,hco3:28,heparin:0},
-  {id:"hartmann",cat:"maint",name:"ハルトマン",defaultVol:500,enabled:true,glu:43,na:35,k:20,cl:35,ca:0,mg:0,p:0,aa:0,fat:0,hco3:20,heparin:0},
-  {id:"physio35",cat:"maint",name:"フィジオ35",defaultVol:500,enabled:true,glu:100,na:35,k:20,cl:28,ca:5,mg:3,p:0,aa:0,fat:0,hco3:25,heparin:0},
-  {id:"d5",cat:"glu",name:"5%ブドウ糖液",defaultVol:500,enabled:true,glu:50,na:0,k:0,cl:0,ca:0,mg:0,p:0,aa:0,fat:0,hco3:0,heparin:0},
-  {id:"d10",cat:"glu",name:"10%ブドウ糖液",defaultVol:500,enabled:true,glu:100,na:0,k:0,cl:0,ca:0,mg:0,p:0,aa:0,fat:0,hco3:0,heparin:0},
-  {id:"bfluid",cat:"ppn",name:"ビーフリード",defaultVol:500,enabled:true,glu:75,na:35,k:20,cl:35,ca:5,mg:5,p:301,aa:30,fat:0,hco3:42,heparin:0},
-  {id:"fulcaliq1",cat:"tpn",name:"フルカリック1号液(903ml)",defaultVol:903,enabled:true,glu:133,na:55.4,k:33.2,cl:54.3,ca:9.4,mg:11.1,p:277,aa:22.1,fat:0,hco3:55.81,heparin:0},
-  {id:"fulcaliq2",cat:"tpn",name:"フルカリック2号液(1003ml)",defaultVol:1003,enabled:true,glu:175,na:50,k:30,cl:49,ca:8.5,mg:10,p:250,aa:30,fat:0,hco3:50.25,heparin:0},
-  {id:"elneopa1",cat:"tpn",name:"エルネオパNF1号(1000ml)",defaultVol:1000,enabled:true,glu:120,na:35,k:20,cl:35,ca:5,mg:5,p:310,aa:20,fat:20,hco3:25,heparin:0},
-  {id:"elneopa2",cat:"tpn",name:"エルネオパNF2号(1000ml)",defaultVol:1000,enabled:true,glu:175,na:50,k:27,cl:50,ca:5,mg:5,p:310,aa:30,fat:20,hco3:30,heparin:0},
-  {id:"d50",cat:"conc",name:"50%ブドウ糖",defaultVol:20,enabled:true,glu:500,na:0,k:0,cl:0,ca:0,mg:0,p:0,aa:0,fat:0,hco3:0,heparin:0},
-  {id:"nacl10",cat:"conc",name:"10%NaCl",defaultVol:20,enabled:true,glu:0,na:1700,k:0,cl:1700,ca:0,mg:0,p:0,aa:0,fat:0,hco3:0,heparin:0},
-  {id:"kcl",cat:"conc",name:"KCl注20mEqキット",defaultVol:20,enabled:true,glu:0,na:0,k:1000,cl:1000,ca:0,mg:0,p:0,aa:0,fat:0,hco3:0,heparin:0},
-  {id:"preamine",cat:"amino",name:"プレアミン",defaultVol:200,enabled:true,glu:0,na:3,k:0,cl:0,ca:0,mg:0,p:0,aa:76,fat:0,hco3:0,heparin:0},
-  {id:"intralipid",cat:"lipid",name:"20%イントラリポス",defaultVol:100,enabled:true,glu:0,na:0,k:0,cl:0,ca:0,mg:0,p:0,aa:0,fat:200,hco3:0,heparin:0},
-  {id:"multamin",cat:"vitmin",name:"マルタミン",defaultVol:5,enabled:true,glu:0,na:0,k:0,cl:0,ca:0,mg:0,p:0,aa:0,fat:0,hco3:0,heparin:0},
-  {id:"elezect",cat:"vitmin",name:"エレジェクト",defaultVol:2,enabled:true,glu:0,na:0,k:0,cl:0,ca:0,mg:0,p:0,aa:0,fat:0,hco3:0,heparin:0},
-  {id:"calcicol",cat:"elyte",name:"カルチコール",defaultVol:5,enabled:true,glu:0,na:0,k:0,cl:0,ca:390,mg:0,p:0,aa:0,fat:0,hco3:0,heparin:0},
-  {id:"napo4",cat:"elyte",name:"リン酸Na補正液",defaultVol:5,enabled:true,glu:0,na:750,k:0,cl:0,ca:0,mg:0,p:15500,aa:0,fat:0,hco3:0,heparin:0},
-  {id:"mgso4",cat:"elyte",name:"硫酸Mg補正液",defaultVol:5,enabled:true,glu:0,na:0,k:0,cl:0,ca:0,mg:1000,p:0,aa:0,fat:0,hco3:1000,heparin:0},
-  {id:"meylon",cat:"other",name:"メイロン静注7%",defaultVol:20,enabled:true,glu:0,na:833,k:0,cl:0,ca:0,mg:0,p:0,aa:0,fat:0,hco3:833,heparin:0},
-  {id:"heparin",cat:"other",name:"ヘパリンNa 5千単位/5mL",defaultVol:1,enabled:true,glu:0,na:68,k:0,cl:0,ca:0,mg:0,p:0,aa:0,fat:0,hco3:0,heparin:1000},
-  {id:"water",cat:"other",name:"注射用水",defaultVol:100,enabled:true,glu:0,na:0,k:0,cl:0,ca:0,mg:0,p:0,aa:0,fat:0,hco3:0,heparin:0},
+  {id:"ns",cat:"ecf",name:"生理食塩液",defaultVol:500,enabled:true,glu:0,na:154,k:0,cl:154,ca:0,mg:0,p:0,aa:0,fat:0,hco3:0,heparin:0,fiber:0,water:1000},
+  {id:"solulyte",cat:"ecf",name:"ソリューゲンF",defaultVol:500,enabled:true,glu:0,na:130,k:4,cl:109,ca:3,mg:0,p:0,aa:0,fat:0,hco3:28,heparin:0,fiber:0,water:1000},
+  {id:"physio140",cat:"ecf",name:"フィジオ140",defaultVol:500,enabled:true,glu:10,na:140,k:4,cl:115,ca:3,mg:2,p:0,aa:0,fat:0,hco3:34,heparin:0,fiber:0,water:1000},
+  {id:"soldem1",cat:"start",name:"ソルデム1輸液",defaultVol:500,enabled:true,glu:26,na:90,k:0,cl:70,ca:0,mg:0,p:0,aa:0,fat:0,hco3:20,heparin:0,fiber:0,water:1000},
+  {id:"veend",cat:"ecf",name:"ヴィーンD",defaultVol:500,enabled:true,glu:50,na:130,k:4,cl:109,ca:3,mg:0,p:0,aa:0,fat:0,hco3:28,heparin:0,fiber:0,water:1000},
+  {id:"hartmann",cat:"maint",name:"ハルトマン",defaultVol:500,enabled:true,glu:43,na:35,k:20,cl:35,ca:0,mg:0,p:0,aa:0,fat:0,hco3:20,heparin:0,fiber:0,water:1000},
+  {id:"physio35",cat:"maint",name:"フィジオ35",defaultVol:500,enabled:true,glu:100,na:35,k:20,cl:28,ca:5,mg:3,p:0,aa:0,fat:0,hco3:25,heparin:0,fiber:0,water:1000},
+  {id:"d5",cat:"glu",name:"5%ブドウ糖液",defaultVol:500,enabled:true,glu:50,na:0,k:0,cl:0,ca:0,mg:0,p:0,aa:0,fat:0,hco3:0,heparin:0,fiber:0,water:1000},
+  {id:"d10",cat:"glu",name:"10%ブドウ糖液",defaultVol:500,enabled:true,glu:100,na:0,k:0,cl:0,ca:0,mg:0,p:0,aa:0,fat:0,hco3:0,heparin:0,fiber:0,water:1000},
+  {id:"bfluid",cat:"ppn",name:"ビーフリード",defaultVol:500,enabled:true,glu:75,na:35,k:20,cl:35,ca:5,mg:5,p:301,aa:30,fat:0,hco3:42,heparin:0,fiber:0,water:1000},
+  {id:"fulcaliq1",cat:"tpn",name:"フルカリック1号液(903ml)",defaultVol:903,enabled:true,glu:133,na:55.4,k:33.2,cl:54.3,ca:9.4,mg:11.1,p:277,aa:22.1,fat:0,hco3:55.81,heparin:0,fiber:0,water:1000},
+  {id:"fulcaliq2",cat:"tpn",name:"フルカリック2号液(1003ml)",defaultVol:1003,enabled:true,glu:175,na:50,k:30,cl:49,ca:8.5,mg:10,p:250,aa:30,fat:0,hco3:50.25,heparin:0,fiber:0,water:1000},
+  {id:"elneopa1",cat:"tpn",name:"エルネオパNF1号(1000ml)",defaultVol:1000,enabled:true,glu:120,na:35,k:20,cl:35,ca:5,mg:5,p:310,aa:20,fat:20,hco3:25,heparin:0,fiber:0,water:1000},
+  {id:"elneopa2",cat:"tpn",name:"エルネオパNF2号(1000ml)",defaultVol:1000,enabled:true,glu:175,na:50,k:27,cl:50,ca:5,mg:5,p:310,aa:30,fat:20,hco3:30,heparin:0,fiber:0,water:1000},
+  {id:"d50",cat:"conc",name:"50%ブドウ糖",defaultVol:20,enabled:true,glu:500,na:0,k:0,cl:0,ca:0,mg:0,p:0,aa:0,fat:0,hco3:0,heparin:0,fiber:0,water:1000},
+  {id:"nacl10",cat:"conc",name:"10%NaCl",defaultVol:20,enabled:true,glu:0,na:1700,k:0,cl:1700,ca:0,mg:0,p:0,aa:0,fat:0,hco3:0,heparin:0,fiber:0,water:1000},
+  {id:"kcl",cat:"conc",name:"KCl注20mEqキット",defaultVol:20,enabled:true,glu:0,na:0,k:1000,cl:1000,ca:0,mg:0,p:0,aa:0,fat:0,hco3:0,heparin:0,fiber:0,water:1000},
+  {id:"preamine",cat:"amino",name:"プレアミン",defaultVol:200,enabled:true,glu:0,na:3,k:0,cl:0,ca:0,mg:0,p:0,aa:76,fat:0,hco3:0,heparin:0,fiber:0,water:1000},
+  {id:"intralipid",cat:"lipid",name:"20%イントラリポス",defaultVol:100,enabled:true,glu:0,na:0,k:0,cl:0,ca:0,mg:0,p:0,aa:0,fat:200,hco3:0,heparin:0,fiber:0,water:1000},
+  {id:"multamin",cat:"vitmin",name:"マルタミン",defaultVol:5,enabled:true,glu:0,na:0,k:0,cl:0,ca:0,mg:0,p:0,aa:0,fat:0,hco3:0,heparin:0,fiber:0,water:1000},
+  {id:"elezect",cat:"vitmin",name:"エレジェクト",defaultVol:2,enabled:true,glu:0,na:0,k:0,cl:0,ca:0,mg:0,p:0,aa:0,fat:0,hco3:0,heparin:0,fiber:0,water:1000},
+  {id:"calcicol",cat:"elyte",name:"カルチコール",defaultVol:5,enabled:true,glu:0,na:0,k:0,cl:0,ca:390,mg:0,p:0,aa:0,fat:0,hco3:0,heparin:0,fiber:0,water:1000},
+  {id:"napo4",cat:"elyte",name:"リン酸Na補正液",defaultVol:5,enabled:true,glu:0,na:750,k:0,cl:0,ca:0,mg:0,p:15500,aa:0,fat:0,hco3:0,heparin:0,fiber:0,water:1000},
+  {id:"mgso4",cat:"elyte",name:"硫酸Mg補正液",defaultVol:5,enabled:true,glu:0,na:0,k:0,cl:0,ca:0,mg:1000,p:0,aa:0,fat:0,hco3:1000,heparin:0,fiber:0,water:1000},
+  {id:"meylon",cat:"other",name:"メイロン静注7%",defaultVol:20,enabled:true,glu:0,na:833,k:0,cl:0,ca:0,mg:0,p:0,aa:0,fat:0,hco3:833,heparin:0,fiber:0,water:1000},
+  {id:"heparin",cat:"other",name:"ヘパリンNa 5千単位/5mL",defaultVol:1,enabled:true,glu:0,na:68,k:0,cl:0,ca:0,mg:0,p:0,aa:0,fat:0,hco3:0,heparin:1000,fiber:0,water:1000},
+  {id:"water",cat:"other",name:"注射用水",defaultVol:100,enabled:true,glu:0,na:0,k:0,cl:0,ca:0,mg:0,p:0,aa:0,fat:0,hco3:0,heparin:0,fiber:0,water:1000},
+  {id:"ensure_liq",cat:"en_semi",name:"エンシュア・リキッド",defaultVol:250,enabled:true,glu:136,na:32,k:32,cl:28,ca:9.2,mg:3.3,p:120,aa:35,fat:35,hco3:0,heparin:0,fiber:0,water:845},
+  {id:"ensure_h",cat:"en_conc",name:"エンシュア・H",defaultVol:250,enabled:true,glu:204,na:44,k:40,cl:38,ca:12.5,mg:5,p:150,aa:52.5,fat:53,hco3:0,heparin:0,fiber:0,water:770},
+  {id:"enevo",cat:"en_semi",name:"エネーボ",defaultVol:250,enabled:true,glu:137,na:35,k:31,cl:32,ca:10,mg:4.1,p:130,aa:40,fat:28,hco3:0,heparin:0,fiber:10,water:838},
+  {id:"racol_nf",cat:"en_semi",name:"ラコールNF",defaultVol:200,enabled:true,glu:131,na:48,k:20,cl:42,ca:10,mg:4.1,p:140,aa:44,fat:27,hco3:0,heparin:0,fiber:7,water:840},
+  {id:"elental",cat:"en_elem",name:"エレンタール",defaultVol:300,enabled:true,glu:210,na:20,k:15,cl:18,ca:4.5,mg:2.7,p:100,aa:44,fat:1.5,hco3:0,heparin:0,fiber:0,water:830},
+  {id:"elental_p",cat:"en_elem",name:"エレンタールP",defaultVol:200,enabled:true,glu:175,na:16,k:12,cl:14,ca:6.7,mg:2.5,p:133,aa:31,fat:1.8,hco3:0,heparin:0,fiber:0,water:840},
+  {id:"twinline_nf",cat:"en_semi",name:"ツインラインNF",defaultVol:200,enabled:true,glu:119,na:30,k:20,cl:25,ca:8.6,mg:3.4,p:110,aa:40,fat:30,hco3:0,heparin:0,fiber:0,water:843},
+  {id:"innoras",cat:"en_conc",name:"イノラス",defaultVol:187,enabled:true,glu:197,na:46,k:37,cl:40,ca:14,mg:5,p:160,aa:60,fat:56,hco3:0,heparin:0,fiber:12,water:730},
+  {id:"solita_t",cat:"en_other",name:"ソリタT配合顆粒",defaultVol:500,enabled:true,glu:18,na:30,k:10,cl:28,ca:0,mg:0,p:0,aa:0,fat:0,hco3:10,heparin:0,fiber:0,water:980},
 ];
 var fluids=JSON.parse(JSON.stringify(DEFAULT_FLUIDS)), routes=[];
 function getEnabledFluids(){return fluids.filter(function(f){return f.enabled})}
@@ -303,7 +329,7 @@ function chComp(ch){
 }
 function nextName(prefix,items,key){var u={};items.forEach(function(i){var m=(i[key]||'').match(new RegExp('^'+prefix+'\\s*(\\d+)$'));if(m)u[parseInt(m[1])]=true});var n=1;while(u[n])n++;return prefix+' '+n}
 
-function addRoute(){var rid='r'+nextRouteId++;routes.push({id:rid,name:nextName('ライン',routes,'name'),main:{fluids:[],rate:0,hours:24},sides:[]});renderAll();recalc()}
+function addRoute(type){var rid='r'+nextRouteId++;if(type==='enteral'){routes.push({id:rid,type:'enteral',name:nextName('経腸',routes,'name'),main:{fluids:[],rate:0,hours:24},enDailyVol:0,enUnitsPerDay:0,sides:[]})}else{routes.push({id:rid,type:'iv',name:nextName('ライン',routes,'name'),main:{fluids:[],rate:0,hours:24},sides:[]})}renderAll();recalc()}
 function removeRoute(rid){if(routes.length<=1)return;routes=routes.filter(function(r){return r.id!==rid});renderAll();recalc()}
 function renameRoute(rid,v){var rt=R(rid);if(rt)rt.name=v;updateResultHeader();saveState()}
 function addSide(rid){var rt=R(rid);if(!rt)return;var sid='s'+nextSideId++;rt.sides.push({id:sid,name:nextName('側管',rt.sides,'name'),fluids:[],rate:0,mode:'continuous',hours:24,duration:1,timesPerDay:3,mainRateDuring:null});renderAll();recalc()}
@@ -312,17 +338,28 @@ function renameSide(rid,sid,v){var s=S(rid,sid);if(s)s.name=v;saveState()}
 function setSideMode(rid,sid,mode){var s=S(rid,sid);if(s)s.mode=mode;renderAll();recalc()}
 
 var fssAnchor=null;
-function buildSelector(rid,ct,cid){
+function buildSelector(rid,ct,cid,filterMode){
   var ch=CH(rid,ct,cid);if(!ch)return '';var used={};ch.fluids.forEach(function(e){used[e.id]=true});
-  var av=getEnabledFluids().filter(function(f){return !used[f.id]});if(av.length===0)return '';
-  return '<div class="fluid-search-select"><input type="text" class="fss-input" placeholder="＋ 輸液を追加…" data-rid="'+rid+'" data-ct="'+ct+'" data-cid="'+(cid||'')+'" onfocus="openFSS(this)" oninput="filterFSS()" onkeydown="if(event.key===\'Escape\'){closeFSS();this.blur()}"></div>';
+  var av=getEnabledFluids().filter(function(f){
+    if(used[f.id])return false;
+    if(filterMode==='enteral')return isEnteralCat(f.cat);
+    if(filterMode==='iv')return !isEnteralCat(f.cat);
+    return true;
+  });if(av.length===0)return '';
+  var ph=filterMode==='enteral'?'＋ 経腸栄養剤を追加…':'＋ 輸液を追加…';
+  return '<div class="fluid-search-select"><input type="text" class="fss-input" placeholder="'+ph+'" data-rid="'+rid+'" data-ct="'+ct+'" data-cid="'+(cid||'')+'" data-filter="'+(filterMode||'')+'" onfocus="openFSS(this)" oninput="filterFSS()" onkeydown="if(event.key===\'Escape\'){closeFSS();this.blur()}"></div>';
 }
 function openFSS(inp){
   closeFSS();fssAnchor=inp;
-  var rid=inp.dataset.rid,ct=inp.dataset.ct,cid=inp.dataset.cid;
+  var rid=inp.dataset.rid,ct=inp.dataset.ct,cid=inp.dataset.cid,filterMode=inp.dataset.filter||'';
   var ch=CH(rid,ct,cid);if(!ch)return;
   var used={};ch.fluids.forEach(function(e){used[e.id]=true});
-  var av=getEnabledFluids().filter(function(f){return !used[f.id]});
+  var av=getEnabledFluids().filter(function(f){
+    if(used[f.id])return false;
+    if(filterMode==='enteral')return isEnteralCat(f.cat);
+    if(filterMode==='iv')return !isEnteralCat(f.cat);
+    return true;
+  });
   var portal=document.getElementById('fss-portal'),h='';
   FLUID_CATS.forEach(function(cat){
     var items=av.filter(function(f){return(f.cat||'other')===cat.key});if(items.length===0)return;
@@ -362,12 +399,13 @@ document.addEventListener('mousedown',function(e){if(!e.target.closest('.fluid-s
 function rmFluid(rid,ct,cid,fid){var ch=CH(rid,ct,cid);if(!ch)return;ch.fluids=ch.fluids.filter(function(e){return e.id!==fid});renderFL(rid,ct,cid);recalc()}
 function updVol(rid,ct,cid,fid,val){var ch=CH(rid,ct,cid);if(!ch)return;var e=ch.fluids.find(function(e){return e.id===fid});if(e)e.volume=parseFloat(val)||0;recalc()}
 function renderFL(rid,ct,cid){
-  var ck=CK(rid,ct,cid),el=document.getElementById('flist-'+ck);if(!el)return;var ch=CH(rid,ct,cid);if(!ch)return;var h='';
+  var ck=CK(rid,ct,cid),el=document.getElementById('flist-'+ck);if(!el)return;var ch=CH(rid,ct,cid);if(!ch)return;
+  var rt=R(rid),isEN=rt&&rt.type==='enteral',h='';
   ch.fluids.forEach(function(entry){var fl=getFluidById(entry.id);if(!fl)return;var step=entry.id==='heparin'?'0.1':'1';
     h+='<div class="fluid-item"><span class="fluid-name" title="'+esc(fl.name)+'">'+esc(fl.name)+'</span>';
     h+='<input type="number" value="'+entry.volume+'" step="'+step+'" min="0" oninput="updVol(\''+rid+'\',\''+ct+'\',\''+(cid||'')+'\',\''+entry.id+'\',this.value)">';
-    h+='<span class="unit">ml</span><button class="btn btn-danger btn-sm" onclick="rmFluid(\''+rid+'\',\''+ct+'\',\''+(cid||'')+'\',\''+entry.id+'\')">&#10005;</button></div>'});
-  h+=buildSelector(rid,ct,cid);el.innerHTML=h;
+    h+='<span class="unit">'+(isEN?'ml/本':'ml')+'</span><button class="btn btn-danger btn-sm" onclick="rmFluid(\''+rid+'\',\''+ct+'\',\''+(cid||'')+'\',\''+entry.id+'\')">&#10005;</button></div>'});
+  h+=buildSelector(rid,ct,cid,isEN?'enteral':'iv');el.innerHTML=h;
 }
 
 function onMR(rid,v){var rt=R(rid);if(rt)rt.main.rate=parseFloat(v)||0;recalc()}
@@ -381,8 +419,9 @@ function onSMR(rid,sid,v){var s=S(rid,sid);if(s)s.mainRateDuring=v===''?null:(pa
 
 function renderAll(){
   var c=document.getElementById('routes-container');c.innerHTML='';
-  routes.forEach(function(rt,idx){var card=document.createElement('div');card.className='card';card.innerHTML=buildRoute(rt,idx);c.appendChild(card);
-    renderFL(rt.id,'main',null);rt.sides.forEach(function(s){renderFL(rt.id,'side',s.id)})});
+  routes.forEach(function(rt,idx){var card=document.createElement('div');card.className='card';
+    if(rt.type==='enteral'){card.innerHTML=buildEnteralRoute(rt);c.appendChild(card);renderFL(rt.id,'main',null)}
+    else{card.innerHTML=buildRoute(rt,idx);c.appendChild(card);renderFL(rt.id,'main',null);rt.sides.forEach(function(s){renderFL(rt.id,'side',s.id)})}});
 }
 
 function buildRoute(rt,idx){
@@ -458,16 +497,64 @@ function buildSide(rid,s){
   return h;
 }
 
+function buildEnteralRoute(rt){
+  var rid=rt.id;
+  var h='<div class="card-header line-en"><input class="line-name-input" value="'+esc(rt.name)+'" oninput="renameRoute(\''+rid+'\',this.value)">';
+  h+='<div style="display:flex;gap:6px;align-items:center">';
+  if(routes.length>1)h+='<button class="btn-remove-line" onclick="removeRoute(\''+rid+'\')">&#10005; 削除</button>';
+  h+='</div></div><div class="card-body">';
+  h+='<div class="fluid-list" id="flist-'+rid+'-main"></div>';
+  h+='<div class="en-vol-row">';
+  h+='<label>1日投与量 <input type="number" id="envol-'+rid+'" value="'+(rt.enDailyVol||'')+'" step="1" placeholder="mL/日" oninput="onEnVol(\''+rid+'\',this.value)"> <span class="unit">mL/日</span></label>';
+  h+='<span class="sync-indicator">=</span>';
+  h+='<label><input type="number" id="enunits-'+rid+'" value="'+(rt.enUnitsPerDay||'')+'" step="0.5" placeholder="本" oninput="onEnUnits(\''+rid+'\',this.value)"> <span class="unit">本/日</span></label>';
+  h+='</div>';
+  h+='<div class="en-summary" id="ensm-'+rid+'"></div>';
+  h+='<div class="comp-box en-comp"><div class="comp-title">組成（経腸栄養）</div><div class="comp-grid" id="comp-'+rid+'-main"></div></div>';
+  h+='</div>';
+  return h;
+}
+
+function onEnVol(rid,v){
+  var rt=R(rid);if(!rt||rt.type!=='enteral')return;
+  rt.enDailyVol=parseFloat(v)||0;
+  var unitVol=getEnteralUnitVol(rt);
+  if(unitVol>0){rt.enUnitsPerDay=Math.round(rt.enDailyVol/unitVol*10)/10;var el=document.getElementById('enunits-'+rid);if(el)el.value=rt.enUnitsPerDay||''}
+  recalc();
+}
+function onEnUnits(rid,v){
+  var rt=R(rid);if(!rt||rt.type!=='enteral')return;
+  rt.enUnitsPerDay=parseFloat(v)||0;
+  var unitVol=getEnteralUnitVol(rt);
+  if(unitVol>0){rt.enDailyVol=Math.round(rt.enUnitsPerDay*unitVol*10)/10;var el=document.getElementById('envol-'+rid);if(el)el.value=rt.enDailyVol||''}
+  recalc();
+}
+function getEnteralUnitVol(rt){
+  if(rt.main.fluids.length===0)return 0;
+  if(rt.main.fluids.length===1)return rt.main.fluids[0].volume;
+  var t=0;rt.main.fluids.forEach(function(e){t+=e.volume});return t;
+}
+
 function fmt(v,d){if(v===null||v===undefined||isNaN(v)||!isFinite(v))return"—";return v.toFixed(d!==undefined?d:2)}
 function esc(s){return s.replace(/&/g,"&amp;").replace(/"/g,"&quot;").replace(/</g,"&lt;").replace(/>/g,"&gt;")}
 function cr(l,v,al){var c=al==='warn'?' alert-warn':al==='info'?' alert-info':'';return'<div class="comp-row'+c+'"><span class="label">'+l+'</span><span class="value">'+v+(al?' &#9888;':'')+'</span></div>'}
 function calcOsm(c){return c.na+c.k+c.cl+c.ca/2+c.mg/2+c.hco3+c.glu*5.56+(c.aa||0)*10+(c.fat||0)*0.7}
 function calcCaP(c){return c.ca*(c.p/31)}
 
-function renderComp(elId,comp,rate,wt){
+function renderComp(elId,comp,rate,wt,isEnteral){
   var g=document.getElementById(elId);if(!g)return;
-  var hasData=false;COMP_KEYS.forEach(function(k){if(comp[k]>0)hasData=true});
+  var hasData=false;COMP_KEYS.forEach(function(k){if(k!=='water'&&comp[k]>0)hasData=true});
   if(!hasData){g.innerHTML='<div style="color:var(--gray-400);font-size:12px">—</div>';return}
+  if(isEnteral){
+    var kcalML=(comp.glu*4+comp.aa*4+comp.fat*9)/1000;
+    var freeWR=(comp.water||1000)/10;
+    var row1='<div class="comp-row-group cols-3">'+cr('カロリー密度',fmt(kcalML,2)+' kcal/mL')+cr('自由水',fmt(freeWR,1)+'%')+cr('糖質',fmt(comp.glu/10,1)+'%')+'</div>';
+    var row2='<div class="comp-row-group cols-3">'+cr('Na',fmt(comp.na,1)+' mEq/L')+cr('K',fmt(comp.k,1)+' mEq/L')+cr('Cl',fmt(comp.cl,1)+' mEq/L')+'</div>';
+    var row3='<div class="comp-row-group cols-3">'+cr('Ca',fmt(comp.ca,1)+' mEq/L')+cr('Mg',fmt(comp.mg,1)+' mEq/L')+cr('P',fmt(comp.p,0)+' mg/L')+'</div>';
+    var row4='<div class="comp-row-group cols-3">'+(comp.aa>0?cr('タンパク質',fmt(comp.aa,1)+' g/L'):'<div></div>')+(comp.fat>0?cr('脂質',fmt(comp.fat,1)+' g/L'):'<div></div>')+(comp.fiber>0?cr('食物繊維',fmt(comp.fiber,1)+' g/L'):'<div></div>')+'</div>';
+    g.innerHTML=row1+row2+row3+row4;
+    return;
+  }
   var gir=rate>0&&wt>0?comp.glu*rate/60/wt:0,gp=comp.glu/10,osm=calcOsm(comp),caP=calcCaP(comp);
   var row4='<div class="comp-row-group cols-3">'+(comp.ca>0&&comp.p>0?cr('Ca×P積',fmt(caP,1),caP>72?'warn':null):'<div></div>')+cr('重炭酸',fmt(comp.hco3,1)+' mEq/L')+(comp.aa>0?cr('アミノ酸',fmt(comp.aa,1)+' g/L'):'<div></div>')+'</div>';
   var ex=[];if(comp.fat>0)ex.push(cr('脂肪',fmt(comp.fat,1)+' g/L'));
@@ -541,11 +628,32 @@ function recalc(){
   var bsa=ht>0&&wt>0?Math.sqrt(ht*wt/3600):0;
   document.getElementById('bsa-display').textContent=bsa>0?'体表面積: '+fmt(bsa,4)+' ㎡':'体表面積: — ㎡';
 
-  var totalWater=0,dayAmt={};
+  var totalFreeWater=0,ivWater=0,enFreeWater=0,enTotalVol=0,dayAmt={},ivDayGlu=0,enKcal=0,ivKcal=0;
   COMP_KEYS.forEach(function(k){dayAmt[k]=0});
+  var hasEN=false,hasIV=false;
 
   routes.forEach(function(rt){
-    var rid=rt.id,mc=chComp(rt.main),mt=chTotal(rt.main),mr=rt.main.rate,mh=rt.main.hours;
+    var rid=rt.id;
+
+    if(rt.type==='enteral'){
+      hasEN=true;
+      var mc=chComp(rt.main),dailyVol=rt.enDailyVol||0;
+      var waterRatio=(mc.water||1000)/1000;
+      var fw=dailyVol*waterRatio;
+      enFreeWater+=fw;enTotalVol+=dailyVol;totalFreeWater+=fw;
+      COMP_KEYS.forEach(function(k){dayAmt[k]+=mc[k]*dailyVol});
+      enKcal+=(mc.glu*4+mc.aa*4+mc.fat*9)*dailyVol/1000;
+      renderComp('comp-'+rid+'-main',mc,0,wt,true);
+      var smEl=document.getElementById('ensm-'+rid);
+      if(smEl){
+        var kcalDay=(mc.glu*4+mc.aa*4+mc.fat*9)*dailyVol/1000;
+        smEl.innerHTML='<span>自由水: <span class="val">'+fmt(fw,0)+' mL</span></span><span>カロリー: <span class="val">'+fmt(kcalDay,0)+' kcal</span></span>';
+      }
+      return;
+    }
+
+    hasIV=true;
+    var mc=chComp(rt.main),mt=chTotal(rt.main),mr=rt.main.rate,mh=rt.main.hours;
     var mainVolDay=mr*mh;
     rt.sides.forEach(function(s){
       if(s.mode==='intermittent'&&s.mainRateDuring!==null){
@@ -558,7 +666,7 @@ function recalc(){
     document.getElementById('total-'+rid+'-main').textContent=mt+' ml';
     document.getElementById('dayvol-'+rid+'-main').textContent=fmt(mr*mh,0)+' ml';
     updateBag(rid,mr>0?mt/mr:0,mh);
-    renderComp('comp-'+rid+'-main',mc,mr,wt);
+    renderComp('comp-'+rid+'-main',mc,mr,wt,false);
 
     var hasIntChange=rt.sides.some(function(s){return s.mode==='intermittent'&&s.mainRateDuring!==null});
     var effEl=document.getElementById('eff-'+rid);
@@ -581,7 +689,8 @@ function recalc(){
     }
 
     COMP_KEYS.forEach(function(k){dayAmt[k]+=mc[k]*mainVolDay});
-    totalWater+=mainVolDay;
+    ivDayGlu+=mc.glu*mainVolDay;
+    ivWater+=mainVolDay;totalFreeWater+=mainVolDay;
 
     // Sides
     rt.sides.forEach(function(s){
@@ -596,16 +705,17 @@ function recalc(){
           smEl.innerHTML='<span>1回量: <span class="val">'+fmt(dose,0)+' ml</span></span><span>1日量: <span class="val">'+fmt(sVolDay,0)+' ml</span></span><span>合計(バッグ): <span class="val">'+st+' ml</span></span>';
         }
       }
-      renderComp('comp-'+rid+'-'+s.id,sc,s.rate,wt);
+      renderComp('comp-'+rid+'-'+s.id,sc,s.rate,wt,false);
       COMP_KEYS.forEach(function(k){dayAmt[k]+=sc[k]*sVolDay});
-      totalWater+=sVolDay;
+      ivDayGlu+=sc.glu*sVolDay;
+      ivWater+=sVolDay;totalFreeWater+=sVolDay;
     });
 
     // Route composition: normal (常時)
     var normEl=document.getElementById('comp-'+rid+'-norm');
     if(normEl){
       var norm=calcRouteCompNorm(rt);
-      renderComp('comp-'+rid+'-norm',norm.comp,norm.totalRate,wt);
+      renderComp('comp-'+rid+'-norm',norm.comp,norm.totalRate,wt,false);
       var nrEl=document.getElementById('route-rate-norm-'+rid);
       if(nrEl){
         if(norm.parts.length>1){var pd=norm.parts.map(function(p){return p.name+':'+fmt(p.rate,1)}).join(' + ');nrEl.textContent='('+fmt(norm.totalRate,1)+' ml/h = '+pd+')';}
@@ -617,7 +727,7 @@ function recalc(){
     if(intEl){
       var intR=calcRouteCompInt(rt);
       if(intR){
-        renderComp('comp-'+rid+'-int',intR.comp,intR.totalRate,wt);
+        renderComp('comp-'+rid+'-int',intR.comp,intR.totalRate,wt,false);
         var irEl=document.getElementById('route-rate-int-'+rid);
         if(irEl){
           var pd=intR.parts.map(function(p){return p.name+':'+fmt(p.rate,1)}).join(' + ');
@@ -628,22 +738,35 @@ function recalc(){
   });
 
   // Totals
-  var tGlu=dayAmt.glu/1000,tAa=dayAmt.aa/1000,tFat=dayAmt.fat/1000;
-  var girAvg=wt>0?tGlu*1000/1440/wt:0;
+  var tGlu=dayAmt.glu/1000,tAa=dayAmt.aa/1000,tFat=dayAmt.fat/1000,tFiber=dayAmt.fiber/1000;
+  var ivGlu=ivDayGlu/1000;
+  var girAvg=wt>0?ivGlu*1000/1440/wt:0;
   var gKg=wt>0?tGlu/wt:0,aKg=wt>0?tAa/wt:0,fKg=wt>0?tFat/wt:0;
   var eqK=gKg*4+aKg*4+fKg*9,tK=eqK*wt;
   var pR=eqK>0?aKg*4/eqK:0,fR=eqK>0?fKg*9/eqK:0,gR=eqK>0?1-pR-fR:0;
   var fOver=wt>0&&fKg>2;
   updateResultHeader();
-  var fC=fOver?'result-box warn':'result-box',gC=girAvg>12?'result-box warn':'result-box highlight';
-  document.getElementById('result-summary').innerHTML=
-    '<div class="result-box highlight"><div class="r-title">水分量</div><div class="r-value">'+fmt(totalWater,0)+' <span class="r-unit">ml/day</span></div><div class="r-sub">'+(wt>0?fmt(totalWater/wt,1)+' ml/kg/day':'—')+(bsa>0?' / '+fmt(totalWater/bsa,0)+' ml/㎡/day':'')+'</div></div>'+
-    '<div class="result-box highlight"><div class="r-title">カロリー</div><div class="r-value">'+fmt(eqK,1)+' <span class="r-unit">kcal/kg/day</span></div><div class="r-sub">'+fmt(tK,0)+' kcal/day</div></div>'+
-    '<div class="'+gC+'"><div class="r-title">GIR（平均）</div><div class="r-value">'+fmt(girAvg,2)+' <span class="r-unit">mg/kg/min</span></div>'+(girAvg>12?'<div class="r-sub" style="color:var(--danger)">&#9888; 高血糖リスク</div>':'')+'</div>'+
-    '<div class="result-box"><div class="r-title">アミノ酸</div><div class="r-value">'+fmt(aKg,2)+' <span class="r-unit">g/kg/day</span></div></div>'+
-    '<div class="'+fC+'"><div class="r-title">脂肪</div><div class="r-value">'+fmt(fKg,2)+' <span class="r-unit">g/kg/day</span></div>'+(fOver?'<div class="r-sub" style="color:var(--danger)">&#9888; 上限 2 g/kg/day 超過</div>':'')+'</div>';
 
-  // Electrolyte table (no concentration column)
+  ivKcal=tK-enKcal;
+  var waterSub=wt>0?fmt(totalFreeWater/wt,1)+' ml/kg/day':'—';
+  if(bsa>0)waterSub+=' / '+fmt(totalFreeWater/bsa,0)+' ml/㎡/day';
+  if(hasIV&&hasEN)waterSub+='<br>IV: '+fmt(ivWater,0)+' mL / 経腸(自由水): '+fmt(enFreeWater,0)+' mL';
+
+  var calSub=fmt(tK,0)+' kcal/day';
+  if(hasIV&&hasEN)calSub+='<br>IV: '+fmt(ivKcal,0)+' kcal / 経腸: '+fmt(enKcal,0)+' kcal';
+
+  var fC=fOver?'result-box warn':'result-box',gC=girAvg>12?'result-box warn':'result-box highlight';
+  var girLabel=hasEN?'GIR（静脈のみ）':'GIR（平均）';
+  var rsHtml=
+    '<div class="result-box highlight"><div class="r-title">水分量（自由水）</div><div class="r-value">'+fmt(totalFreeWater,0)+' <span class="r-unit">ml/day</span></div><div class="r-sub">'+waterSub+'</div></div>'+
+    '<div class="result-box highlight"><div class="r-title">カロリー</div><div class="r-value">'+fmt(eqK,1)+' <span class="r-unit">kcal/kg/day</span></div><div class="r-sub">'+calSub+'</div></div>'+
+    '<div class="'+gC+'"><div class="r-title">'+girLabel+'</div><div class="r-value">'+fmt(girAvg,2)+' <span class="r-unit">mg/kg/min</span></div>'+(girAvg>12?'<div class="r-sub" style="color:var(--danger)">&#9888; 高血糖リスク</div>':'')+'</div>'+
+    (tAa>0?'<div class="result-box"><div class="r-title">タンパク質</div><div class="r-value">'+fmt(aKg,2)+' <span class="r-unit">g/kg/day</span></div></div>':'')+
+    (tFat>0?'<div class="'+fC+'"><div class="r-title">脂肪</div><div class="r-value">'+fmt(fKg,2)+' <span class="r-unit">g/kg/day</span></div>'+(fOver?'<div class="r-sub" style="color:var(--danger)">&#9888; 上限 2 g/kg/day 超過</div>':'')+'</div>':'')+
+    (hasEN?'<div class="result-box"><div class="r-title">食物繊維</div><div class="r-value">'+fmt(tFiber,1)+' <span class="r-unit">g/day</span></div></div>':'');
+  document.getElementById('result-summary').innerHTML=rsHtml;
+
+  // Electrolyte table
   var eItems=[{n:"Na",du:"mEq/day",ku:"mEq/kg/day",k:"na"},{n:"K",du:"mEq/day",ku:"mEq/kg/day",k:"k"},{n:"Cl",du:"mEq/day",ku:"mEq/kg/day",k:"cl"},{n:"Ca",du:"mEq/day",ku:"mEq/kg/day",k:"ca"},{n:"Mg",du:"mEq/day",ku:"mEq/kg/day",k:"mg"},{n:"P",du:"mg/day",ku:"mg/kg/day",k:"p"},{n:"重炭酸",du:"mEq/day",ku:"mEq/kg/day",k:"hco3"}];
   var eT=document.getElementById('electrolyte-tbody');eT.innerHTML='';
   eItems.forEach(function(i){
@@ -654,16 +777,25 @@ function recalc(){
   if(hDay>0){var tr=document.createElement('tr');tr.innerHTML='<td>ヘパリン</td><td>'+fmt(hDay,0)+' 単位/day</td><td>'+(wt>0?fmt(hDay/wt,1)+' 単位/kg/day':'—')+'</td>';eT.appendChild(tr)}
 
   // Nutrition
-  var nT=document.getElementById('nutrition-tbody');nT.innerHTML='';
-  [{n:"タンパク+Aa",v:aKg,r:pR},{n:"脂質",v:fKg,r:fR},{n:"糖質",v:gKg,r:gR}].forEach(function(x){
-    var tr=document.createElement('tr');tr.innerHTML='<td>'+x.n+'</td><td>'+fmt(x.v,2)+'</td><td>'+(eqK>0?fmt(x.r*100,1)+'%':'—')+'</td>';nT.appendChild(tr)});
+  var nSec=document.getElementById('nutrition-section'),nT=document.getElementById('nutrition-tbody');
+  var showNutr=tAa>0||tFat>0||hasEN;
+  nSec.style.display=showNutr?'':'none';
+  nT.innerHTML='';
+  if(showNutr){
+    [{n:"タンパク質",v:aKg,r:pR},{n:"脂質",v:fKg,r:fR},{n:"糖質",v:gKg,r:gR}].forEach(function(x){
+      var tr=document.createElement('tr');tr.innerHTML='<td>'+x.n+'</td><td>'+fmt(x.v,2)+'</td><td>'+(eqK>0?fmt(x.r*100,1)+'%':'—')+'</td>';nT.appendChild(tr)});
+    if(tFiber>0){var tr=document.createElement('tr');tr.innerHTML='<td>食物繊維</td><td>'+fmt(wt>0?tFiber/wt:0,2)+'</td><td>—</td>';nT.appendChild(tr)}
+  }
 
   saveState();
 }
 
 function updateResultHeader(){
-  var ns=routes.map(function(r){return r.name||'ライン'});
-  document.getElementById('result-header').textContent=ns.length>0?'輸液組成（'+ns.join(' + ')+'）合計':'輸液組成 合計';
+  var hasIV=routes.some(function(r){return r.type!=='enteral'});
+  var hasEN=routes.some(function(r){return r.type==='enteral'});
+  var ns=routes.map(function(r){return r.name||(r.type==='enteral'?'経腸':'ライン')});
+  var prefix=hasIV&&hasEN?'輸液・経腸栄養':hasEN?'経腸栄養':'輸液組成';
+  document.getElementById('result-header').textContent=ns.length>0?prefix+'（'+ns.join(' + ')+'）合計':prefix+' 合計';
 }
 
 // Settings
@@ -671,8 +803,8 @@ function openSettings(){renderSettingsTable();document.getElementById('settings-
 function closeSettings(){document.getElementById('settings-modal').classList.remove('open');renderAll();recalc()}
 function renderSettingsTable(){
   var b=document.getElementById('settings-body');
-  var cols=["Glu(g/L)","Na","K","Cl","Ca","Mg","P(mg/L)","Aa(g/L)","脂肪(g/L)","HCO3","Hep(U/mL)"];
-  var keys=["glu","na","k","cl","ca","mg","p","aa","fat","hco3","heparin"];
+  var cols=["Glu(g/L)","Na","K","Cl","Ca","Mg","P(mg/L)","Aa(g/L)","脂肪(g/L)","HCO3","Hep(U/mL)","繊維(g/L)","水(mL/L)"];
+  var keys=["glu","na","k","cl","ca","mg","p","aa","fat","hco3","heparin","fiber","water"];
   var ncol=cols.length+4;
   var h='<table class="fluid-edit-table"><thead><tr><th></th><th>★</th><th>製剤名</th><th>ml</th>';
   cols.forEach(function(c){h+='<th>'+c+'</th>'});h+='<th></th></tr></thead><tbody>';
@@ -705,7 +837,7 @@ function updFP(i,p,v){fluids[i][p]=v;saveFluids()}
 function delFluid(i){if(!confirm('"'+fluids[i].name+'" を削除？'))return;var fid=fluids[i].id;fluids.splice(i,1);
   routes.forEach(function(rt){rt.main.fluids=rt.main.fluids.filter(function(e){return e.id!==fid});rt.sides.forEach(function(s){s.fluids=s.fluids.filter(function(e){return e.id!==fid})})});
   saveFluids();renderSettingsTable()}
-function addFluid(){var o={id:'c_'+Date.now(),cat:'other',name:'新規製剤',defaultVol:500,enabled:true};COMP_KEYS.forEach(function(k){o[k]=0});fluids.push(o);saveFluids();renderSettingsTable();
+function addFluid(){var o={id:'c_'+Date.now(),cat:'other',name:'新規製剤',defaultVol:500,enabled:true};COMP_KEYS.forEach(function(k){o[k]=(k==='water'?1000:0)});fluids.push(o);saveFluids();renderSettingsTable();
   var tb=document.querySelector('.fluid-edit-table tbody');if(tb&&tb.lastElementChild){var inp=tb.lastElementChild.querySelector('.name-input');if(inp){inp.focus();inp.select()}}}
 function resetFluidsToDefault(){if(!confirm('デフォルトに戻しますか？'))return;fluids=JSON.parse(JSON.stringify(DEFAULT_FLUIDS));saveFluids();
   routes.forEach(function(rt){rt.main.fluids=[];rt.sides.forEach(function(s){s.fluids=[]})});renderSettingsTable();renderAll();recalc()}
@@ -713,7 +845,7 @@ function downloadConfiguredHTML(){
   var html=document.documentElement.outerHTML;
   html=html.replace(/var DEFAULT_FLUIDS=\[[\s\S]*?\];/,'var DEFAULT_FLUIDS='+JSON.stringify(fluids)+';');
   var blob=new Blob(['<!DOCTYPE html>\n<html lang="ja">\n'+html.slice(html.indexOf('<head'))],{type:'text/html;charset=utf-8'});
-  var a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='輸液組成計算シート.html';a.click();URL.revokeObjectURL(a.href);
+  var a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='輸液経腸栄養組成計算シート.html';a.click();URL.revokeObjectURL(a.href);
 }
 
 // Persistence
@@ -721,12 +853,13 @@ var STORAGE_PREFIX='iv-calc_'+location.pathname+'_';
 function saveFluids(){try{localStorage.setItem(STORAGE_PREFIX+'fluids',JSON.stringify(fluids))}catch(e){}}
 function loadFluids(){try{var r=localStorage.getItem(STORAGE_PREFIX+'fluids');if(r){var p=JSON.parse(r);
   var defCat={};DEFAULT_FLUIDS.forEach(function(df){defCat[df.id]=df.cat});
-  p.forEach(function(f){COMP_KEYS.forEach(function(k){if(f[k]===undefined)f[k]=0});if(!f.cat)f.cat=defCat[f.id]||'other'});
+  p.forEach(function(f){COMP_KEYS.forEach(function(k){if(f[k]===undefined)f[k]=(k==='water'?1000:0)});if(!f.cat)f.cat=defCat[f.id]||'other'});
   var ids={};p.forEach(function(f){ids[f.id]=true});DEFAULT_FLUIDS.forEach(function(df){if(!ids[df.id])p.push(JSON.parse(JSON.stringify(df)))});fluids=p}}catch(e){}}
 function saveState(){try{localStorage.setItem(STORAGE_PREFIX+'state',JSON.stringify({height:document.getElementById('height').value,weight:document.getElementById('weight').value,routes:routes,nextRouteId:nextRouteId,nextSideId:nextSideId}))}catch(e){}}
 function loadState(){try{var r=localStorage.getItem(STORAGE_PREFIX+'state');if(!r)return false;var d=JSON.parse(r);
   if(d.height)document.getElementById('height').value=d.height;if(d.weight)document.getElementById('weight').value=d.weight;
   if(d.routes&&d.routes.length>0){routes=d.routes.map(function(rt){rt.main.fluids=rt.main.fluids.filter(function(e){return getFluidById(e.id)});
+    if(!rt.type)rt.type='iv';if(rt.type==='enteral'){if(rt.enDailyVol===undefined)rt.enDailyVol=0;if(rt.enUnitsPerDay===undefined)rt.enUnitsPerDay=0}
     if(!rt.sides)rt.sides=[];rt.sides.forEach(function(s){s.fluids=s.fluids.filter(function(e){return getFluidById(e.id)});
     if(!s.mode)s.mode='continuous';if(s.mainRateDuring===undefined)s.mainRateDuring=null;if(!s.hours)s.hours=24;if(!s.duration)s.duration=1;if(!s.timesPerDay)s.timesPerDay=1});return rt});
     nextRouteId=d.nextRouteId||routes.length+1;nextSideId=d.nextSideId||1;return true}

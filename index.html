@@ -50,56 +50,31 @@ body {
 .container { max-width: 1200px; margin: 0 auto; padding: 16px; }
 .patient-card { background: #fff; border-radius: var(--radius); box-shadow: var(--shadow); overflow: hidden; margin-bottom: 16px; }
 .patient-card-header { padding: 8px 16px; background: var(--gray-100); font-size: 13px; font-weight: 700; color: var(--gray-600); border-bottom: 1px solid var(--gray-200); }
-.patient-bar {
-  display: flex; align-items: center; gap: 16px; flex-wrap: wrap;
-  padding: 12px 16px;
-}
+.patient-bar { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; padding: 12px 16px; }
 .patient-bar label { font-size: 13px; font-weight: 600; color: var(--gray-600); display: flex; align-items: center; gap: 6px; }
-.patient-bar input {
-  width: 70px; padding: 4px 8px; border: 1px solid var(--gray-300); border-radius: 4px;
-  font-size: 14px; text-align: right; background: var(--warning-light);
-}
+.patient-bar input { width: 70px; padding: 4px 8px; border: 1px solid var(--gray-300); border-radius: 4px; font-size: 14px; text-align: right; background: var(--warning-light); }
 .patient-bar input:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 2px var(--primary-light); }
 .patient-bar .unit { font-size: 13px; color: var(--gray-500); }
 .patient-bar .bsa-display { font-size: 13px; color: var(--gray-600); background: var(--gray-100); padding: 4px 10px; border-radius: 4px; }
-.lines-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(380px, 1fr)); gap: 16px; margin-bottom: 16px; }
+.routes-list { display: flex; flex-direction: column; gap: 16px; margin-bottom: 16px; }
 .card { background: #fff; border-radius: var(--radius); box-shadow: var(--shadow); overflow: hidden; }
-.card-header {
-  padding: 10px 16px; font-weight: 700; font-size: 14px;
-  display: flex; align-items: center; justify-content: space-between;
-}
+.card-header { padding: 10px 16px; font-weight: 700; font-size: 14px; display: flex; align-items: center; justify-content: space-between; }
 .card-header.result { background: var(--gray-800); color: #fff; }
 .card-body { padding: 12px 16px; }
-.line-header-actions { display: flex; gap: 6px; align-items: center; }
-.line-name-input {
-  border: none; background: transparent; font-size: 14px; font-weight: 700; color: inherit;
-  padding: 0; min-width: 60px; width: auto; max-width: 200px; outline: none;
-  border-bottom: 1px solid transparent;
-}
-.line-name-input:hover { border-bottom-color: currentColor; }
-.line-name-input:focus { border-bottom-color: currentColor; }
-.btn-remove-line {
-  padding: 2px 8px; border: 1px solid rgba(0,0,0,.15); border-radius: 4px;
-  background: rgba(255,255,255,.5); font-size: 12px; cursor: pointer; color: inherit; opacity: .7;
-}
+.line-name-input { border: none; background: transparent; font-size: 14px; font-weight: 700; color: inherit; padding: 0; min-width: 60px; width: auto; max-width: 200px; outline: none; border-bottom: 1px solid transparent; }
+.line-name-input:hover, .line-name-input:focus { border-bottom-color: currentColor; }
+.btn-remove-line { padding: 2px 8px; border: 1px solid rgba(0,0,0,.15); border-radius: 4px; background: rgba(255,255,255,.5); font-size: 12px; cursor: pointer; color: inherit; opacity: .7; }
 .btn-remove-line:hover { opacity: 1; background: rgba(255,255,255,.8); }
+.route-columns { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.route-comp-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--gray-200); }
 .fluid-list { display: flex; flex-direction: column; gap: 6px; }
-.fluid-item {
-  display: flex; align-items: center; gap: 8px; padding: 6px 8px;
-  background: var(--gray-50); border-radius: 4px; border: 1px solid var(--gray-200);
-}
+.fluid-item { display: flex; align-items: center; gap: 8px; padding: 6px 8px; background: var(--gray-50); border-radius: 4px; border: 1px solid var(--gray-200); }
 .fluid-item .fluid-name { flex: 1; font-size: 13px; font-weight: 500; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.fluid-item input {
-  width: 65px; padding: 3px 6px; border: 1px solid var(--gray-300); border-radius: 4px;
-  font-size: 13px; text-align: right; background: var(--warning-light);
-}
+.fluid-item input { width: 65px; padding: 3px 6px; border: 1px solid var(--gray-300); border-radius: 4px; font-size: 13px; text-align: right; background: var(--warning-light); }
 .fluid-item input:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 2px var(--primary-light); }
 .fluid-item .unit { font-size: 12px; color: var(--gray-500); min-width: 20px; }
 .fluid-selector { margin-top: 4px; }
-.fluid-selector select {
-  width: 100%; padding: 6px 8px; border: 1px dashed var(--gray-300); border-radius: 4px;
-  font-size: 13px; background: #fff; color: var(--gray-500); cursor: pointer;
-}
+.fluid-selector select { width: 100%; padding: 6px 8px; border: 1px dashed var(--gray-300); border-radius: 4px; font-size: 13px; background: #fff; color: var(--gray-500); cursor: pointer; }
 .fluid-selector select:focus { outline: none; border-color: var(--primary); border-style: solid; }
 .btn { padding: 6px 14px; border: none; border-radius: 4px; font-size: 13px; font-weight: 600; cursor: pointer; transition: background .15s; }
 .btn-primary { background: var(--primary); color: #fff; }
@@ -107,16 +82,38 @@ body {
 .btn-danger { background: var(--danger-light); color: var(--danger); }
 .btn-danger:hover { background: #fecaca; }
 .btn-sm { padding: 2px 8px; font-size: 12px; }
-.line-summary {
-  margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--gray-200);
-  display: flex; justify-content: space-between; align-items: center; font-size: 13px;
-}
-.line-summary .total { font-weight: 700; }
-.line-comp { margin-top: 8px; padding: 8px; background: var(--gray-50); border-radius: 4px; font-size: 12px; }
-.line-comp-title { font-weight: 700; font-size: 13px; margin-bottom: 4px; color: var(--gray-700); }
+.ch-section { margin-top: 12px; padding-top: 12px; border-top: 1px dashed var(--gray-300); }
+.ch-section:first-child { margin-top: 0; padding-top: 0; border-top: none; }
+.ch-header { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
+.ch-label { font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 3px; }
+.ch-label.main-l { background: var(--primary-light); color: var(--primary-dark); }
+.ch-label.side-l { background: var(--warning-light); color: var(--warning); }
+.side-name-input { border: none; background: transparent; font-size: 12px; font-weight: 700; color: var(--gray-600); padding: 0; outline: none; border-bottom: 1px solid transparent; min-width: 50px; max-width: 120px; }
+.side-name-input:hover, .side-name-input:focus { border-bottom-color: var(--gray-400); }
+.btn-remove-side { padding: 1px 6px; border: 1px solid var(--gray-200); border-radius: 3px; background: #fff; font-size: 11px; cursor: pointer; color: var(--gray-400); margin-left: auto; }
+.btn-remove-side:hover { color: var(--danger); border-color: var(--danger); }
+.mode-toggle { display: inline-flex; border: 1px solid var(--gray-300); border-radius: 4px; overflow: hidden; }
+.mode-toggle button { padding: 2px 10px; border: none; cursor: pointer; font-size: 11px; font-weight: 600; background: #fff; color: var(--gray-500); }
+.mode-toggle button.active { background: var(--primary); color: #fff; }
+.flow-row { margin-top: 6px; display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+.flow-row label { font-size: 12px; color: var(--gray-600); font-weight: 600; display: flex; align-items: center; gap: 3px; }
+.flow-row input { width: 50px; padding: 3px 5px; border: 1px solid var(--gray-300); border-radius: 4px; font-size: 12px; text-align: right; background: var(--warning-light); }
+.flow-row input:focus { outline: none; border-color: var(--primary); }
+.flow-row .unit { font-size: 11px; color: var(--gray-500); }
+.flow-row .calc-val { font-size: 12px; color: var(--gray-600); background: var(--gray-100); padding: 2px 8px; border-radius: 4px; }
+.flow-row .calc-val.clickable { cursor: pointer; border: 1px dashed var(--gray-300); transition: all .15s; }
+.flow-row .calc-val.clickable:hover { background: var(--primary-light); border-color: var(--primary); color: var(--primary-dark); }
+.btn-24h { padding: 2px 8px; border: 1px solid var(--gray-300); border-radius: 4px; background: #fff; color: var(--gray-500); font-size: 12px; font-weight: 600; cursor: pointer; transition: all .15s; display: none; }
+.btn-24h:hover { background: var(--primary-light); border-color: var(--primary); color: var(--primary-dark); }
+.ch-summary { margin-top: 6px; font-size: 12px; display: flex; gap: 10px; flex-wrap: wrap; color: var(--gray-600); }
+.ch-summary .val { font-weight: 700; }
+.ch-summary .eff { color: var(--warning); font-weight: 600; }
+.comp-box { margin-top: 8px; padding: 8px; background: var(--gray-50); border-radius: 4px; font-size: 12px; }
+.comp-box.route-comp-norm { background: var(--success-light); border: 1px solid #a7f3d0; }
+.comp-box.route-comp-int { background: var(--warning-light); border: 1px solid #fde68a; }
+.comp-title { font-weight: 700; font-size: 12px; margin-bottom: 4px; color: var(--gray-700); }
 .comp-grid { display: flex; flex-direction: column; gap: 2px; }
-.comp-row-group { display: grid; gap: 2px 16px; }
-.comp-row-group.cols-2 { grid-template-columns: 1fr 1fr; }
+.comp-row-group { display: grid; gap: 2px 12px; }
 .comp-row-group.cols-3 { grid-template-columns: 1fr 1fr 1fr; }
 .comp-row { display: flex; justify-content: space-between; padding: 1px 0; }
 .comp-row .label { color: var(--gray-500); }
@@ -125,29 +122,10 @@ body {
 .comp-row.alert-info .label, .comp-row.alert-info .value { color: var(--warning); font-weight: 700; }
 .alert-row { background: var(--danger-light) !important; }
 .alert-row td { color: var(--danger) !important; font-weight: 700 !important; }
-.flow-inputs { margin-top: 8px; display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
-.flow-inputs label { font-size: 12px; color: var(--gray-600); font-weight: 600; display: flex; align-items: center; gap: 4px; }
-.flow-inputs input {
-  width: 55px; padding: 3px 6px; border: 1px solid var(--gray-300); border-radius: 4px;
-  font-size: 13px; text-align: right; background: var(--warning-light);
-}
-.flow-inputs input:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 2px var(--primary-light); }
-.flow-inputs .unit { font-size: 12px; color: var(--gray-500); }
-.flow-inputs .calc-val { font-size: 12px; color: var(--gray-600); background: var(--gray-100); padding: 2px 8px; border-radius: 4px; }
-.flow-inputs .calc-val.clickable { cursor: pointer; border: 1px dashed var(--gray-300); transition: all .15s; }
-.flow-inputs .calc-val.clickable:hover { background: var(--primary-light); border-color: var(--primary); color: var(--primary-dark); }
-.btn-24h {
-  padding: 2px 8px; border: 1px solid var(--gray-300); border-radius: 4px;
-  background: #fff; color: var(--gray-500); font-size: 12px; font-weight: 600;
-  cursor: pointer; transition: all .15s; display: none;
-}
-.btn-24h:hover { background: var(--primary-light); border-color: var(--primary); color: var(--primary-dark); }
-.btn-add-line {
-  width: 100%; padding: 12px; border: 2px dashed var(--gray-300); border-radius: var(--radius);
-  background: #fff; color: var(--gray-500); font-size: 14px; font-weight: 600;
-  cursor: pointer; transition: all .15s; margin-bottom: 16px;
-}
-.btn-add-line:hover { border-color: var(--primary); color: var(--primary); background: var(--primary-light); }
+.btn-add-side { margin-top: 10px; padding: 5px; border: 1px dashed var(--gray-300); border-radius: 4px; background: #fff; color: var(--gray-400); font-size: 12px; cursor: pointer; width: 100%; }
+.btn-add-side:hover { border-color: var(--primary); color: var(--primary); }
+.btn-add-route { width: 100%; padding: 12px; border: 2px dashed var(--gray-300); border-radius: var(--radius); background: #fff; color: var(--gray-500); font-size: 14px; font-weight: 600; cursor: pointer; transition: all .15s; margin-bottom: 16px; }
+.btn-add-route:hover { border-color: var(--primary); color: var(--primary); background: var(--primary-light); }
 .result-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 8px; }
 .result-box { padding: 10px 12px; background: var(--gray-50); border-radius: 6px; border: 1px solid var(--gray-200); }
 .result-box .r-title { font-size: 11px; font-weight: 600; color: var(--gray-500); text-transform: uppercase; letter-spacing: .3px; margin-bottom: 4px; }
@@ -173,65 +151,45 @@ body {
 .nutrition-table td:not(:first-child) { text-align: right; }
 .nutrition-table th:not(:first-child) { text-align: right; }
 .footer { text-align: center; padding: 16px; font-size: 12px; color: var(--gray-400); }
-
-/* Modal */
-.modal-overlay {
-  display: none; position: fixed; inset: 0; background: rgba(0,0,0,.5); z-index: 1000;
-  justify-content: center; align-items: flex-start; padding: 40px 16px; overflow-y: auto;
-}
+.modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.5); z-index: 1000; justify-content: center; align-items: flex-start; padding: 40px 16px; overflow-y: auto; }
 .modal-overlay.open { display: flex; }
-.modal {
-  background: #fff; border-radius: 12px; box-shadow: 0 20px 60px rgba(0,0,0,.2);
-  width: 100%; max-width: 860px; max-height: calc(100vh - 80px); display: flex; flex-direction: column;
-}
+.modal { background: #fff; border-radius: 12px; box-shadow: 0 20px 60px rgba(0,0,0,.2); width: 100%; max-width: 860px; max-height: calc(100vh - 80px); display: flex; flex-direction: column; }
 .modal-header { padding: 16px 20px; border-bottom: 1px solid var(--gray-200); display: flex; align-items: center; justify-content: space-between; flex-shrink: 0; }
 .modal-header h2 { font-size: 16px; font-weight: 700; }
 .modal-close { width: 28px; height: 28px; border: none; background: var(--gray-100); border-radius: 4px; cursor: pointer; font-size: 16px; color: var(--gray-500); display: flex; align-items: center; justify-content: center; }
 .modal-close:hover { background: var(--gray-200); }
 .modal-body { padding: 16px 20px; overflow-y: auto; flex: 1; }
 .modal-footer { padding: 12px 20px; border-top: 1px solid var(--gray-200); display: flex; justify-content: flex-end; gap: 8px; flex-shrink: 0; }
-.settings-section { margin-bottom: 20px; }
-.settings-section-title { font-size: 14px; font-weight: 700; color: var(--gray-700); margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
 .fluid-edit-table { width: 100%; border-collapse: collapse; font-size: 12px; }
 .fluid-edit-table th, .fluid-edit-table td { padding: 4px 4px; border: 1px solid var(--gray-200); text-align: center; }
 .fluid-edit-table th { background: var(--gray-100); font-weight: 600; color: var(--gray-600); font-size: 11px; position: sticky; top: 0; z-index: 1; }
-.fluid-edit-table td:first-child { text-align: left; font-weight: 500; }
 .fluid-edit-table input { width: 100%; min-width: 45px; padding: 2px 4px; border: 1px solid var(--gray-200); border-radius: 3px; font-size: 12px; text-align: right; background: #fff; }
 .fluid-edit-table input:focus { outline: none; border-color: var(--primary); }
 .fluid-edit-table input.name-input { text-align: left; min-width: 100px; }
 .fluid-edit-table .del-btn { width: 22px; height: 22px; border: none; background: var(--danger-light); color: var(--danger); border-radius: 3px; cursor: pointer; font-size: 11px; }
-.fluid-edit-table .del-btn:hover { background: #fecaca; }
 .fluid-edit-table .toggle-btn { width: 22px; height: 22px; border: none; border-radius: 3px; cursor: pointer; font-size: 13px; line-height: 1; }
 .fluid-edit-table .toggle-btn.on { background: var(--success-light); color: var(--success); }
 .fluid-edit-table .toggle-btn.off { background: var(--gray-200); color: var(--gray-400); }
 .btn-add-row { margin-top: 8px; padding: 6px 12px; border: 1px dashed var(--gray-300); border-radius: 4px; background: #fff; color: var(--gray-500); font-size: 13px; cursor: pointer; width: 100%; }
 .btn-add-row:hover { border-color: var(--primary); color: var(--primary); }
-.settings-actions { display: flex; gap: 8px; margin-top: 12px; }
 .btn-outline { padding: 6px 14px; border: 1px solid var(--gray-300); border-radius: 4px; font-size: 13px; font-weight: 600; cursor: pointer; background: #fff; color: var(--gray-600); }
 .btn-outline:hover { border-color: var(--gray-400); }
 .btn-outline.danger { border-color: var(--danger); color: var(--danger); }
 .btn-outline.danger:hover { background: var(--danger-light); }
-
 .line-c0 { background: #dbeafe; color: #1d4ed8; }
 .line-c1 { background: #d1fae5; color: #059669; }
 .line-c2 { background: #fef3c7; color: #d97706; }
 .line-c3 { background: #ede9fe; color: #7c3aed; }
 .line-c4 { background: #fce7f3; color: #db2777; }
 .line-c5 { background: #ccfbf1; color: #0d9488; }
+.no-int-msg { color: var(--gray-400); font-size: 12px; padding: 8px 0; text-align: center; }
 </style>
 </head>
 <body>
-
 <div class="header">
-  <div class="header-left">
-    <h1>輸液組成計算シート</h1>
-    <p>輸液を選択すると自動で追加されます。量を調整して組成を確認できます。</p>
-  </div>
-  <div class="header-right">
-    <button class="btn-header" onclick="openSettings()">&#9881; 製剤設定</button>
-  </div>
+  <div class="header-left"><h1>輸液組成計算シート</h1><p>ルートごとにメイン・側管を設定し、輸液の組成を計算できます。</p></div>
+  <div class="header-right"><button class="btn-header" onclick="openSettings()">&#9881; 製剤設定</button></div>
 </div>
-
 <div class="container">
   <div class="patient-card">
     <div class="patient-card-header">患者情報</div>
@@ -241,555 +199,445 @@ body {
       <span class="bsa-display" id="bsa-display">体表面積: — ㎡</span>
     </div>
   </div>
-
-  <div class="lines-grid" id="lines-container"></div>
-  <button class="btn-add-line" onclick="addLine()">＋ ラインを追加</button>
-
+  <div class="routes-list" id="routes-container"></div>
+  <button class="btn-add-route" onclick="addRoute()">＋ ルートを追加</button>
   <div class="card">
     <div class="card-header result" id="result-header">輸液組成 合計</div>
     <div class="card-body">
       <div class="result-grid" id="result-summary"></div>
-      <div class="result-detail">
-        <div class="result-detail-title">電解質・成分 詳細</div>
-        <table class="detail-table">
-          <thead><tr><th>成分</th><th>ルート内濃度</th><th>1日投与量</th><th>投与量/kg/day</th></tr></thead>
-          <tbody id="electrolyte-tbody"></tbody>
-        </table>
-      </div>
-      <div class="result-detail" style="margin-top: 16px;">
-        <div class="result-detail-title">栄養組成</div>
-        <table class="nutrition-table">
-          <thead><tr><th>成分</th><th>投与量 (g/kg/day)</th><th>カロリー比</th></tr></thead>
-          <tbody id="nutrition-tbody"></tbody>
-        </table>
-      </div>
-      <div class="result-detail" style="margin-top: 16px;">
-        <div class="result-detail-title">補正液 投与量</div>
-        <table class="detail-table">
-          <thead><tr><th>薬剤</th><th>投与量 (ml/kg/day)</th></tr></thead>
-          <tbody id="supplement-tbody"></tbody>
-        </table>
-      </div>
+      <div class="result-detail"><div class="result-detail-title">電解質・成分 詳細</div>
+        <table class="detail-table"><thead><tr><th>成分</th><th>1日投与量</th><th>投与量/kg/day</th></tr></thead><tbody id="electrolyte-tbody"></tbody></table></div>
+      <div class="result-detail" style="margin-top:16px"><div class="result-detail-title">栄養組成</div>
+        <table class="nutrition-table"><thead><tr><th>成分</th><th>投与量 (g/kg/day)</th><th>カロリー比</th></tr></thead><tbody id="nutrition-tbody"></tbody></table></div>
+      <div class="result-detail" style="margin-top:16px"><div class="result-detail-title">補正液 投与量</div>
+        <table class="detail-table"><thead><tr><th>薬剤</th><th>投与量 (ml/kg/day)</th></tr></thead><tbody id="supplement-tbody"></tbody></table></div>
     </div>
   </div>
 </div>
-
 <div class="footer">輸液組成計算シート — 臨床参考用（処方は必ず医師の判断に基づいてください）</div>
-
 <div class="modal-overlay" id="settings-modal">
   <div class="modal">
-    <div class="modal-header">
-      <h2>製剤リスト設定</h2>
-      <button class="modal-close" onclick="closeSettings()">&#10005;</button>
-    </div>
+    <div class="modal-header"><h2>製剤リスト設定</h2><button class="modal-close" onclick="closeSettings()">&#10005;</button></div>
     <div class="modal-body" id="settings-body"></div>
     <div class="modal-footer">
-      <div class="settings-actions" style="margin-top:0;flex:1;">
+      <div style="display:flex;gap:8px;flex:1">
         <button class="btn-outline danger" onclick="resetFluidsToDefault()">デフォルトに戻す</button>
-        <button class="btn-outline" onclick="exportSettings()">設定をエクスポート</button>
-        <button class="btn-outline" onclick="document.getElementById('import-file').click()">設定をインポート</button>
+        <button class="btn-outline" onclick="exportSettings()">エクスポート</button>
+        <button class="btn-outline" onclick="document.getElementById('import-file').click()">インポート</button>
         <input type="file" id="import-file" accept=".json" style="display:none" onchange="importSettings(event)">
       </div>
       <button class="btn btn-primary" onclick="closeSettings()">閉じる</button>
     </div>
   </div>
 </div>
-
 <script>
-var LINE_COLORS = 6;
-var nextLineId = 1;
-var COMP_KEYS = ["glu","na","k","cl","ca","mg","p","aa","fat","hco3","heparin"];
-
-var DEFAULT_FLUIDS = [
-  { id:"ns",        name:"生理食塩液",              defaultVol:500,  enabled:true, glu:0,   na:154,  k:0,    cl:154,  ca:0,   mg:0,    p:0,     aa:0,    fat:0,   hco3:0,     heparin:0 },
-  { id:"d5",        name:"5%ブドウ糖液",            defaultVol:500,  enabled:true, glu:50,  na:0,    k:0,    cl:0,    ca:0,   mg:0,    p:0,     aa:0,    fat:0,   hco3:0,     heparin:0 },
-  { id:"veend",     name:"ヴィーンD",               defaultVol:500,  enabled:true, glu:50,  na:130,  k:4,    cl:109,  ca:3,   mg:0,    p:0,     aa:0,    fat:0,   hco3:28,    heparin:0 },
-  { id:"solulyte",  name:"ソリューゲンF",           defaultVol:500,  enabled:true, glu:0,   na:130,  k:4,    cl:109,  ca:3,   mg:0,    p:0,     aa:0,    fat:0,   hco3:28,    heparin:0 },
-  { id:"soldem1",   name:"ソルデム1輸液",           defaultVol:500,  enabled:true, glu:26,  na:90,   k:0,    cl:70,   ca:0,   mg:0,    p:0,     aa:0,    fat:0,   hco3:20,    heparin:0 },
-  { id:"hartmann",  name:"ハルトマン",              defaultVol:500,  enabled:true, glu:43,  na:35,   k:20,   cl:35,   ca:0,   mg:0,    p:0,     aa:0,    fat:0,   hco3:20,    heparin:0 },
-  { id:"physio140", name:"フィジオ140",             defaultVol:500,  enabled:true, glu:10,  na:140,  k:4,    cl:115,  ca:3,   mg:2,    p:0,     aa:0,    fat:0,   hco3:34,    heparin:0 },
-  { id:"physio35",  name:"フィジオ35",              defaultVol:500,  enabled:true, glu:100, na:35,   k:20,   cl:28,   ca:5,   mg:3,    p:0,     aa:0,    fat:0,   hco3:25,    heparin:0 },
-  { id:"bfluid",    name:"ビーフリード",            defaultVol:500,  enabled:true, glu:75,  na:35,   k:20,   cl:35,   ca:5,   mg:5,    p:301,   aa:30,   fat:0,   hco3:42,    heparin:0 },
-  { id:"fulcaliq1", name:"フルカリック1号液(903ml)",defaultVol:903,  enabled:true, glu:133, na:55.4, k:33.2, cl:54.3, ca:9.4, mg:11.1, p:277,   aa:22.1, fat:0,   hco3:55.81, heparin:0 },
-  { id:"fulcaliq2", name:"フルカリック2号液(1003ml)",defaultVol:1003, enabled:true, glu:175, na:50,   k:30,   cl:49,   ca:8.5, mg:10,   p:250,   aa:30,   fat:0,   hco3:50.25, heparin:0 },
-  { id:"d50",       name:"50%ブドウ糖",            defaultVol:20,   enabled:true, glu:500, na:0,    k:0,    cl:0,    ca:0,   mg:0,    p:0,     aa:0,    fat:0,   hco3:0,     heparin:0 },
-  { id:"nacl10",    name:"10%NaCl",                 defaultVol:20,   enabled:true, glu:0,   na:1700, k:0,    cl:1700, ca:0,   mg:0,    p:0,     aa:0,    fat:0,   hco3:0,     heparin:0 },
-  { id:"kcl",       name:"KCl注20mEqキット",        defaultVol:20,   enabled:true, glu:0,   na:0,    k:1000, cl:1000, ca:0,   mg:0,    p:0,     aa:0,    fat:0,   hco3:0,     heparin:0 },
-  { id:"preamine",  name:"プレアミン",              defaultVol:200,  enabled:true, glu:0,   na:3,    k:0,    cl:0,    ca:0,   mg:0,    p:0,     aa:76,   fat:0,   hco3:0,     heparin:0 },
-  { id:"multamin",  name:"マルタミン",              defaultVol:5,    enabled:true, glu:0,   na:0,    k:0,    cl:0,    ca:0,   mg:0,    p:0,     aa:0,    fat:0,   hco3:0,     heparin:0 },
-  { id:"elezect",   name:"エレジェクト",            defaultVol:2,    enabled:true, glu:0,   na:0,    k:0,    cl:0,    ca:0,   mg:0,    p:0,     aa:0,    fat:0,   hco3:0,     heparin:0 },
-  { id:"calcicol",  name:"カルチコール",            defaultVol:5,    enabled:true, glu:0,   na:0,    k:0,    cl:0,    ca:390, mg:0,    p:0,     aa:0,    fat:0,   hco3:0,     heparin:0 },
-  { id:"napo4",     name:"リン酸Na補正液",          defaultVol:5,    enabled:true, glu:0,   na:750,  k:0,    cl:0,    ca:0,   mg:0,    p:15500, aa:0,    fat:0,   hco3:0,     heparin:0 },
-  { id:"mgso4",     name:"硫酸Mg補正液",            defaultVol:5,    enabled:true, glu:0,   na:0,    k:0,    cl:0,    ca:0,   mg:1000, p:0,     aa:0,    fat:0,   hco3:1000,  heparin:0 },
-  { id:"meylon",    name:"メイロン静注7%",          defaultVol:20,   enabled:true, glu:0,   na:833,  k:0,    cl:0,    ca:0,   mg:0,    p:0,     aa:0,    fat:0,   hco3:833,   heparin:0 },
-  { id:"heparin",   name:"ヘパリンNa 5千単位/5mL",  defaultVol:1,    enabled:true, glu:0,   na:68,   k:0,    cl:0,    ca:0,   mg:0,    p:0,     aa:0,    fat:0,   hco3:0,     heparin:1000 },
-  { id:"water",     name:"注射用水",                defaultVol:100,  enabled:true, glu:0,   na:0,    k:0,    cl:0,    ca:0,   mg:0,    p:0,     aa:0,    fat:0,   hco3:0,     heparin:0 },
-  { id:"intralipid",name:"20%イントラリポス",       defaultVol:100,  enabled:true, glu:0,   na:0,    k:0,    cl:0,    ca:0,   mg:0,    p:0,     aa:0,    fat:200, hco3:0,     heparin:0 },
+var LINE_COLORS=6, nextRouteId=1, nextSideId=1;
+var COMP_KEYS=["glu","na","k","cl","ca","mg","p","aa","fat","hco3","heparin"];
+var DEFAULT_FLUIDS=[
+  {id:"ns",name:"生理食塩液",defaultVol:500,enabled:true,glu:0,na:154,k:0,cl:154,ca:0,mg:0,p:0,aa:0,fat:0,hco3:0,heparin:0},
+  {id:"d5",name:"5%ブドウ糖液",defaultVol:500,enabled:true,glu:50,na:0,k:0,cl:0,ca:0,mg:0,p:0,aa:0,fat:0,hco3:0,heparin:0},
+  {id:"veend",name:"ヴィーンD",defaultVol:500,enabled:true,glu:50,na:130,k:4,cl:109,ca:3,mg:0,p:0,aa:0,fat:0,hco3:28,heparin:0},
+  {id:"solulyte",name:"ソリューゲンF",defaultVol:500,enabled:true,glu:0,na:130,k:4,cl:109,ca:3,mg:0,p:0,aa:0,fat:0,hco3:28,heparin:0},
+  {id:"soldem1",name:"ソルデム1輸液",defaultVol:500,enabled:true,glu:26,na:90,k:0,cl:70,ca:0,mg:0,p:0,aa:0,fat:0,hco3:20,heparin:0},
+  {id:"hartmann",name:"ハルトマン",defaultVol:500,enabled:true,glu:43,na:35,k:20,cl:35,ca:0,mg:0,p:0,aa:0,fat:0,hco3:20,heparin:0},
+  {id:"physio140",name:"フィジオ140",defaultVol:500,enabled:true,glu:10,na:140,k:4,cl:115,ca:3,mg:2,p:0,aa:0,fat:0,hco3:34,heparin:0},
+  {id:"physio35",name:"フィジオ35",defaultVol:500,enabled:true,glu:100,na:35,k:20,cl:28,ca:5,mg:3,p:0,aa:0,fat:0,hco3:25,heparin:0},
+  {id:"bfluid",name:"ビーフリード",defaultVol:500,enabled:true,glu:75,na:35,k:20,cl:35,ca:5,mg:5,p:301,aa:30,fat:0,hco3:42,heparin:0},
+  {id:"fulcaliq1",name:"フルカリック1号液(903ml)",defaultVol:903,enabled:true,glu:133,na:55.4,k:33.2,cl:54.3,ca:9.4,mg:11.1,p:277,aa:22.1,fat:0,hco3:55.81,heparin:0},
+  {id:"fulcaliq2",name:"フルカリック2号液(1003ml)",defaultVol:1003,enabled:true,glu:175,na:50,k:30,cl:49,ca:8.5,mg:10,p:250,aa:30,fat:0,hco3:50.25,heparin:0},
+  {id:"d50",name:"50%ブドウ糖",defaultVol:20,enabled:true,glu:500,na:0,k:0,cl:0,ca:0,mg:0,p:0,aa:0,fat:0,hco3:0,heparin:0},
+  {id:"nacl10",name:"10%NaCl",defaultVol:20,enabled:true,glu:0,na:1700,k:0,cl:1700,ca:0,mg:0,p:0,aa:0,fat:0,hco3:0,heparin:0},
+  {id:"kcl",name:"KCl注20mEqキット",defaultVol:20,enabled:true,glu:0,na:0,k:1000,cl:1000,ca:0,mg:0,p:0,aa:0,fat:0,hco3:0,heparin:0},
+  {id:"preamine",name:"プレアミン",defaultVol:200,enabled:true,glu:0,na:3,k:0,cl:0,ca:0,mg:0,p:0,aa:76,fat:0,hco3:0,heparin:0},
+  {id:"multamin",name:"マルタミン",defaultVol:5,enabled:true,glu:0,na:0,k:0,cl:0,ca:0,mg:0,p:0,aa:0,fat:0,hco3:0,heparin:0},
+  {id:"elezect",name:"エレジェクト",defaultVol:2,enabled:true,glu:0,na:0,k:0,cl:0,ca:0,mg:0,p:0,aa:0,fat:0,hco3:0,heparin:0},
+  {id:"calcicol",name:"カルチコール",defaultVol:5,enabled:true,glu:0,na:0,k:0,cl:0,ca:390,mg:0,p:0,aa:0,fat:0,hco3:0,heparin:0},
+  {id:"napo4",name:"リン酸Na補正液",defaultVol:5,enabled:true,glu:0,na:750,k:0,cl:0,ca:0,mg:0,p:15500,aa:0,fat:0,hco3:0,heparin:0},
+  {id:"mgso4",name:"硫酸Mg補正液",defaultVol:5,enabled:true,glu:0,na:0,k:0,cl:0,ca:0,mg:1000,p:0,aa:0,fat:0,hco3:1000,heparin:0},
+  {id:"meylon",name:"メイロン静注7%",defaultVol:20,enabled:true,glu:0,na:833,k:0,cl:0,ca:0,mg:0,p:0,aa:0,fat:0,hco3:833,heparin:0},
+  {id:"heparin",name:"ヘパリンNa 5千単位/5mL",defaultVol:1,enabled:true,glu:0,na:68,k:0,cl:0,ca:0,mg:0,p:0,aa:0,fat:0,hco3:0,heparin:1000},
+  {id:"water",name:"注射用水",defaultVol:100,enabled:true,glu:0,na:0,k:0,cl:0,ca:0,mg:0,p:0,aa:0,fat:0,hco3:0,heparin:0},
+  {id:"intralipid",name:"20%イントラリポス",defaultVol:100,enabled:true,glu:0,na:0,k:0,cl:0,ca:0,mg:0,p:0,aa:0,fat:200,hco3:0,heparin:0},
 ];
+var fluids=JSON.parse(JSON.stringify(DEFAULT_FLUIDS)), routes=[];
+function getEnabledFluids(){return fluids.filter(function(f){return f.enabled})}
+function getFluidById(id){return fluids.find(function(f){return f.id===id})}
+function R(rid){return routes.find(function(r){return r.id===rid})}
+function S(rid,sid){var rt=R(rid);return rt?rt.sides.find(function(s){return s.id===sid}):null}
+function CH(rid,ct,cid){var rt=R(rid);if(!rt)return null;return ct==='main'?rt.main:rt.sides.find(function(s){return s.id===cid})}
+function CK(rid,ct,cid){return rid+'-'+(ct==='main'?'main':cid)}
+function chTotal(ch){return ch.fluids.reduce(function(s,e){return s+e.volume},0)}
+function chComp(ch){
+  var t=chTotal(ch),c={};COMP_KEYS.forEach(function(k){c[k]=0});if(t===0)return c;
+  ch.fluids.forEach(function(e){var f=getFluidById(e.id);if(!f)return;COMP_KEYS.forEach(function(k){c[k]+=e.volume*(f[k]||0)})});
+  COMP_KEYS.forEach(function(k){c[k]/=t});return c;
+}
+function nextName(prefix,items,key){var u={};items.forEach(function(i){var m=(i[key]||'').match(new RegExp('^'+prefix+'\\s*(\\d+)$'));if(m)u[parseInt(m[1])]=true});var n=1;while(u[n])n++;return prefix+' '+n}
 
-var fluids = JSON.parse(JSON.stringify(DEFAULT_FLUIDS));
-var lines = [];
+function addRoute(){var rid='r'+nextRouteId++;routes.push({id:rid,name:nextName('ライン',routes,'name'),main:{fluids:[],rate:0,hours:24},sides:[]});renderAll();recalc()}
+function removeRoute(rid){if(routes.length<=1)return;routes=routes.filter(function(r){return r.id!==rid});renderAll();recalc()}
+function renameRoute(rid,v){var rt=R(rid);if(rt)rt.name=v;updateResultHeader();saveState()}
+function addSide(rid){var rt=R(rid);if(!rt)return;var sid='s'+nextSideId++;rt.sides.push({id:sid,name:nextName('側管',rt.sides,'name'),fluids:[],rate:0,mode:'continuous',hours:24,duration:1,timesPerDay:3,mainRateDuring:null});renderAll();recalc()}
+function removeSide(rid,sid){var rt=R(rid);if(!rt)return;rt.sides=rt.sides.filter(function(s){return s.id!==sid});renderAll();recalc()}
+function renameSide(rid,sid,v){var s=S(rid,sid);if(s)s.name=v;saveState()}
+function setSideMode(rid,sid,mode){var s=S(rid,sid);if(s)s.mode=mode;renderAll();recalc()}
 
-function getEnabledFluids() { return fluids.filter(function(f){ return f.enabled; }); }
-function getFluidById(id) { return fluids.find(function(f){ return f.id === id; }); }
-function getLineById(lid) { return lines.find(function(l){ return l.id === lid; }); }
-
-function getNextLineName() {
-  var usedNums = {};
-  lines.forEach(function(l) {
-    var m = l.name.match(/^ライン\s*(\d+)$/);
-    if (m) usedNums[parseInt(m[1])] = true;
-  });
-  var n = 1;
-  while (usedNums[n]) n++;
-  return 'ライン ' + n;
+function buildSelector(rid,ct,cid){
+  var ch=CH(rid,ct,cid);if(!ch)return '';var used={};ch.fluids.forEach(function(e){used[e.id]=true});
+  var av=getEnabledFluids().filter(function(f){return !used[f.id]});if(av.length===0)return '';
+  var h='<div class="fluid-selector"><select onchange="onSelect(\''+rid+'\',\''+ct+'\',\''+(cid||'')+'\',this)">';
+  h+='<option value="">&#65291; 輸液を追加...</option>';av.forEach(function(f){h+='<option value="'+f.id+'">'+esc(f.name)+'</option>'});
+  return h+'</select></div>';
+}
+function onSelect(rid,ct,cid,sel){
+  var fid=sel.value;if(!fid)return;var fl=getFluidById(fid),ch=CH(rid,ct,cid);if(!fl||!ch)return;
+  ch.fluids.push({id:fid,volume:fl.defaultVol});renderFL(rid,ct,cid);recalc();
+  var items=document.querySelectorAll('#flist-'+CK(rid,ct,cid)+' .fluid-item');
+  if(items.length>0){var inp=items[items.length-1].querySelector('input');if(inp)inp.select()}
+}
+function rmFluid(rid,ct,cid,fid){var ch=CH(rid,ct,cid);if(!ch)return;ch.fluids=ch.fluids.filter(function(e){return e.id!==fid});renderFL(rid,ct,cid);recalc()}
+function updVol(rid,ct,cid,fid,val){var ch=CH(rid,ct,cid);if(!ch)return;var e=ch.fluids.find(function(e){return e.id===fid});if(e)e.volume=parseFloat(val)||0;recalc()}
+function renderFL(rid,ct,cid){
+  var ck=CK(rid,ct,cid),el=document.getElementById('flist-'+ck);if(!el)return;var ch=CH(rid,ct,cid);if(!ch)return;var h='';
+  ch.fluids.forEach(function(entry){var fl=getFluidById(entry.id);if(!fl)return;var step=entry.id==='heparin'?'0.1':'1';
+    h+='<div class="fluid-item"><span class="fluid-name" title="'+esc(fl.name)+'">'+esc(fl.name)+'</span>';
+    h+='<input type="number" value="'+entry.volume+'" step="'+step+'" min="0" oninput="updVol(\''+rid+'\',\''+ct+'\',\''+(cid||'')+'\',\''+entry.id+'\',this.value)">';
+    h+='<span class="unit">ml</span><button class="btn btn-danger btn-sm" onclick="rmFluid(\''+rid+'\',\''+ct+'\',\''+(cid||'')+'\',\''+entry.id+'\')">&#10005;</button></div>'});
+  h+=buildSelector(rid,ct,cid);el.innerHTML=h;
 }
 
-function addLine() {
-  var lid = 'line_' + nextLineId;
-  lines.push({ id: lid, name: getNextLineName(), fluids: [], rate: 0, hours: 24 });
-  nextLineId++;
-  renderAllLines();
-  recalc();
+function onMR(rid,v){var rt=R(rid);if(rt)rt.main.rate=parseFloat(v)||0;recalc()}
+function onMH(rid,v){var rt=R(rid);if(rt)rt.main.hours=parseFloat(v)||0;recalc()}
+function setMH(rid,h){var rt=R(rid);if(rt)rt.main.hours=h;var el=document.getElementById('hours-'+rid);if(el)el.value=h;recalc()}
+function onSR(rid,sid,v){var s=S(rid,sid);if(s)s.rate=parseFloat(v)||0;recalc()}
+function onSH(rid,sid,v){var s=S(rid,sid);if(s)s.hours=parseFloat(v)||0;recalc()}
+function onSD(rid,sid,v){var s=S(rid,sid);if(s)s.duration=parseFloat(v)||0;recalc()}
+function onST(rid,sid,v){var s=S(rid,sid);if(s)s.timesPerDay=parseFloat(v)||0;recalc()}
+function onSMR(rid,sid,v){var s=S(rid,sid);if(s)s.mainRateDuring=v===''?null:(parseFloat(v)||0);recalc()}
+
+function renderAll(){
+  var c=document.getElementById('routes-container');c.innerHTML='';
+  routes.forEach(function(rt,idx){var card=document.createElement('div');card.className='card';card.innerHTML=buildRoute(rt,idx);c.appendChild(card);
+    renderFL(rt.id,'main',null);rt.sides.forEach(function(s){renderFL(rt.id,'side',s.id)})});
 }
 
-function renameLine(lid, val) {
-  var line = getLineById(lid);
-  if (line) line.name = val;
-  updateResultHeader();
-  saveState();
-}
-
-function removeLine(lid) {
-  if (lines.length <= 1) return;
-  lines = lines.filter(function(l){ return l.id !== lid; });
-  renderAllLines();
-  recalc();
-}
-
-function renderAllLines() {
-  var container = document.getElementById('lines-container');
-  container.innerHTML = '';
-  lines.forEach(function(line, idx) {
-    var colorClass = 'line-c' + (idx % LINE_COLORS);
-    var card = document.createElement('div');
-    card.className = 'card';
-    var h = '<div class="card-header ' + colorClass + '">';
-    h += '<input class="line-name-input" value="' + escHtml(line.name) + '" oninput="renameLine(\'' + line.id + '\',this.value)">';
-    h += '<div class="line-header-actions">';
-    if (lines.length > 1) h += '<button class="btn-remove-line" onclick="removeLine(\'' + line.id + '\')" title="このラインを削除">&#10005; 削除</button>';
-    h += '</div></div>';
-    h += '<div class="card-body">';
-    h += '<div class="fluid-list" id="flist-' + line.id + '"></div>';
-    h += '<div class="flow-inputs">';
-    h += '<label>流量 <input type="number" id="rate-' + line.id + '" value="' + (line.rate || '') + '" step="0.1" placeholder="ml/h" oninput="onRateChange(\'' + line.id + '\',this.value)"> <span class="unit">ml/h</span></label>';
-    h += '<label>投与時間 <input type="number" id="hours-' + line.id + '" value="' + line.hours + '" step="1" oninput="onHoursChange(\'' + line.id + '\',this.value)"> <span class="unit">h</span></label>';
-    h += '<button class="btn-24h" id="btn24-' + line.id + '" onclick="setHours(\'' + line.id + '\',24)">&#8592; 24hに戻す</button>';
-    h += '<span class="calc-val" id="bag-' + line.id + '">1本あたり: — h</span>';
-    h += '</div>';
-    h += '<div class="line-summary"><span class="total" id="total-' + line.id + '">合計: 0 ml</span></div>';
-    h += '<div class="line-comp"><div class="line-comp-title">ルート内組成</div><div class="comp-grid" id="comp-' + line.id + '"></div></div>';
-    h += '</div>';
-    card.innerHTML = h;
-    container.appendChild(card);
-    renderFluidList(line.id);
-  });
-}
-
-function buildSelector(lid) {
-  var line = getLineById(lid);
-  if (!line) return '';
-  var used = {};
-  line.fluids.forEach(function(e){ used[e.id] = true; });
-  var available = getEnabledFluids().filter(function(f){ return !used[f.id]; });
-  if (available.length === 0) return '';
-  var h = '<div class="fluid-selector"><select onchange="onSelectFluid(\'' + lid + '\', this)">';
-  h += '<option value="">&#65291; 輸液を追加...</option>';
-  available.forEach(function(f){ h += '<option value="' + f.id + '">' + escHtml(f.name) + '</option>'; });
-  h += '</select></div>';
+function buildRoute(rt,idx){
+  var rid=rt.id,cc='line-c'+(idx%LINE_COLORS),hasSides=rt.sides.length>0;
+  var h='<div class="card-header '+cc+'"><input class="line-name-input" value="'+esc(rt.name)+'" oninput="renameRoute(\''+rid+'\',this.value)">';
+  h+='<div style="display:flex;gap:6px;align-items:center">';
+  if(routes.length>1)h+='<button class="btn-remove-line" onclick="removeRoute(\''+rid+'\')">&#10005; 削除</button>';
+  h+='</div></div><div class="card-body">';
+  // Two-column layout
+  h+='<div class="route-columns">';
+  // Left column: Main
+  h+='<div>';
+  h+='<div class="ch-header"><span class="ch-label main-l">メイン</span></div>';
+  h+='<div class="fluid-list" id="flist-'+rid+'-main"></div>';
+  h+='<div class="flow-row">';
+  h+='<label>流量 <input type="number" id="rate-'+rid+'" value="'+(rt.main.rate||'')+'" step="0.1" placeholder="ml/h" oninput="onMR(\''+rid+'\',this.value)"> <span class="unit">ml/h</span></label>';
+  h+='<label>投与時間 <input type="number" id="hours-'+rid+'" value="'+rt.main.hours+'" step="1" oninput="onMH(\''+rid+'\',this.value)"> <span class="unit">h</span></label>';
+  h+='<button class="btn-24h" id="btn24-'+rid+'" onclick="setMH(\''+rid+'\',24)">&#8592; 24hに戻す</button>';
+  h+='</div>';
+  h+='<div class="flow-row"><span class="calc-val" id="bag-'+rid+'">1本あたり: — h</span></div>';
+  h+='<div class="ch-summary"><span>合計: <span class="val" id="total-'+rid+'-main">0 ml</span></span>';
+  h+='<span class="eff" id="eff-'+rid+'" style="display:none"></span></div>';
+  h+='<div class="comp-box"><div class="comp-title">組成（メイン）</div><div class="comp-grid" id="comp-'+rid+'-main"></div></div>';
+  h+='</div>';
+  // Right column: Sides
+  h+='<div>';
+  rt.sides.forEach(function(s){h+=buildSide(rid,s)});
+  h+='<button class="btn-add-side" onclick="addSide(\''+rid+'\')">＋ 側管を追加</button>';
+  h+='</div>';
+  h+='</div>'; // route-columns
+  // Route composition row (shown when sides exist)
+  if(hasSides){
+    var hasInt=rt.sides.some(function(s){return s.mode==='intermittent'});
+    h+='<div class="route-comp-row">';
+    // Left: 常時
+    h+='<div class="comp-box route-comp-norm"><div class="comp-title">ルート内組成（常時）<span id="route-rate-norm-'+rid+'" style="font-weight:400;color:var(--gray-500);margin-left:6px;font-size:11px"></span></div>';
+    h+='<div class="comp-grid" id="comp-'+rid+'-norm"></div></div>';
+    // Right: 間欠時
+    h+='<div class="comp-box route-comp-int"><div class="comp-title">ルート内組成（間欠時）<span id="route-rate-int-'+rid+'" style="font-weight:400;color:var(--gray-500);margin-left:6px;font-size:11px"></span></div>';
+    if(hasInt) h+='<div class="comp-grid" id="comp-'+rid+'-int"></div>';
+    else h+='<div class="no-int-msg">間欠側管なし</div>';
+    h+='</div>';
+    h+='</div>'; // route-comp-row
+  }
+  h+='</div>'; // card-body
   return h;
 }
 
-function onSelectFluid(lid, sel) {
-  var fid = sel.value; if (!fid) return;
-  var fluid = getFluidById(fid), line = getLineById(lid);
-  if (!fluid || !line) return;
-  line.fluids.push({ id: fid, volume: fluid.defaultVol });
-  renderFluidList(lid); recalc();
-  var items = document.querySelectorAll('#flist-' + lid + ' .fluid-item');
-  if (items.length > 0) { var inp = items[items.length-1].querySelector('input'); if (inp) inp.select(); }
-}
-
-function removeFluid(lid, fid) {
-  var line = getLineById(lid); if (!line) return;
-  line.fluids = line.fluids.filter(function(e){ return e.id !== fid; });
-  renderFluidList(lid); recalc();
-}
-
-function renderFluidList(lid) {
-  var el = document.getElementById('flist-' + lid); if (!el) return;
-  var line = getLineById(lid); if (!line) return;
-  var h = '';
-  line.fluids.forEach(function(entry){
-    var fluid = getFluidById(entry.id); if (!fluid) return;
-    h += '<div class="fluid-item">';
-    h += '<span class="fluid-name" title="' + escHtml(fluid.name) + '">' + escHtml(fluid.name) + '</span>';
-    var step = entry.id === 'heparin' ? '0.1' : '1';
-    h += '<input type="number" value="' + entry.volume + '" step="' + step + '" min="0" oninput="updateVolume(\'' + lid + '\',\'' + entry.id + '\',this.value)">';
-    h += '<span class="unit">ml</span>';
-    h += '<button class="btn btn-danger btn-sm" onclick="removeFluid(\'' + lid + '\',\'' + entry.id + '\')">&#10005;</button>';
-    h += '</div>';
-  });
-  h += buildSelector(lid);
-  el.innerHTML = h;
-}
-
-function updateVolume(lid, fid, val) {
-  var line = getLineById(lid); if (!line) return;
-  var entry = line.fluids.find(function(e){ return e.id === fid; });
-  if (entry) entry.volume = parseFloat(val) || 0;
-  recalc();
-}
-function onRateChange(lid, val) { var l = getLineById(lid); if (l) l.rate = parseFloat(val) || 0; recalc(); }
-function onHoursChange(lid, val) { var l = getLineById(lid); if (l) l.hours = parseFloat(val) || 0; recalc(); }
-function setHours(lid, h) { var l = getLineById(lid); if (l) l.hours = h; var el = document.getElementById('hours-' + lid); if (el) el.value = h; recalc(); }
-
-function getLineTotal(lid) {
-  var line = getLineById(lid); if (!line) return 0;
-  return line.fluids.reduce(function(s, e){ return s + e.volume; }, 0);
-}
-
-function getLineComp(lid) {
-  var total = getLineTotal(lid);
-  var comp = {}; COMP_KEYS.forEach(function(k){ comp[k] = 0; });
-  if (total === 0) return comp;
-  var line = getLineById(lid);
-  line.fluids.forEach(function(entry){
-    var f = getFluidById(entry.id); if (!f) return;
-    COMP_KEYS.forEach(function(k){ comp[k] += entry.volume * (f[k] || 0); });
-  });
-  COMP_KEYS.forEach(function(k){ comp[k] /= total; });
-  return comp;
-}
-
-function fmt(v, d) {
-  if (v === null || v === undefined || isNaN(v) || !isFinite(v)) return "—";
-  return v.toFixed(d !== undefined ? d : 2);
-}
-function escHtml(s) { return s.replace(/&/g,"&amp;").replace(/"/g,"&quot;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
-
-function recalc() {
-  var wt = parseFloat(document.getElementById("weight").value) || 0;
-  var ht = parseFloat(document.getElementById("height").value) || 0;
-  var bsa = ht > 0 && wt > 0 ? Math.sqrt(ht * wt / 3600) : 0;
-  document.getElementById("bsa-display").textContent = bsa > 0 ? "体表面積: " + fmt(bsa, 4) + " ㎡" : "体表面積: — ㎡";
-
-  var totalWater = 0, girTotal = 0, aaTotal = 0, fatTotal = 0, girKcalTotal = 0;
-  var totalRateAll = 0;
-  var weightedComp = {}, dayAmounts = {};
-  COMP_KEYS.forEach(function(k){ weightedComp[k] = 0; dayAmounts[k] = 0; });
-
-  lines.forEach(function(line) {
-    var lid = line.id, total = getLineTotal(lid), comp = getLineComp(lid);
-    var rate = line.rate, hours = line.hours, volPerDay = rate * hours;
-
-    document.getElementById("total-" + lid).textContent = "合計: " + total + " ml";
-    updateBagHoursEl(lid, rate > 0 ? total / rate : 0, hours);
-    renderLineComp(lid, comp, total, rate, wt);
-
-    totalWater += volPerDay;
-    totalRateAll += rate;
-    COMP_KEYS.forEach(function(k){ weightedComp[k] += comp[k] * rate; dayAmounts[k] += comp[k] * volPerDay; });
-
-    var gir = total > 0 && wt > 0 ? comp.glu * rate / 60 / wt : 0;
-    girTotal += gir;
-    girKcalTotal += wt > 0 ? gir / 1000 * 60 * hours * 4 : 0;
-    aaTotal += wt > 0 ? comp.aa / 1000 * volPerDay / wt : 0;
-    fatTotal += wt > 0 ? comp.fat / 1000 * volPerDay / wt : 0;
-  });
-
-  var gluGkgDay = wt > 0 ? girTotal * 60 * 24 / 1000 : 0;
-  var eqKcal = wt > 0 ? girKcalTotal + aaTotal * 4 + fatTotal * 9 : 0;
-  var totalKcal = eqKcal * wt;
-  var protCalRatio = eqKcal > 0 ? aaTotal * 4 / eqKcal : 0;
-  var fatCalRatio = eqKcal > 0 ? fatTotal * 9 / eqKcal : 0;
-  var gluCalRatio = eqKcal > 0 ? 1 - protCalRatio - fatCalRatio : 0;
-  var fatOverLimit = wt > 0 && fatTotal > 2;
-
-  updateResultHeader();
-
-  var fatBoxClass = fatOverLimit ? 'result-box warn' : 'result-box';
-  var girBoxClass = girTotal > 12 ? 'result-box warn' : 'result-box highlight';
-  document.getElementById("result-summary").innerHTML =
-    '<div class="result-box highlight"><div class="r-title">水分量</div><div class="r-value">' + fmt(totalWater, 0) + ' <span class="r-unit">ml/day</span></div><div class="r-sub">' + (bsa > 0 ? fmt(totalWater / bsa, 0) + " ml/㎡/day" : "—") + '</div></div>' +
-    '<div class="result-box highlight"><div class="r-title">カロリー</div><div class="r-value">' + fmt(eqKcal, 1) + ' <span class="r-unit">kcal/kg/day</span></div><div class="r-sub">' + fmt(totalKcal, 0) + ' kcal/day</div></div>' +
-    '<div class="' + girBoxClass + '"><div class="r-title">GIR</div><div class="r-value">' + fmt(girTotal, 2) + ' <span class="r-unit">mg/kg/min</span></div>' +
-    (girTotal > 12 ? '<div class="r-sub" style="color:var(--danger)">&#9888; 高血糖リスク（>12）</div>' : '') + '</div>' +
-    '<div class="result-box"><div class="r-title">アミノ酸</div><div class="r-value">' + fmt(aaTotal, 2) + ' <span class="r-unit">g/kg/day</span></div></div>' +
-    '<div class="' + fatBoxClass + '"><div class="r-title">脂肪</div><div class="r-value">' + fmt(fatTotal, 2) + ' <span class="r-unit">g/kg/day</span></div>' +
-    (fatOverLimit ? '<div class="r-sub" style="color:var(--danger)">&#9888; 上限 2 g/kg/day を超過</div>' : '') + '</div>';
-
-  var elecItems = [
-    { name:"Na", cu:"mEq/L", du:"mEq/day", ku:"mEq/kg/day", key:"na" },
-    { name:"K",  cu:"mEq/L", du:"mEq/day", ku:"mEq/kg/day", key:"k" },
-    { name:"Cl", cu:"mEq/L", du:"mEq/day", ku:"mEq/kg/day", key:"cl" },
-    { name:"Ca", cu:"mEq/L", du:"mEq/day", ku:"mEq/kg/day", key:"ca" },
-    { name:"Mg", cu:"mEq/L", du:"mEq/day", ku:"mEq/kg/day", key:"mg" },
-    { name:"P",  cu:"mg/L",  du:"mg/day",  ku:"mg/kg/day",  key:"p" },
-    { name:"重炭酸", cu:"mEq/L", du:"mEq/day", ku:"mEq/kg/day", key:"hco3" },
-  ];
-  var eTbody = document.getElementById("electrolyte-tbody");
-  eTbody.innerHTML = "";
-  elecItems.forEach(function(item){
-    var conc = totalRateAll > 0 ? weightedComp[item.key] / totalRateAll : 0;
-    var day = dayAmounts[item.key] / 1000;
-    var kg = wt > 0 ? day / wt : 0;
-    var isAlert = false;
-    if (item.key === "k") isAlert = conc > 40 || day > 100;
-    var tr = document.createElement("tr");
-    if (isAlert) tr.className = "alert-row";
-    tr.innerHTML = '<td>' + item.name + (isAlert ? ' &#9888;' : '') + '</td><td>' + fmt(conc) + ' ' + item.cu + '</td><td>' + fmt(day) + ' ' + item.du + '</td><td>' + fmt(kg) + ' ' + item.ku + '</td>';
-    eTbody.appendChild(tr);
-  });
-  var hepConc = totalRateAll > 0 ? weightedComp.heparin / totalRateAll : 0;
-  if (hepConc > 0) {
-    var tr = document.createElement("tr");
-    if (hepConc > 1.1) tr.className = "alert-row";
-    tr.innerHTML = '<td>ヘパリン' + (hepConc > 1.1 ? ' &#9888;' : '') + '</td><td>' + fmt(hepConc) + ' 単位/mL</td><td>—</td><td>—</td>';
-    eTbody.appendChild(tr);
+function buildSide(rid,s){
+  var sid=s.id,ck=rid+'-'+sid,isCont=s.mode==='continuous';
+  var h='<div class="ch-section"><div class="ch-header"><span class="ch-label side-l">側管</span>';
+  h+='<input class="side-name-input" value="'+esc(s.name)+'" oninput="renameSide(\''+rid+'\',\''+sid+'\',this.value)">';
+  h+='<div class="mode-toggle"><button class="'+(isCont?'active':'')+'" onclick="setSideMode(\''+rid+'\',\''+sid+'\',\'continuous\')">常時</button>';
+  h+='<button class="'+(!isCont?'active':'')+'" onclick="setSideMode(\''+rid+'\',\''+sid+'\',\'intermittent\')">間欠</button></div>';
+  h+='<button class="btn-remove-side" onclick="removeSide(\''+rid+'\',\''+sid+'\')">&#10005;</button></div>';
+  h+='<div class="fluid-list" id="flist-'+ck+'"></div>';
+  h+='<div class="flow-row">';
+  h+='<label>流量 <input type="number" value="'+(s.rate||'')+'" step="0.1" placeholder="ml/h" oninput="onSR(\''+rid+'\',\''+sid+'\',this.value)"> <span class="unit">ml/h</span></label>';
+  if(isCont){
+    h+='<label>投与時間 <input type="number" value="'+s.hours+'" step="1" oninput="onSH(\''+rid+'\',\''+sid+'\',this.value)"> <span class="unit">h</span></label>';
+  } else {
+    h+='<label><input type="number" value="'+s.duration+'" step="0.5" style="width:35px" oninput="onSD(\''+rid+'\',\''+sid+'\',this.value)"> <span class="unit">h</span></label>';
+    h+='<span class="unit">×</span>';
+    h+='<label><input type="number" value="'+s.timesPerDay+'" step="1" style="width:30px" oninput="onST(\''+rid+'\',\''+sid+'\',this.value)"> <span class="unit">回/日</span></label>';
+    h+='<span style="color:var(--gray-300);margin:0 2px">|</span>';
+    h+='<label>投与中メイン <input type="number" value="'+(s.mainRateDuring!==null?s.mainRateDuring:'')+'" placeholder="変更なし" style="width:55px" oninput="onSMR(\''+rid+'\',\''+sid+'\',this.value)"> <span class="unit">ml/h</span></label>';
   }
-  if (totalRateAll > 0) {
-    var totalComp = {};
-    COMP_KEYS.forEach(function(k){ totalComp[k] = weightedComp[k] / totalRateAll; });
-    var totalOsm = calcOsm(totalComp);
-    var totalCaP = calcCaP(totalComp);
-    var trOsm = document.createElement("tr");
-    if (totalOsm > 900) trOsm.className = "alert-row";
-    trOsm.innerHTML = '<td>浸透圧（推定）' + (totalOsm > 900 ? ' &#9888;' : '') + '</td><td>' + fmt(totalOsm, 0) + ' mOsm/L</td><td colspan="2" style="color:var(--gray-400);text-align:right">' + (totalOsm > 900 ? '末梢静脈の上限超過' : '') + '</td>';
-    eTbody.appendChild(trOsm);
-    var trCaP = document.createElement("tr");
-    if (totalCaP > 72) trCaP.className = "alert-row";
-    trCaP.innerHTML = '<td>Ca×P積' + (totalCaP > 72 ? ' &#9888;' : '') + '</td><td>' + fmt(totalCaP, 1) + '</td><td colspan="2" style="color:var(--gray-400);text-align:right">' + (totalCaP > 72 ? '沈殿リスク（>72）' : '') + '</td>';
-    eTbody.appendChild(trCaP);
-  }
+  h+='</div>';
+  h+='<div class="ch-summary" id="sidesm-'+ck+'"></div>';
+  h+='<div class="comp-box"><div class="comp-title">組成（'+esc(s.name)+'）</div><div class="comp-grid" id="comp-'+ck+'"></div></div></div>';
+  return h;
+}
 
-  var nTbody = document.getElementById("nutrition-tbody");
-  nTbody.innerHTML = "";
-  [{name:"タンパク+Aa",val:aaTotal,ratio:protCalRatio},{name:"脂質",val:fatTotal,ratio:fatCalRatio},{name:"糖質",val:gluGkgDay,ratio:gluCalRatio}].forEach(function(n){
-    var tr = document.createElement("tr");
-    tr.innerHTML = '<td>' + n.name + '</td><td>' + fmt(n.val, 2) + '</td><td>' + (eqKcal > 0 ? fmt(n.ratio * 100, 1) + "%" : "—") + '</td>';
-    nTbody.appendChild(tr);
-  });
+function fmt(v,d){if(v===null||v===undefined||isNaN(v)||!isFinite(v))return"—";return v.toFixed(d!==undefined?d:2)}
+function esc(s){return s.replace(/&/g,"&amp;").replace(/"/g,"&quot;").replace(/</g,"&lt;").replace(/>/g,"&gt;")}
+function cr(l,v,al){var c=al==='warn'?' alert-warn':al==='info'?' alert-info':'';return'<div class="comp-row'+c+'"><span class="label">'+l+'</span><span class="value">'+v+(al?' &#9888;':'')+'</span></div>'}
+function calcOsm(c){return c.na+c.k+c.cl+c.ca/2+c.mg/2+c.hco3+c.glu*5.56+(c.aa||0)*10+(c.fat||0)*0.7}
+function calcCaP(c){return(c.ca/2)*(c.p/31)}
 
-  var sTbody = document.getElementById("supplement-tbody");
-  sTbody.innerHTML = "";
-  var supIds = ["multamin","elezect","calcicol","napo4","mgso4"];
-  var hasSup = false;
-  supIds.forEach(function(sid){
-    var mlKgDay = 0;
-    lines.forEach(function(line){
-      var entry = line.fluids.find(function(e){ return e.id === sid; });
-      if (entry && wt > 0) {
-        var total = getLineTotal(line.id);
-        if (total > 0) mlKgDay += entry.volume / total * line.rate * line.hours / wt;
-      }
-    });
-    if (mlKgDay > 0) {
-      hasSup = true;
-      var f = getFluidById(sid);
-      var tr = document.createElement("tr");
-      tr.innerHTML = '<td>' + (f ? f.name : sid) + '</td><td>' + fmt(mlKgDay, 2) + ' ml/kg/day</td>';
-      sTbody.appendChild(tr);
+function renderComp(elId,comp,rate,wt){
+  var g=document.getElementById(elId);if(!g)return;
+  var hasData=false;COMP_KEYS.forEach(function(k){if(comp[k]>0)hasData=true});
+  if(!hasData){g.innerHTML='<div style="color:var(--gray-400);font-size:12px">—</div>';return}
+  var gir=rate>0&&wt>0?comp.glu*rate/60/wt:0,gp=comp.glu/10,osm=calcOsm(comp),caP=calcCaP(comp);
+  var ex=[];if(comp.fat>0)ex.push(cr('脂肪',fmt(comp.fat,1)+' g/L'));
+  if(comp.heparin>0)ex.push(cr('ヘパリン',fmt(comp.heparin,1)+' U/mL',comp.heparin>1.1?'warn':null));
+  g.innerHTML=
+    '<div class="comp-row-group cols-3">'+cr('ブドウ糖濃度',fmt(gp,1)+'%',gp>12.5?'info':null)+cr('GIR',fmt(gir,2)+' mg/kg/min',gir>12?'warn':null)+'<div></div></div>'+
+    '<div class="comp-row-group cols-3">'+cr('Na',fmt(comp.na,1)+' mEq/L')+cr('K',fmt(comp.k,1)+' mEq/L',comp.k>40?'warn':null)+cr('Cl',fmt(comp.cl,1)+' mEq/L')+'</div>'+
+    '<div class="comp-row-group cols-3">'+cr('Ca',fmt(comp.ca,1)+' mEq/L')+cr('Mg',fmt(comp.mg,1)+' mEq/L')+cr('P',fmt(comp.p,0)+' mg/L')+'</div>'+
+    '<div class="comp-row-group cols-3">'+cr('アミノ酸',fmt(comp.aa,1)+' g/L')+cr('重炭酸',fmt(comp.hco3,1)+' mEq/L')+'<div></div></div>'+
+    (ex.length?'<div class="comp-row-group cols-3">'+ex.join('')+'<div></div>'.repeat(3-ex.length)+'</div>':'')+
+    '<div class="comp-row-group cols-3">'+cr('浸透圧',fmt(osm,0)+' mOsm/L',osm>900?'info':null)+cr('Ca×P積',fmt(caP,1),caP>72?'warn':null)+'<div></div></div>';
+}
+
+function updateBag(rid,bh,ch){
+  var el=document.getElementById('bag-'+rid),b24=document.getElementById('btn24-'+rid);if(!el||!b24)return;
+  b24.style.display=Math.abs(ch-24)<.05?'none':'inline-block';
+  if(bh<=0){el.textContent='1本あたり: — h';el.className='calc-val';el.onclick=null;el.title='';return}
+  var rd=Math.round(bh*10)/10;el.textContent='1本あたり: '+fmt(bh,1)+' h';
+  if(Math.abs(rd-ch)<.05){el.className='calc-val';el.onclick=null;el.title=''}
+  else{el.className='calc-val clickable';el.title='クリックで投与時間を '+fmt(bh,1)+' h に設定';el.onclick=(function(id,h){return function(){setMH(id,h)}})(rid,rd)}
+}
+
+function calcRouteCompNorm(rt){
+  var mc=chComp(rt.main),mr=rt.main.rate;
+  var totalRate=mr,w={};
+  COMP_KEYS.forEach(function(k){w[k]=mc[k]*mr});
+  rt.sides.forEach(function(s){
+    if(s.mode==='continuous'&&s.rate>0){
+      var sc=chComp(s);totalRate+=s.rate;
+      COMP_KEYS.forEach(function(k){w[k]+=sc[k]*s.rate});
     }
   });
-  if (!hasSup) {
-    var tr = document.createElement("tr");
-    tr.innerHTML = '<td colspan="2" style="color:var(--gray-400);text-align:center">補正液なし</td>';
-    sTbody.appendChild(tr);
-  }
+  var comp={};COMP_KEYS.forEach(function(k){comp[k]=totalRate>0?w[k]/totalRate:0});
+  return{comp:comp,totalRate:totalRate};
+}
+
+function calcRouteCompInt(rt){
+  var mc=chComp(rt.main),mr=rt.main.rate;
+  var hasInt=false;
+  var effMainRate=mr;
+  rt.sides.forEach(function(s){
+    if(s.mode==='intermittent'){
+      hasInt=true;
+      if(s.mainRateDuring!==null) effMainRate=Math.min(effMainRate,s.mainRateDuring);
+    }
+  });
+  if(!hasInt)return null;
+  var totalRate=effMainRate,w={};
+  COMP_KEYS.forEach(function(k){w[k]=mc[k]*effMainRate});
+  rt.sides.forEach(function(s){
+    if(s.mode==='continuous'&&s.rate>0){
+      var sc=chComp(s);totalRate+=s.rate;
+      COMP_KEYS.forEach(function(k){w[k]+=sc[k]*s.rate});
+    }
+  });
+  rt.sides.forEach(function(s){
+    if(s.mode==='intermittent'&&s.rate>0){
+      var sc=chComp(s);totalRate+=s.rate;
+      COMP_KEYS.forEach(function(k){w[k]+=sc[k]*s.rate});
+    }
+  });
+  var comp={};COMP_KEYS.forEach(function(k){comp[k]=totalRate>0?w[k]/totalRate:0});
+  return{comp:comp,totalRate:totalRate,effMainRate:effMainRate};
+}
+
+function recalc(){
+  var wt=parseFloat(document.getElementById('weight').value)||0;
+  var ht=parseFloat(document.getElementById('height').value)||0;
+  var bsa=ht>0&&wt>0?Math.sqrt(ht*wt/3600):0;
+  document.getElementById('bsa-display').textContent=bsa>0?'体表面積: '+fmt(bsa,4)+' ㎡':'体表面積: — ㎡';
+
+  var totalWater=0,dayAmt={};
+  COMP_KEYS.forEach(function(k){dayAmt[k]=0});
+
+  routes.forEach(function(rt){
+    var rid=rt.id,mc=chComp(rt.main),mt=chTotal(rt.main),mr=rt.main.rate,mh=rt.main.hours;
+    var mainVolDay=mr*mh;
+    rt.sides.forEach(function(s){
+      if(s.mode==='intermittent'&&s.mainRateDuring!==null){
+        var st=s.duration*s.timesPerDay;
+        mainVolDay+=(s.mainRateDuring-mr)*st;
+      }
+    });
+    mainVolDay=Math.max(0,mainVolDay);
+
+    document.getElementById('total-'+rid+'-main').textContent=mt+' ml';
+    updateBag(rid,mr>0?mt/mr:0,mh);
+    renderComp('comp-'+rid+'-main',mc,mr,wt);
+
+    var effEl=document.getElementById('eff-'+rid);
+    if(effEl){
+      var hasIntChange=rt.sides.some(function(s){return s.mode==='intermittent'&&s.mainRateDuring!==null});
+      if(hasIntChange&&mr>0){effEl.style.display='inline';effEl.textContent='実効1日量: '+fmt(mainVolDay,0)+' ml'}
+      else effEl.style.display='none';
+    }
+
+    COMP_KEYS.forEach(function(k){dayAmt[k]+=mc[k]*mainVolDay});
+    totalWater+=mainVolDay;
+
+    // Sides
+    rt.sides.forEach(function(s){
+      var sc=chComp(s),st=chTotal(s);
+      var sVolDay=s.mode==='continuous'?s.rate*(s.hours||mh):s.rate*s.duration*s.timesPerDay;
+      var smEl=document.getElementById('sidesm-'+rid+'-'+s.id);
+      if(smEl){
+        if(s.mode==='continuous'){
+          smEl.innerHTML='<span>合計: <span class="val">'+st+' ml</span></span><span>1日量: <span class="val">'+fmt(sVolDay,0)+' ml</span></span>';
+        } else {
+          var dose=s.rate*s.duration;
+          smEl.innerHTML='<span>1回量: <span class="val">'+fmt(dose,0)+' ml</span></span><span>1日量: <span class="val">'+fmt(sVolDay,0)+' ml</span></span><span>合計(バッグ): <span class="val">'+st+' ml</span></span>';
+        }
+      }
+      renderComp('comp-'+rid+'-'+s.id,sc,s.rate,wt);
+      COMP_KEYS.forEach(function(k){dayAmt[k]+=sc[k]*sVolDay});
+      totalWater+=sVolDay;
+    });
+
+    // Route composition: normal (常時)
+    var normEl=document.getElementById('comp-'+rid+'-norm');
+    if(normEl){
+      var norm=calcRouteCompNorm(rt);
+      renderComp('comp-'+rid+'-norm',norm.comp,norm.totalRate,wt);
+      var nrEl=document.getElementById('route-rate-norm-'+rid);
+      if(nrEl)nrEl.textContent='('+fmt(norm.totalRate,1)+' ml/h)';
+    }
+    // Route composition: intermittent (間欠時)
+    var intEl=document.getElementById('comp-'+rid+'-int');
+    if(intEl){
+      var intR=calcRouteCompInt(rt);
+      if(intR){
+        renderComp('comp-'+rid+'-int',intR.comp,intR.totalRate,wt);
+        var irEl=document.getElementById('route-rate-int-'+rid);
+        if(irEl){
+          var detail=fmt(intR.totalRate,1)+' ml/h';
+          if(intR.effMainRate!==mr) detail+=' メイン:'+fmt(intR.effMainRate,1);
+          irEl.textContent='('+detail+')';
+        }
+      }
+    }
+  });
+
+  // Totals
+  var tGlu=dayAmt.glu/1000,tAa=dayAmt.aa/1000,tFat=dayAmt.fat/1000;
+  var girAvg=wt>0?tGlu*1000/1440/wt:0;
+  var gKg=wt>0?tGlu/wt:0,aKg=wt>0?tAa/wt:0,fKg=wt>0?tFat/wt:0;
+  var eqK=gKg*4+aKg*4+fKg*9,tK=eqK*wt;
+  var pR=eqK>0?aKg*4/eqK:0,fR=eqK>0?fKg*9/eqK:0,gR=eqK>0?1-pR-fR:0;
+  var fOver=wt>0&&fKg>2;
+  updateResultHeader();
+  var fC=fOver?'result-box warn':'result-box',gC=girAvg>12?'result-box warn':'result-box highlight';
+  document.getElementById('result-summary').innerHTML=
+    '<div class="result-box highlight"><div class="r-title">水分量</div><div class="r-value">'+fmt(totalWater,0)+' <span class="r-unit">ml/day</span></div><div class="r-sub">'+(bsa>0?fmt(totalWater/bsa,0)+' ml/㎡/day':'—')+'</div></div>'+
+    '<div class="result-box highlight"><div class="r-title">カロリー</div><div class="r-value">'+fmt(eqK,1)+' <span class="r-unit">kcal/kg/day</span></div><div class="r-sub">'+fmt(tK,0)+' kcal/day</div></div>'+
+    '<div class="'+gC+'"><div class="r-title">GIR（平均）</div><div class="r-value">'+fmt(girAvg,2)+' <span class="r-unit">mg/kg/min</span></div>'+(girAvg>12?'<div class="r-sub" style="color:var(--danger)">&#9888; 高血糖リスク</div>':'')+'</div>'+
+    '<div class="result-box"><div class="r-title">アミノ酸</div><div class="r-value">'+fmt(aKg,2)+' <span class="r-unit">g/kg/day</span></div></div>'+
+    '<div class="'+fC+'"><div class="r-title">脂肪</div><div class="r-value">'+fmt(fKg,2)+' <span class="r-unit">g/kg/day</span></div>'+(fOver?'<div class="r-sub" style="color:var(--danger)">&#9888; 上限 2 g/kg/day 超過</div>':'')+'</div>';
+
+  // Electrolyte table (no concentration column)
+  var eItems=[{n:"Na",du:"mEq/day",ku:"mEq/kg/day",k:"na"},{n:"K",du:"mEq/day",ku:"mEq/kg/day",k:"k"},{n:"Cl",du:"mEq/day",ku:"mEq/kg/day",k:"cl"},{n:"Ca",du:"mEq/day",ku:"mEq/kg/day",k:"ca"},{n:"Mg",du:"mEq/day",ku:"mEq/kg/day",k:"mg"},{n:"P",du:"mg/day",ku:"mg/kg/day",k:"p"},{n:"重炭酸",du:"mEq/day",ku:"mEq/kg/day",k:"hco3"}];
+  var eT=document.getElementById('electrolyte-tbody');eT.innerHTML='';
+  eItems.forEach(function(i){
+    var day=dayAmt[i.k]/1000,kg=wt>0?day/wt:0;
+    var tr=document.createElement('tr');
+    tr.innerHTML='<td>'+i.n+'</td><td>'+fmt(day)+' '+i.du+'</td><td>'+fmt(kg)+' '+i.ku+'</td>';eT.appendChild(tr)});
+  var hDay=dayAmt.heparin/1000;
+  if(hDay>0){var tr=document.createElement('tr');tr.innerHTML='<td>ヘパリン</td><td>'+fmt(hDay,0)+' 単位/day</td><td>'+(wt>0?fmt(hDay/wt,1)+' 単位/kg/day':'—')+'</td>';eT.appendChild(tr)}
+
+  // Nutrition
+  var nT=document.getElementById('nutrition-tbody');nT.innerHTML='';
+  [{n:"タンパク+Aa",v:aKg,r:pR},{n:"脂質",v:fKg,r:fR},{n:"糖質",v:gKg,r:gR}].forEach(function(x){
+    var tr=document.createElement('tr');tr.innerHTML='<td>'+x.n+'</td><td>'+fmt(x.v,2)+'</td><td>'+(eqK>0?fmt(x.r*100,1)+'%':'—')+'</td>';nT.appendChild(tr)});
+
+  // Supplements
+  var sT=document.getElementById('supplement-tbody');sT.innerHTML='';var supIds=["multamin","elezect","calcicol","napo4","mgso4"],hasSup=false;
+  supIds.forEach(function(sid){var mlKg=0;routes.forEach(function(rt){
+    var me=rt.main.fluids.find(function(e){return e.id===sid});
+    if(me&&wt>0){var mt=chTotal(rt.main);var mvd=rt.main.rate*rt.main.hours;
+      rt.sides.forEach(function(s){if(s.mode==='intermittent'&&s.mainRateDuring!==null)mvd+=(s.mainRateDuring-rt.main.rate)*s.duration*s.timesPerDay});
+      mvd=Math.max(0,mvd);if(mt>0)mlKg+=me.volume/mt*mvd/wt}
+    rt.sides.forEach(function(s){var se=s.fluids.find(function(e){return e.id===sid});
+      if(se&&wt>0){var st=chTotal(s);var sv=s.mode==='continuous'?s.rate*(s.hours||rt.main.hours):s.rate*s.duration*s.timesPerDay;if(st>0)mlKg+=se.volume/st*sv/wt}})});
+    if(mlKg>0){hasSup=true;var f=getFluidById(sid);var tr=document.createElement('tr');tr.innerHTML='<td>'+(f?f.name:sid)+'</td><td>'+fmt(mlKg,2)+' ml/kg/day</td>';sT.appendChild(tr)}});
+  if(!hasSup){var tr=document.createElement('tr');tr.innerHTML='<td colspan="2" style="color:var(--gray-400);text-align:center">補正液なし</td>';sT.appendChild(tr)}
   saveState();
 }
 
-function updateResultHeader() {
-  var names = lines.map(function(l){ return l.name || 'ライン'; });
-  document.getElementById("result-header").textContent = names.length > 0 ? "輸液組成（" + names.join(" + ") + "）合計" : "輸液組成 合計";
+function updateResultHeader(){
+  var ns=routes.map(function(r){return r.name||'ライン'});
+  document.getElementById('result-header').textContent=ns.length>0?'輸液組成（'+ns.join(' + ')+'）合計':'輸液組成 合計';
 }
 
-function updateBagHoursEl(lid, bagHours, currentHours) {
-  var el = document.getElementById("bag-" + lid), btn24 = document.getElementById("btn24-" + lid);
-  if (!el || !btn24) return;
-  btn24.style.display = Math.abs(currentHours - 24) < 0.05 ? "none" : "inline-block";
-  if (bagHours <= 0) { el.textContent = "1本あたり: — h"; el.className = "calc-val"; el.onclick = null; el.title = ""; return; }
-  var rounded = Math.round(bagHours * 10) / 10;
-  el.textContent = "1本あたり: " + fmt(bagHours, 1) + " h";
-  if (Math.abs(rounded - currentHours) < 0.05) { el.className = "calc-val"; el.onclick = null; el.title = ""; }
-  else { el.className = "calc-val clickable"; el.title = "クリックで投与時間を " + fmt(bagHours, 1) + " h に設定"; el.onclick = (function(id,h){ return function(){ setHours(id,h); }; })(lid, rounded); }
+// Settings
+function openSettings(){renderSettingsTable();document.getElementById('settings-modal').classList.add('open')}
+function closeSettings(){document.getElementById('settings-modal').classList.remove('open');renderAll();recalc()}
+function renderSettingsTable(){
+  var b=document.getElementById('settings-body');
+  var cols=["Glu(g/L)","Na","K","Cl","Ca","Mg","P(mg/L)","Aa(g/L)","脂肪(g/L)","HCO3","Hep(U/mL)"];
+  var keys=["glu","na","k","cl","ca","mg","p","aa","fat","hco3","heparin"];
+  var h='<div style="overflow-x:auto"><table class="fluid-edit-table"><thead><tr><th>★</th><th>製剤名</th><th>ml</th>';
+  cols.forEach(function(c){h+='<th>'+c+'</th>'});h+='<th></th></tr></thead><tbody>';
+  fluids.forEach(function(f,i){h+='<tr><td><button class="toggle-btn '+(f.enabled?'on':'off')+'" onclick="toggleFluid('+i+')">'+(f.enabled?'★':'☆')+'</button></td>';
+    h+='<td><input class="name-input" value="'+esc(f.name)+'" onchange="updFP('+i+',\'name\',this.value)"></td>';
+    h+='<td><input type="number" value="'+f.defaultVol+'" min="0" onchange="updFP('+i+',\'defaultVol\',parseFloat(this.value)||0)"></td>';
+    keys.forEach(function(k){h+='<td><input type="number" value="'+(f[k]||0)+'" step="any" onchange="updFP('+i+',\''+k+'\',parseFloat(this.value)||0)"></td>'});
+    h+='<td><button class="del-btn" onclick="delFluid('+i+')">&#10005;</button></td></tr>'});
+  h+='</tbody></table></div><button class="btn-add-row" onclick="addFluid()">＋ 新しい製剤を追加</button>';b.innerHTML=h;
 }
+function toggleFluid(i){fluids[i].enabled=!fluids[i].enabled;saveFluids();renderSettingsTable()}
+function updFP(i,p,v){fluids[i][p]=v;saveFluids()}
+function delFluid(i){if(!confirm('"'+fluids[i].name+'" を削除？'))return;var fid=fluids[i].id;fluids.splice(i,1);
+  routes.forEach(function(rt){rt.main.fluids=rt.main.fluids.filter(function(e){return e.id!==fid});rt.sides.forEach(function(s){s.fluids=s.fluids.filter(function(e){return e.id!==fid})})});
+  saveFluids();renderSettingsTable()}
+function addFluid(){var o={id:'c_'+Date.now(),name:'新規製剤',defaultVol:500,enabled:true};COMP_KEYS.forEach(function(k){o[k]=0});fluids.push(o);saveFluids();renderSettingsTable();
+  var tb=document.querySelector('.fluid-edit-table tbody');if(tb&&tb.lastElementChild){var inp=tb.lastElementChild.querySelector('.name-input');if(inp){inp.focus();inp.select()}}}
+function resetFluidsToDefault(){if(!confirm('デフォルトに戻しますか？'))return;fluids=JSON.parse(JSON.stringify(DEFAULT_FLUIDS));saveFluids();
+  routes.forEach(function(rt){rt.main.fluids=[];rt.sides.forEach(function(s){s.fluids=[]})});renderSettingsTable();renderAll();recalc()}
+function exportSettings(){var b=new Blob([JSON.stringify(fluids,null,2)],{type:'application/json'});var u=URL.createObjectURL(b);var a=document.createElement('a');a.href=u;a.download='iv-calc-fluids.json';a.click();URL.revokeObjectURL(u)}
+function importSettings(ev){var f=ev.target.files[0];if(!f)return;var r=new FileReader();r.onload=function(e){try{var d=JSON.parse(e.target.result);if(!Array.isArray(d))throw 0;fluids=d;saveFluids();renderSettingsTable();renderAll();recalc();alert('インポート完了')}catch(e){alert('形式が正しくありません')}};r.readAsText(f);ev.target.value=''}
 
-function compRow(label, value, alertLevel) {
-  var cls = alertLevel === 'warn' ? ' alert-warn' : alertLevel === 'info' ? ' alert-info' : '';
-  var icon = alertLevel ? ' &#9888;' : '';
-  return '<div class="comp-row' + cls + '"><span class="label">' + label + '</span><span class="value">' + value + icon + '</span></div>';
-}
+// Persistence
+function saveFluids(){try{localStorage.setItem('iv-calc-fluids',JSON.stringify(fluids))}catch(e){}}
+function loadFluids(){try{var r=localStorage.getItem('iv-calc-fluids');if(r){var p=JSON.parse(r);p.forEach(function(f){COMP_KEYS.forEach(function(k){if(f[k]===undefined)f[k]=0})});
+  var ids={};p.forEach(function(f){ids[f.id]=true});DEFAULT_FLUIDS.forEach(function(df){if(!ids[df.id])p.push(JSON.parse(JSON.stringify(df)))});fluids=p}}catch(e){}}
+function saveState(){try{localStorage.setItem('iv-calc-state',JSON.stringify({height:document.getElementById('height').value,weight:document.getElementById('weight').value,routes:routes,nextRouteId:nextRouteId,nextSideId:nextSideId}))}catch(e){}}
+function loadState(){try{var r=localStorage.getItem('iv-calc-state');if(!r)return false;var d=JSON.parse(r);
+  if(d.height)document.getElementById('height').value=d.height;if(d.weight)document.getElementById('weight').value=d.weight;
+  if(d.routes&&d.routes.length>0){routes=d.routes.map(function(rt){rt.main.fluids=rt.main.fluids.filter(function(e){return getFluidById(e.id)});
+    if(!rt.sides)rt.sides=[];rt.sides.forEach(function(s){s.fluids=s.fluids.filter(function(e){return getFluidById(e.id)});
+    if(!s.mode)s.mode='continuous';if(s.mainRateDuring===undefined)s.mainRateDuring=null;if(!s.hours)s.hours=24;if(!s.duration)s.duration=1;if(!s.timesPerDay)s.timesPerDay=1});return rt});
+    nextRouteId=d.nextRouteId||routes.length+1;nextSideId=d.nextSideId||1;return true}
+  if(d.lines&&d.lines.length>0){routes=d.lines.map(function(l,i){return{id:'r'+(i+1),name:l.name||'ライン '+(i+1),main:{fluids:l.fluids.filter(function(e){return getFluidById(e.id)}),rate:l.rate||0,hours:l.hours!=null?l.hours:24},sides:[]}});
+    nextRouteId=routes.length+1;return true}}catch(e){}return false}
 
-function calcOsm(comp) {
-  return comp.na + comp.k + comp.cl + comp.ca / 2 + comp.mg / 2 + comp.hco3 + comp.glu * 5.56 + (comp.aa || 0) * 10 + (comp.fat || 0) * 0.7;
-}
-
-function calcCaP(comp) {
-  var caMmol = comp.ca / 2;
-  var pMmol = comp.p / 31;
-  return caMmol * pMmol;
-}
-
-function renderLineComp(lid, comp, total, rate, wt) {
-  var grid = document.getElementById("comp-" + lid); if (!grid) return;
-  if (total === 0) { grid.innerHTML = '<div style="color:var(--gray-400);font-size:12px;">—</div>'; return; }
-  var gir = rate > 0 && wt > 0 ? comp.glu * rate / 60 / wt : 0;
-  var extraItems = [];
-  if (comp.fat > 0) extraItems.push(compRow('脂肪', fmt(comp.fat, 1) + ' g/L'));
-  if (comp.heparin > 0) extraItems.push(compRow('ヘパリン', fmt(comp.heparin, 1) + ' 単位/mL', comp.heparin > 1.1 ? 'warn' : null));
-  var gluPct = comp.glu / 10;
-  var osm = calcOsm(comp);
-  var caP = calcCaP(comp);
-  var caPAlert = caP > 72 ? 'warn' : null;
-  grid.innerHTML =
-    '<div class="comp-row-group cols-3">' +
-      compRow('ブドウ糖濃度', fmt(gluPct, 1) + '%', gluPct > 12.5 ? 'info' : null) +
-      compRow('GIR', fmt(gir, 2) + ' mg/kg/min', gir > 12 ? 'warn' : null) +
-      '<div></div>' +
-    '</div>' +
-    '<div class="comp-row-group cols-3">' +
-      compRow('Na', fmt(comp.na, 1) + ' mEq/L') +
-      compRow('K', fmt(comp.k, 1) + ' mEq/L', comp.k > 40 ? 'warn' : null) +
-      compRow('Cl', fmt(comp.cl, 1) + ' mEq/L') +
-    '</div>' +
-    '<div class="comp-row-group cols-3">' +
-      compRow('Ca', fmt(comp.ca, 1) + ' mEq/L') +
-      compRow('Mg', fmt(comp.mg, 1) + ' mEq/L') +
-      compRow('P', fmt(comp.p, 0) + ' mg/L') +
-    '</div>' +
-    '<div class="comp-row-group cols-3">' +
-      compRow('アミノ酸', fmt(comp.aa, 1) + ' g/L') +
-      compRow('重炭酸', fmt(comp.hco3, 1) + ' mEq/L') +
-      '<div></div>' +
-    '</div>' +
-    (extraItems.length > 0 ? '<div class="comp-row-group cols-3">' + extraItems.join('') + '<div></div>'.repeat(3 - extraItems.length) + '</div>' : '') +
-    '<div class="comp-row-group cols-3">' +
-      compRow('浸透圧', fmt(osm, 0) + ' mOsm/L', osm > 900 ? 'info' : null) +
-      compRow('Ca×P積', fmt(caP, 1), caPAlert) +
-      '<div></div>' +
-    '</div>';
-}
-
-// ===== Settings =====
-function openSettings() { renderSettingsTable(); document.getElementById("settings-modal").classList.add("open"); }
-function closeSettings() { document.getElementById("settings-modal").classList.remove("open"); renderAllLines(); recalc(); }
-
-function renderSettingsTable() {
-  var body = document.getElementById("settings-body");
-  var cols = ["Glu (g/L)","Na","K","Cl","Ca","Mg","P (mg/L)","アミノ酸 (g/L)","脂肪 (g/L)","重炭酸","ヘパリン (単位/mL)"];
-  var keys = ["glu","na","k","cl","ca","mg","p","aa","fat","hco3","heparin"];
-  var h = '<div class="settings-section">';
-  h += '<div class="settings-section-title">製剤リストと組成 <span style="font-weight:400;font-size:12px;color:var(--gray-500)">(★ = プルダウンに表示)</span></div>';
-  h += '<div style="overflow-x:auto;"><table class="fluid-edit-table"><thead><tr>';
-  h += '<th>★</th><th>製剤名</th><th>デフォルト量(ml)</th>';
-  cols.forEach(function(c){ h += '<th>' + c + '</th>'; });
-  h += '<th></th></tr></thead><tbody>';
-  fluids.forEach(function(f, i){
-    h += '<tr>';
-    h += '<td><button class="toggle-btn ' + (f.enabled ? 'on' : 'off') + '" onclick="toggleFluid(' + i + ')">' + (f.enabled ? '★' : '☆') + '</button></td>';
-    h += '<td><input class="name-input" value="' + escHtml(f.name) + '" onchange="updateFluidProp(' + i + ',\'name\',this.value)"></td>';
-    h += '<td><input type="number" value="' + f.defaultVol + '" min="0" onchange="updateFluidProp(' + i + ',\'defaultVol\',parseFloat(this.value)||0)"></td>';
-    keys.forEach(function(k){ h += '<td><input type="number" value="' + (f[k]||0) + '" step="any" onchange="updateFluidProp(' + i + ',\'' + k + '\',parseFloat(this.value)||0)"></td>'; });
-    h += '<td><button class="del-btn" onclick="deleteFluid(' + i + ')" title="削除">&#10005;</button></td></tr>';
-  });
-  h += '</tbody></table></div>';
-  h += '<button class="btn-add-row" onclick="addNewFluid()">＋ 新しい製剤を追加</button></div>';
-  body.innerHTML = h;
-}
-
-function toggleFluid(i) { fluids[i].enabled = !fluids[i].enabled; saveFluids(); renderSettingsTable(); }
-function updateFluidProp(i, prop, val) { fluids[i][prop] = val; saveFluids(); }
-function deleteFluid(i) {
-  if (!confirm('"' + fluids[i].name + '" を削除しますか？')) return;
-  var fid = fluids[i].id; fluids.splice(i, 1);
-  lines.forEach(function(line){ line.fluids = line.fluids.filter(function(e){ return e.id !== fid; }); });
-  saveFluids(); renderSettingsTable();
-}
-function addNewFluid() {
-  var o = { id: "custom_" + Date.now(), name: "新規製剤", defaultVol: 500, enabled: true };
-  COMP_KEYS.forEach(function(k){ o[k] = 0; });
-  fluids.push(o); saveFluids(); renderSettingsTable();
-  var tbody = document.querySelector(".fluid-edit-table tbody");
-  if (tbody && tbody.lastElementChild) { var inp = tbody.lastElementChild.querySelector(".name-input"); if (inp) { inp.focus(); inp.select(); } }
-}
-function resetFluidsToDefault() {
-  if (!confirm("製剤リストをデフォルトに戻しますか？カスタム製剤も削除されます。")) return;
-  fluids = JSON.parse(JSON.stringify(DEFAULT_FLUIDS)); saveFluids();
-  lines.forEach(function(l){ l.fluids = []; }); renderSettingsTable(); renderAllLines(); recalc();
-}
-function exportSettings() {
-  var blob = new Blob([JSON.stringify(fluids, null, 2)], { type: "application/json" });
-  var url = URL.createObjectURL(blob); var a = document.createElement("a"); a.href = url; a.download = "iv-calc-fluids.json"; a.click(); URL.revokeObjectURL(url);
-}
-function importSettings(event) {
-  var file = event.target.files[0]; if (!file) return;
-  var reader = new FileReader();
-  reader.onload = function(e) {
-    try { var imp = JSON.parse(e.target.result); if (!Array.isArray(imp)) throw 0; fluids = imp; saveFluids(); renderSettingsTable(); renderAllLines(); recalc(); alert("インポート完了"); }
-    catch(err) { alert("ファイルの形式が正しくありません。"); }
-  };
-  reader.readAsText(file); event.target.value = "";
-}
-
-// ===== Persistence =====
-function saveFluids() { try { localStorage.setItem("iv-calc-fluids", JSON.stringify(fluids)); } catch(e) {} }
-function loadFluids() {
-  try {
-    var r = localStorage.getItem("iv-calc-fluids");
-    if (r) {
-      var p = JSON.parse(r);
-      p.forEach(function(f){ COMP_KEYS.forEach(function(k){ if (f[k] === undefined) f[k] = 0; }); });
-      var savedIds = {};
-      p.forEach(function(f){ savedIds[f.id] = true; });
-      DEFAULT_FLUIDS.forEach(function(df){
-        if (!savedIds[df.id]) p.push(JSON.parse(JSON.stringify(df)));
-      });
-      fluids = p;
-    }
-  } catch(e) {}
-}
-function saveState() {
-  try {
-    localStorage.setItem("iv-calc-state", JSON.stringify({
-      height: document.getElementById("height").value,
-      weight: document.getElementById("weight").value,
-      lines: lines.map(function(l){ return { id:l.id, name:l.name, fluids:l.fluids, rate:l.rate, hours:l.hours }; }),
-      nextLineId: nextLineId,
-    }));
-  } catch(e) {}
-}
-function loadState() {
-  try {
-    var r = localStorage.getItem("iv-calc-state"); if (!r) return false;
-    var d = JSON.parse(r);
-    if (d.height) document.getElementById("height").value = d.height;
-    if (d.weight) document.getElementById("weight").value = d.weight;
-    if (d.nextLineId) nextLineId = d.nextLineId;
-    if (d.lines && d.lines.length > 0) {
-      lines = d.lines.map(function(l){
-        return { id:l.id, name:l.name||('ライン '+(l.id.replace('line_',''))), fluids:l.fluids.filter(function(e){return getFluidById(e.id);}), rate:l.rate||0, hours:l.hours!=null?l.hours:24 };
-      });
-      return true;
-    }
-  } catch(e) {} return false;
-}
-
-// ===== Init =====
-document.getElementById("height").addEventListener("input", recalc);
-document.getElementById("weight").addEventListener("input", recalc);
-loadFluids(); var hasState = loadState(); if (!hasState) addLine(); renderAllLines(); recalc();
+// Init
+document.getElementById('height').addEventListener('input',recalc);
+document.getElementById('weight').addEventListener('input',recalc);
+loadFluids();var hs=loadState();if(!hs)addRoute();renderAll();recalc();
 </script>
 </body>
 </html>

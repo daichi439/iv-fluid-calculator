@@ -77,7 +77,7 @@ body {
 .fss-input { width: 100%; padding: 6px 8px; border: 1px dashed var(--gray-300); border-radius: 4px; font-size: 13px; background: #fff; color: var(--gray-800); cursor: text; }
 .fss-input::placeholder { color: var(--gray-400); }
 .fss-input:focus { outline: none; border-color: var(--primary); border-style: solid; }
-.fss-dropdown { display: none; position: absolute; left: 0; right: 0; top: 100%; margin-top: 2px; background: #fff; border: 1px solid var(--gray-300); border-radius: 6px; box-shadow: var(--shadow-md); max-height: 260px; overflow-y: auto; z-index: 50; }
+.fss-dropdown { display: none; position: fixed; background: #fff; border: 1px solid var(--gray-300); border-radius: 6px; box-shadow: var(--shadow-md); overflow-y: auto; z-index: 1000; }
 .fss-dropdown.open { display: block; }
 .fss-group-label { padding: 4px 10px; font-size: 11px; font-weight: 700; color: var(--gray-500); background: var(--gray-50); border-bottom: 1px solid var(--gray-100); position: sticky; top: 0; }
 .fss-option { padding: 5px 12px; font-size: 13px; cursor: pointer; border-bottom: 1px solid var(--gray-50); }
@@ -303,52 +303,54 @@ function removeSide(rid,sid){var rt=R(rid);if(!rt)return;rt.sides=rt.sides.filte
 function renameSide(rid,sid,v){var s=S(rid,sid);if(s)s.name=v;saveState()}
 function setSideMode(rid,sid,mode){var s=S(rid,sid);if(s)s.mode=mode;renderAll();recalc()}
 
+var fssAnchor=null;
 function buildSelector(rid,ct,cid){
   var ch=CH(rid,ct,cid);if(!ch)return '';var used={};ch.fluids.forEach(function(e){used[e.id]=true});
   var av=getEnabledFluids().filter(function(f){return !used[f.id]});if(av.length===0)return '';
-  var key=CK(rid,ct,cid);
-  var h='<div class="fluid-search-select" id="fss-'+key+'">';
-  h+='<input type="text" class="fss-input" placeholder="＋ 輸液を追加…" onfocus="openFSS(\''+key+'\')" oninput="filterFSS(\''+key+'\')" onkeydown="fsKey(event,\''+key+'\')">';
-  h+='<div class="fss-dropdown" id="fssd-'+key+'">';
+  return '<div class="fluid-search-select"><input type="text" class="fss-input" placeholder="＋ 輸液を追加…" data-rid="'+rid+'" data-ct="'+ct+'" data-cid="'+(cid||'')+'" onfocus="openFSS(this)" oninput="filterFSS()" onkeydown="if(event.key===\'Escape\'){closeFSS();this.blur()}"></div>';
+}
+function openFSS(inp){
+  closeFSS();fssAnchor=inp;
+  var rid=inp.dataset.rid,ct=inp.dataset.ct,cid=inp.dataset.cid;
+  var ch=CH(rid,ct,cid);if(!ch)return;
+  var used={};ch.fluids.forEach(function(e){used[e.id]=true});
+  var av=getEnabledFluids().filter(function(f){return !used[f.id]});
+  var portal=document.getElementById('fss-portal'),h='';
   FLUID_CATS.forEach(function(cat){
     var items=av.filter(function(f){return(f.cat||'other')===cat.key});if(items.length===0)return;
-    h+='<div class="fss-group" data-cat="'+cat.key+'"><div class="fss-group-label">'+esc(cat.label)+'</div>';
-    items.forEach(function(f){h+='<div class="fss-option" data-fid="'+f.id+'" onmousedown="event.preventDefault();selectFSS(\''+rid+'\',\''+ct+'\',\''+(cid||'')+'\',\''+f.id+'\')">'+esc(f.name)+'</div>'});
+    h+='<div class="fss-group"><div class="fss-group-label">'+esc(cat.label)+'</div>';
+    items.forEach(function(f){h+='<div class="fss-option" onmousedown="event.preventDefault();selectFSS(\''+f.id+'\')">'+esc(f.name)+'</div>'});
     h+='</div>'});
-  h+='</div></div>';return h;
+  portal.innerHTML=h;
+  var r=inp.getBoundingClientRect(),sb=window.innerHeight-r.bottom-8,above=sb<200;
+  portal.style.left=r.left+'px';portal.style.width=Math.max(r.width,280)+'px';
+  if(above){portal.style.bottom=(window.innerHeight-r.top+2)+'px';portal.style.top='auto';portal.style.maxHeight=(r.top-8)+'px'}
+  else{portal.style.top=(r.bottom+2)+'px';portal.style.bottom='auto';portal.style.maxHeight=sb+'px'}
+  portal.classList.add('open');inp.value='';
 }
-function openFSS(key){
-  document.querySelectorAll('.fss-dropdown.open').forEach(function(d){d.classList.remove('open')});
-  var dd=document.getElementById('fssd-'+key);if(!dd)return;
-  dd.querySelectorAll('.fss-option,.fss-group').forEach(function(el){el.style.display=''});
-  var em=dd.querySelector('.fss-empty');if(em)em.remove();
-  dd.classList.add('open');
-}
-function filterFSS(key){
-  var dd=document.getElementById('fssd-'+key);if(!dd)return;
-  var inp=dd.parentElement.querySelector('.fss-input');
-  var q=(inp.value||'').toLowerCase();
-  var any=false;
-  dd.querySelectorAll('.fss-group').forEach(function(grp){
+function filterFSS(){
+  var portal=document.getElementById('fss-portal');if(!fssAnchor)return;
+  var q=(fssAnchor.value||'').toLowerCase(),any=false;
+  portal.querySelectorAll('.fss-group').forEach(function(grp){
     var vis=false;
     grp.querySelectorAll('.fss-option').forEach(function(opt){
       var show=!q||opt.textContent.toLowerCase().indexOf(q)>=0;
-      opt.style.display=show?'':'none';if(show)vis=true;
-    });
-    grp.style.display=vis?'':'none';if(vis)any=true;
-  });
-  var em=dd.querySelector('.fss-empty');
-  if(!any){if(!em){em=document.createElement('div');em.className='fss-empty';em.textContent='該当なし';dd.appendChild(em)}}
-  else{if(em)em.remove()}
+      opt.style.display=show?'':'none';if(show)vis=true});
+    grp.style.display=vis?'':'none';if(vis)any=true});
+  var em=portal.querySelector('.fss-empty');
+  if(!any){if(!em){em=document.createElement('div');em.className='fss-empty';em.textContent='該当なし';portal.appendChild(em)}}
+  else if(em)em.remove();
 }
-function selectFSS(rid,ct,cid,fid){
+function selectFSS(fid){
+  if(!fssAnchor)return;
+  var rid=fssAnchor.dataset.rid,ct=fssAnchor.dataset.ct,cid=fssAnchor.dataset.cid;
   var fl=getFluidById(fid),ch=CH(rid,ct,cid);if(!fl||!ch)return;
-  ch.fluids.push({id:fid,volume:fl.defaultVol});renderFL(rid,ct,cid);recalc();
+  ch.fluids.push({id:fid,volume:fl.defaultVol});closeFSS();renderFL(rid,ct,cid);recalc();
   var items=document.querySelectorAll('#flist-'+CK(rid,ct,cid)+' .fluid-item');
   if(items.length>0){var inp=items[items.length-1].querySelector('input');if(inp)inp.select()}
 }
-function fsKey(e,key){if(e.key==='Escape'){var dd=document.getElementById('fssd-'+key);if(dd)dd.classList.remove('open');e.target.blur()}}
-document.addEventListener('click',function(e){if(!e.target.closest('.fluid-search-select'))document.querySelectorAll('.fss-dropdown.open').forEach(function(d){d.classList.remove('open')})});
+function closeFSS(){document.getElementById('fss-portal').classList.remove('open');fssAnchor=null}
+document.addEventListener('mousedown',function(e){if(!e.target.closest('.fluid-search-select')&&!e.target.closest('#fss-portal'))closeFSS()});
 function rmFluid(rid,ct,cid,fid){var ch=CH(rid,ct,cid);if(!ch)return;ch.fluids=ch.fluids.filter(function(e){return e.id!==fid});renderFL(rid,ct,cid);recalc()}
 function updVol(rid,ct,cid,fid,val){var ch=CH(rid,ct,cid);if(!ch)return;var e=ch.fluids.find(function(e){return e.id===fid});if(e)e.volume=parseFloat(val)||0;recalc()}
 function renderFL(rid,ct,cid){
@@ -723,5 +725,6 @@ document.getElementById('height').addEventListener('input',recalc);
 document.getElementById('weight').addEventListener('input',recalc);
 loadFluids();var hs=loadState();if(!hs)addRoute();renderAll();recalc();
 </script>
+<div id="fss-portal" class="fss-dropdown"></div>
 </body>
 </html>

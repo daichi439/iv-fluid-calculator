@@ -31,500 +31,179 @@
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Hiragino Sans', 'Noto Sans JP', sans-serif;
-  background: var(--gray-100);
-  color: var(--gray-800);
-  line-height: 1.5;
-  min-height: 100vh;
+  background: var(--gray-100); color: var(--gray-800); line-height: 1.5; min-height: 100vh;
 }
 .header {
   background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-  color: #fff;
-  padding: 16px 24px;
-  box-shadow: var(--shadow-md);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+  color: #fff; padding: 16px 24px; box-shadow: var(--shadow-md);
+  display: flex; align-items: center; justify-content: space-between;
 }
 .header-left h1 { font-size: 20px; font-weight: 700; }
 .header-left p { font-size: 13px; opacity: .85; margin-top: 2px; }
 .header-right { display: flex; gap: 8px; }
 .btn-header {
-  padding: 6px 14px;
-  border: 1px solid rgba(255,255,255,.4);
-  border-radius: 4px;
-  font-size: 13px;
-  font-weight: 600;
-  cursor: pointer;
-  background: rgba(255,255,255,.15);
-  color: #fff;
-  transition: background .15s;
+  padding: 6px 14px; border: 1px solid rgba(255,255,255,.4); border-radius: 4px;
+  font-size: 13px; font-weight: 600; cursor: pointer;
+  background: rgba(255,255,255,.15); color: #fff; transition: background .15s;
 }
 .btn-header:hover { background: rgba(255,255,255,.3); }
 .container { max-width: 1200px; margin: 0 auto; padding: 16px; }
 .patient-bar {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  flex-wrap: wrap;
-  background: #fff;
-  border-radius: var(--radius);
-  padding: 12px 16px;
-  box-shadow: var(--shadow);
-  margin-bottom: 16px;
+  display: flex; align-items: center; gap: 16px; flex-wrap: wrap;
+  background: #fff; border-radius: var(--radius); padding: 12px 16px;
+  box-shadow: var(--shadow); margin-bottom: 16px;
 }
-.patient-bar label {
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--gray-600);
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
+.patient-bar label { font-size: 13px; font-weight: 600; color: var(--gray-600); display: flex; align-items: center; gap: 6px; }
 .patient-bar input {
-  width: 70px;
-  padding: 4px 8px;
-  border: 1px solid var(--gray-300);
-  border-radius: 4px;
-  font-size: 14px;
-  text-align: right;
-  background: var(--warning-light);
+  width: 70px; padding: 4px 8px; border: 1px solid var(--gray-300); border-radius: 4px;
+  font-size: 14px; text-align: right; background: var(--warning-light);
 }
 .patient-bar input:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 2px var(--primary-light); }
 .patient-bar .unit { font-size: 13px; color: var(--gray-500); }
-.patient-bar .bsa-display {
-  font-size: 13px;
-  color: var(--gray-600);
-  background: var(--gray-100);
-  padding: 4px 10px;
-  border-radius: 4px;
-}
-.lines-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
-  gap: 16px;
-  margin-bottom: 16px;
-}
-.card {
-  background: #fff;
-  border-radius: var(--radius);
-  box-shadow: var(--shadow);
-  overflow: hidden;
-}
+.patient-bar .bsa-display { font-size: 13px; color: var(--gray-600); background: var(--gray-100); padding: 4px 10px; border-radius: 4px; }
+.lines-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(380px, 1fr)); gap: 16px; margin-bottom: 16px; }
+.card { background: #fff; border-radius: var(--radius); box-shadow: var(--shadow); overflow: hidden; }
 .card-header {
-  padding: 10px 16px;
-  font-weight: 700;
-  font-size: 14px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+  padding: 10px 16px; font-weight: 700; font-size: 14px;
+  display: flex; align-items: center; justify-content: space-between;
 }
-.card-header.line-color { background: var(--primary-light); color: var(--primary-dark); }
-.card-header.fat { background: var(--warning-light); color: var(--warning); }
 .card-header.result { background: var(--gray-800); color: #fff; }
 .card-body { padding: 12px 16px; }
 .line-header-actions { display: flex; gap: 6px; align-items: center; }
 .line-name-input {
-  border: none;
-  background: transparent;
-  font-size: 14px;
-  font-weight: 700;
-  color: inherit;
-  padding: 0;
-  min-width: 60px;
-  width: auto;
-  max-width: 200px;
-  outline: none;
+  border: none; background: transparent; font-size: 14px; font-weight: 700; color: inherit;
+  padding: 0; min-width: 60px; width: auto; max-width: 200px; outline: none;
   border-bottom: 1px solid transparent;
 }
 .line-name-input:hover { border-bottom-color: currentColor; }
 .line-name-input:focus { border-bottom-color: currentColor; }
 .btn-remove-line {
-  padding: 2px 8px;
-  border: 1px solid rgba(0,0,0,.15);
-  border-radius: 4px;
-  background: rgba(255,255,255,.5);
-  font-size: 12px;
-  cursor: pointer;
-  color: inherit;
-  opacity: .7;
+  padding: 2px 8px; border: 1px solid rgba(0,0,0,.15); border-radius: 4px;
+  background: rgba(255,255,255,.5); font-size: 12px; cursor: pointer; color: inherit; opacity: .7;
 }
 .btn-remove-line:hover { opacity: 1; background: rgba(255,255,255,.8); }
-
 .fluid-list { display: flex; flex-direction: column; gap: 6px; }
 .fluid-item {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 6px 8px;
-  background: var(--gray-50);
-  border-radius: 4px;
-  border: 1px solid var(--gray-200);
+  display: flex; align-items: center; gap: 8px; padding: 6px 8px;
+  background: var(--gray-50); border-radius: 4px; border: 1px solid var(--gray-200);
 }
-.fluid-item .fluid-name {
-  flex: 1;
-  font-size: 13px;
-  font-weight: 500;
-  min-width: 0;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
+.fluid-item .fluid-name { flex: 1; font-size: 13px; font-weight: 500; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .fluid-item input {
-  width: 65px;
-  padding: 3px 6px;
-  border: 1px solid var(--gray-300);
-  border-radius: 4px;
-  font-size: 13px;
-  text-align: right;
-  background: var(--warning-light);
+  width: 65px; padding: 3px 6px; border: 1px solid var(--gray-300); border-radius: 4px;
+  font-size: 13px; text-align: right; background: var(--warning-light);
 }
 .fluid-item input:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 2px var(--primary-light); }
 .fluid-item .unit { font-size: 12px; color: var(--gray-500); min-width: 20px; }
 .fluid-selector { margin-top: 4px; }
 .fluid-selector select {
-  width: 100%;
-  padding: 6px 8px;
-  border: 1px dashed var(--gray-300);
-  border-radius: 4px;
-  font-size: 13px;
-  background: #fff;
-  color: var(--gray-500);
-  cursor: pointer;
+  width: 100%; padding: 6px 8px; border: 1px dashed var(--gray-300); border-radius: 4px;
+  font-size: 13px; background: #fff; color: var(--gray-500); cursor: pointer;
 }
 .fluid-selector select:focus { outline: none; border-color: var(--primary); border-style: solid; }
-.btn {
-  padding: 6px 14px;
-  border: none;
-  border-radius: 4px;
-  font-size: 13px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background .15s;
-}
+.btn { padding: 6px 14px; border: none; border-radius: 4px; font-size: 13px; font-weight: 600; cursor: pointer; transition: background .15s; }
 .btn-primary { background: var(--primary); color: #fff; }
 .btn-primary:hover { background: var(--primary-dark); }
 .btn-danger { background: var(--danger-light); color: var(--danger); }
 .btn-danger:hover { background: #fecaca; }
 .btn-sm { padding: 2px 8px; font-size: 12px; }
 .line-summary {
-  margin-top: 10px;
-  padding-top: 10px;
-  border-top: 1px solid var(--gray-200);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-size: 13px;
+  margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--gray-200);
+  display: flex; justify-content: space-between; align-items: center; font-size: 13px;
 }
 .line-summary .total { font-weight: 700; }
-.line-comp {
-  margin-top: 8px;
-  padding: 8px;
-  background: var(--gray-50);
-  border-radius: 4px;
-  font-size: 12px;
-}
-.line-comp-title {
-  font-weight: 700;
-  font-size: 13px;
-  margin-bottom: 4px;
-  color: var(--gray-700);
-}
-.comp-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-  gap: 2px 12px;
-}
-.comp-row {
-  display: flex;
-  justify-content: space-between;
-  padding: 1px 0;
-}
+.line-comp { margin-top: 8px; padding: 8px; background: var(--gray-50); border-radius: 4px; font-size: 12px; }
+.line-comp-title { font-weight: 700; font-size: 13px; margin-bottom: 4px; color: var(--gray-700); }
+.comp-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 2px 12px; }
+.comp-row { display: flex; justify-content: space-between; padding: 1px 0; }
 .comp-row .label { color: var(--gray-500); }
 .comp-row .value { font-weight: 600; font-variant-numeric: tabular-nums; }
-.flow-inputs {
-  margin-top: 8px;
-  display: flex;
-  gap: 12px;
-  align-items: center;
-  flex-wrap: wrap;
-}
-.flow-inputs label {
-  font-size: 12px;
-  color: var(--gray-600);
-  font-weight: 600;
-  display: flex;
-  align-items: center;
-  gap: 4px;
-}
+.flow-inputs { margin-top: 8px; display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+.flow-inputs label { font-size: 12px; color: var(--gray-600); font-weight: 600; display: flex; align-items: center; gap: 4px; }
 .flow-inputs input {
-  width: 55px;
-  padding: 3px 6px;
-  border: 1px solid var(--gray-300);
-  border-radius: 4px;
-  font-size: 13px;
-  text-align: right;
-  background: var(--warning-light);
+  width: 55px; padding: 3px 6px; border: 1px solid var(--gray-300); border-radius: 4px;
+  font-size: 13px; text-align: right; background: var(--warning-light);
 }
 .flow-inputs input:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 2px var(--primary-light); }
 .flow-inputs .unit { font-size: 12px; color: var(--gray-500); }
-.flow-inputs .calc-val {
-  font-size: 12px;
-  color: var(--gray-600);
-  background: var(--gray-100);
-  padding: 2px 8px;
-  border-radius: 4px;
-}
-.flow-inputs .calc-val.clickable {
-  cursor: pointer;
-  border: 1px dashed var(--gray-300);
-  transition: all .15s;
-}
-.flow-inputs .calc-val.clickable:hover {
-  background: var(--primary-light);
-  border-color: var(--primary);
-  color: var(--primary-dark);
-}
+.flow-inputs .calc-val { font-size: 12px; color: var(--gray-600); background: var(--gray-100); padding: 2px 8px; border-radius: 4px; }
+.flow-inputs .calc-val.clickable { cursor: pointer; border: 1px dashed var(--gray-300); transition: all .15s; }
+.flow-inputs .calc-val.clickable:hover { background: var(--primary-light); border-color: var(--primary); color: var(--primary-dark); }
 .btn-24h {
-  padding: 2px 8px;
-  border: 1px solid var(--gray-300);
-  border-radius: 4px;
-  background: #fff;
-  color: var(--gray-500);
-  font-size: 12px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all .15s;
-  display: none;
+  padding: 2px 8px; border: 1px solid var(--gray-300); border-radius: 4px;
+  background: #fff; color: var(--gray-500); font-size: 12px; font-weight: 600;
+  cursor: pointer; transition: all .15s; display: none;
 }
-.btn-24h:hover {
-  background: var(--primary-light);
-  border-color: var(--primary);
-  color: var(--primary-dark);
-}
+.btn-24h:hover { background: var(--primary-light); border-color: var(--primary); color: var(--primary-dark); }
 .btn-add-line {
-  width: 100%;
-  padding: 12px;
-  border: 2px dashed var(--gray-300);
-  border-radius: var(--radius);
-  background: #fff;
-  color: var(--gray-500);
-  font-size: 14px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all .15s;
-  margin-bottom: 16px;
+  width: 100%; padding: 12px; border: 2px dashed var(--gray-300); border-radius: var(--radius);
+  background: #fff; color: var(--gray-500); font-size: 14px; font-weight: 600;
+  cursor: pointer; transition: all .15s; margin-bottom: 16px;
 }
 .btn-add-line:hover { border-color: var(--primary); color: var(--primary); background: var(--primary-light); }
-
-.result-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 8px;
-}
-.result-box {
-  padding: 10px 12px;
-  background: var(--gray-50);
-  border-radius: 6px;
-  border: 1px solid var(--gray-200);
-}
-.result-box .r-title {
-  font-size: 11px;
-  font-weight: 600;
-  color: var(--gray-500);
-  text-transform: uppercase;
-  letter-spacing: .3px;
-  margin-bottom: 4px;
-}
-.result-box .r-value {
-  font-size: 20px;
-  font-weight: 700;
-  color: var(--gray-800);
-  font-variant-numeric: tabular-nums;
-}
-.result-box .r-unit {
-  font-size: 12px;
-  color: var(--gray-500);
-  font-weight: 400;
-}
+.result-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 8px; }
+.result-box { padding: 10px 12px; background: var(--gray-50); border-radius: 6px; border: 1px solid var(--gray-200); }
+.result-box .r-title { font-size: 11px; font-weight: 600; color: var(--gray-500); text-transform: uppercase; letter-spacing: .3px; margin-bottom: 4px; }
+.result-box .r-value { font-size: 20px; font-weight: 700; color: var(--gray-800); font-variant-numeric: tabular-nums; }
+.result-box .r-unit { font-size: 12px; color: var(--gray-500); font-weight: 400; }
+.result-box .r-sub { font-size: 12px; color: var(--gray-500); margin-top: 2px; }
 .result-box.highlight { border-color: var(--primary); background: var(--primary-light); }
 .result-box.highlight .r-value { color: var(--primary-dark); }
+.result-box.warn { border-color: var(--danger); }
+.result-box.warn .r-value { color: var(--danger); }
 .result-detail { margin-top: 12px; }
-.result-detail-title {
-  font-size: 14px;
-  font-weight: 700;
-  color: var(--gray-700);
-  margin-bottom: 8px;
-}
-.detail-table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 13px;
-}
-.detail-table th, .detail-table td {
-  padding: 6px 10px;
-  text-align: left;
-  border-bottom: 1px solid var(--gray-200);
-}
-.detail-table th {
-  font-weight: 600;
-  color: var(--gray-500);
-  font-size: 12px;
-  background: var(--gray-50);
-}
+.result-detail-title { font-size: 14px; font-weight: 700; color: var(--gray-700); margin-bottom: 8px; }
+.detail-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.detail-table th, .detail-table td { padding: 6px 10px; text-align: left; border-bottom: 1px solid var(--gray-200); }
+.detail-table th { font-weight: 600; color: var(--gray-500); font-size: 12px; background: var(--gray-50); }
 .detail-table td { font-variant-numeric: tabular-nums; }
 .detail-table td:not(:first-child) { text-align: right; }
 .detail-table th:not(:first-child) { text-align: right; }
-.fat-inputs {
-  display: flex;
-  gap: 12px;
-  align-items: center;
-  flex-wrap: wrap;
-}
-.fat-inputs label {
-  font-size: 12px;
-  color: var(--gray-600);
-  font-weight: 600;
-  display: flex;
-  align-items: center;
-  gap: 4px;
-}
-.fat-inputs input {
-  width: 55px;
-  padding: 3px 6px;
-  border: 1px solid var(--gray-300);
-  border-radius: 4px;
-  font-size: 13px;
-  text-align: right;
-  background: var(--warning-light);
-}
-.fat-inputs input:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 2px var(--primary-light); }
-.fat-inputs .unit { font-size: 12px; color: var(--gray-500); }
-.fat-note { font-size: 12px; color: var(--gray-500); margin-top: 6px; }
-.nutrition-table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 13px;
-  margin-top: 8px;
-}
-.nutrition-table th, .nutrition-table td {
-  padding: 5px 10px;
-  border-bottom: 1px solid var(--gray-200);
-}
-.nutrition-table th {
-  text-align: left;
-  font-weight: 600;
-  color: var(--gray-500);
-  font-size: 12px;
-  background: var(--gray-50);
-}
+.nutrition-table { width: 100%; border-collapse: collapse; font-size: 13px; margin-top: 8px; }
+.nutrition-table th, .nutrition-table td { padding: 5px 10px; border-bottom: 1px solid var(--gray-200); }
+.nutrition-table th { text-align: left; font-weight: 600; color: var(--gray-500); font-size: 12px; background: var(--gray-50); }
 .nutrition-table td { font-variant-numeric: tabular-nums; }
 .nutrition-table td:not(:first-child) { text-align: right; }
 .nutrition-table th:not(:first-child) { text-align: right; }
-.footer {
-  text-align: center;
-  padding: 16px;
-  font-size: 12px;
-  color: var(--gray-400);
-}
+.footer { text-align: center; padding: 16px; font-size: 12px; color: var(--gray-400); }
 
 /* Modal */
 .modal-overlay {
-  display: none;
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,.5);
-  z-index: 1000;
-  justify-content: center;
-  align-items: flex-start;
-  padding: 40px 16px;
-  overflow-y: auto;
+  display: none; position: fixed; inset: 0; background: rgba(0,0,0,.5); z-index: 1000;
+  justify-content: center; align-items: flex-start; padding: 40px 16px; overflow-y: auto;
 }
 .modal-overlay.open { display: flex; }
 .modal {
-  background: #fff;
-  border-radius: 12px;
-  box-shadow: 0 20px 60px rgba(0,0,0,.2);
-  width: 100%;
-  max-width: 800px;
-  max-height: calc(100vh - 80px);
-  display: flex;
-  flex-direction: column;
+  background: #fff; border-radius: 12px; box-shadow: 0 20px 60px rgba(0,0,0,.2);
+  width: 100%; max-width: 860px; max-height: calc(100vh - 80px); display: flex; flex-direction: column;
 }
-.modal-header {
-  padding: 16px 20px;
-  border-bottom: 1px solid var(--gray-200);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-shrink: 0;
-}
+.modal-header { padding: 16px 20px; border-bottom: 1px solid var(--gray-200); display: flex; align-items: center; justify-content: space-between; flex-shrink: 0; }
 .modal-header h2 { font-size: 16px; font-weight: 700; }
-.modal-close {
-  width: 28px; height: 28px; border: none;
-  background: var(--gray-100); border-radius: 4px;
-  cursor: pointer; font-size: 16px; color: var(--gray-500);
-  display: flex; align-items: center; justify-content: center;
-}
+.modal-close { width: 28px; height: 28px; border: none; background: var(--gray-100); border-radius: 4px; cursor: pointer; font-size: 16px; color: var(--gray-500); display: flex; align-items: center; justify-content: center; }
 .modal-close:hover { background: var(--gray-200); }
 .modal-body { padding: 16px 20px; overflow-y: auto; flex: 1; }
-.modal-footer {
-  padding: 12px 20px;
-  border-top: 1px solid var(--gray-200);
-  display: flex;
-  justify-content: flex-end;
-  gap: 8px;
-  flex-shrink: 0;
-}
+.modal-footer { padding: 12px 20px; border-top: 1px solid var(--gray-200); display: flex; justify-content: flex-end; gap: 8px; flex-shrink: 0; }
 .settings-section { margin-bottom: 20px; }
-.settings-section-title {
-  font-size: 14px; font-weight: 700; color: var(--gray-700);
-  margin-bottom: 8px; display: flex; align-items: center; gap: 8px;
-}
+.settings-section-title { font-size: 14px; font-weight: 700; color: var(--gray-700); margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
 .fluid-edit-table { width: 100%; border-collapse: collapse; font-size: 12px; }
-.fluid-edit-table th, .fluid-edit-table td {
-  padding: 4px 4px; border: 1px solid var(--gray-200); text-align: center;
-}
-.fluid-edit-table th {
-  background: var(--gray-100); font-weight: 600; color: var(--gray-600);
-  font-size: 11px; position: sticky; top: 0; z-index: 1;
-}
+.fluid-edit-table th, .fluid-edit-table td { padding: 4px 4px; border: 1px solid var(--gray-200); text-align: center; }
+.fluid-edit-table th { background: var(--gray-100); font-weight: 600; color: var(--gray-600); font-size: 11px; position: sticky; top: 0; z-index: 1; }
 .fluid-edit-table td:first-child { text-align: left; font-weight: 500; }
-.fluid-edit-table input {
-  width: 100%; min-width: 45px; padding: 2px 4px;
-  border: 1px solid var(--gray-200); border-radius: 3px;
-  font-size: 12px; text-align: right; background: #fff;
-}
+.fluid-edit-table input { width: 100%; min-width: 45px; padding: 2px 4px; border: 1px solid var(--gray-200); border-radius: 3px; font-size: 12px; text-align: right; background: #fff; }
 .fluid-edit-table input:focus { outline: none; border-color: var(--primary); }
 .fluid-edit-table input.name-input { text-align: left; min-width: 100px; }
-.fluid-edit-table .del-btn {
-  width: 22px; height: 22px; border: none;
-  background: var(--danger-light); color: var(--danger);
-  border-radius: 3px; cursor: pointer; font-size: 11px;
-}
+.fluid-edit-table .del-btn { width: 22px; height: 22px; border: none; background: var(--danger-light); color: var(--danger); border-radius: 3px; cursor: pointer; font-size: 11px; }
 .fluid-edit-table .del-btn:hover { background: #fecaca; }
-.fluid-edit-table .toggle-btn {
-  width: 22px; height: 22px; border: none; border-radius: 3px;
-  cursor: pointer; font-size: 13px; line-height: 1;
-}
+.fluid-edit-table .toggle-btn { width: 22px; height: 22px; border: none; border-radius: 3px; cursor: pointer; font-size: 13px; line-height: 1; }
 .fluid-edit-table .toggle-btn.on { background: var(--success-light); color: var(--success); }
 .fluid-edit-table .toggle-btn.off { background: var(--gray-200); color: var(--gray-400); }
-.btn-add-row {
-  margin-top: 8px; padding: 6px 12px;
-  border: 1px dashed var(--gray-300); border-radius: 4px;
-  background: #fff; color: var(--gray-500); font-size: 13px;
-  cursor: pointer; width: 100%;
-}
+.btn-add-row { margin-top: 8px; padding: 6px 12px; border: 1px dashed var(--gray-300); border-radius: 4px; background: #fff; color: var(--gray-500); font-size: 13px; cursor: pointer; width: 100%; }
 .btn-add-row:hover { border-color: var(--primary); color: var(--primary); }
 .settings-actions { display: flex; gap: 8px; margin-top: 12px; }
-.btn-outline {
-  padding: 6px 14px; border: 1px solid var(--gray-300); border-radius: 4px;
-  font-size: 13px; font-weight: 600; cursor: pointer; background: #fff; color: var(--gray-600);
-}
+.btn-outline { padding: 6px 14px; border: 1px solid var(--gray-300); border-radius: 4px; font-size: 13px; font-weight: 600; cursor: pointer; background: #fff; color: var(--gray-600); }
 .btn-outline:hover { border-color: var(--gray-400); }
 .btn-outline.danger { border-color: var(--danger); color: var(--danger); }
 .btn-outline.danger:hover { background: var(--danger-light); }
 
-/* Line color palette */
 .line-c0 { background: #dbeafe; color: #1d4ed8; }
 .line-c1 { background: #d1fae5; color: #059669; }
 .line-c2 { background: #fef3c7; color: #d97706; }
@@ -554,19 +233,6 @@ body {
 
   <div class="lines-grid" id="lines-container"></div>
   <button class="btn-add-line" onclick="addLine()">＋ ラインを追加</button>
-
-  <div class="card" style="margin-bottom: 16px;">
-    <div class="card-header fat">脂肪乳剤</div>
-    <div class="card-body">
-      <div class="fat-inputs">
-        <label>20%イントラリポス</label>
-        <label>投与速度 <input type="number" id="fat-rate" value="" step="0.1" placeholder="ml/h"> <span class="unit">ml/h</span></label>
-        <label>投与時間 <input type="number" id="fat-hours" value="" step="0.5" placeholder="h"> <span class="unit">h</span></label>
-        <span class="calc-val" id="fat-total">投与量: 0 ml</span>
-      </div>
-      <div class="fat-note">20g/100ml（約200kcal/100ml） — 体重1kgあたり1日脂肪として2g（本剤10ml）以内を投与</div>
-    </div>
-  </div>
 
   <div class="card">
     <div class="card-header result" id="result-header">輸液組成 合計</div>
@@ -599,7 +265,6 @@ body {
 
 <div class="footer">輸液組成計算シート — 臨床参考用（処方は必ず医師の判断に基づいてください）</div>
 
-<!-- Settings Modal -->
 <div class="modal-overlay" id="settings-modal">
   <div class="modal">
     <div class="modal-header">
@@ -622,31 +287,33 @@ body {
 <script>
 var LINE_COLORS = 6;
 var nextLineId = 1;
+var COMP_KEYS = ["glu","na","k","cl","ca","mg","p","aa","fat","hco3","heparin"];
 
 var DEFAULT_FLUIDS = [
-  { id: "ns", name: "生理食塩液", defaultVol: 500, enabled: true, glu: 0, na: 154, k: 0, cl: 154, ca: 0, mg: 0, p: 0, aa: 0, hco3: 0, heparin: 0 },
-  { id: "d5", name: "5%ブドウ糖液", defaultVol: 500, enabled: true, glu: 50, na: 0, k: 0, cl: 0, ca: 0, mg: 0, p: 0, aa: 0, hco3: 0, heparin: 0 },
-  { id: "veend", name: "ヴィーンD", defaultVol: 500, enabled: true, glu: 50, na: 130, k: 4, cl: 109, ca: 3, mg: 0, p: 0, aa: 0, hco3: 28, heparin: 0 },
-  { id: "solulyte", name: "ソリューゲンF", defaultVol: 500, enabled: true, glu: 0, na: 130, k: 4, cl: 109, ca: 3, mg: 0, p: 0, aa: 0, hco3: 28, heparin: 0 },
-  { id: "soldem1", name: "ソルデム1輸液", defaultVol: 500, enabled: true, glu: 26, na: 90, k: 0, cl: 70, ca: 0, mg: 0, p: 0, aa: 0, hco3: 20, heparin: 0 },
-  { id: "hartmann", name: "ハルトマン", defaultVol: 500, enabled: true, glu: 43, na: 35, k: 20, cl: 35, ca: 0, mg: 0, p: 0, aa: 0, hco3: 20, heparin: 0 },
-  { id: "physio140", name: "フィジオ140", defaultVol: 500, enabled: true, glu: 10, na: 140, k: 4, cl: 115, ca: 3, mg: 2, p: 0, aa: 0, hco3: 34, heparin: 0 },
-  { id: "physio35", name: "フィジオ35", defaultVol: 500, enabled: true, glu: 100, na: 35, k: 20, cl: 28, ca: 5, mg: 3, p: 0, aa: 0, hco3: 25, heparin: 0 },
-  { id: "bfluid", name: "ビーフリード", defaultVol: 500, enabled: true, glu: 75, na: 35, k: 20, cl: 35, ca: 5, mg: 5, p: 301, aa: 30, hco3: 42, heparin: 0 },
-  { id: "fulcaliq1", name: "フルカリック1号液(903ml)", defaultVol: 903, enabled: true, glu: 133, na: 55.4, k: 33.2, cl: 54.3, ca: 9.4, mg: 11.1, p: 277, aa: 22.1, hco3: 55.81, heparin: 0 },
-  { id: "fulcaliq2", name: "フルカリック2号液(1003ml)", defaultVol: 1003, enabled: true, glu: 175, na: 50, k: 30, cl: 49, ca: 8.5, mg: 10, p: 250, aa: 30, hco3: 50.25, heparin: 0 },
-  { id: "d50", name: "50%ブドウ糖", defaultVol: 20, enabled: true, glu: 500, na: 0, k: 0, cl: 0, ca: 0, mg: 0, p: 0, aa: 0, hco3: 0, heparin: 0 },
-  { id: "nacl10", name: "10%NaCl", defaultVol: 20, enabled: true, glu: 0, na: 1700, k: 0, cl: 1700, ca: 0, mg: 0, p: 0, aa: 0, hco3: 0, heparin: 0 },
-  { id: "kcl", name: "KCl注20mEqキット", defaultVol: 20, enabled: true, glu: 0, na: 0, k: 1000, cl: 1000, ca: 0, mg: 0, p: 0, aa: 0, hco3: 0, heparin: 0 },
-  { id: "preamine", name: "プレアミン", defaultVol: 200, enabled: true, glu: 0, na: 3, k: 0, cl: 0, ca: 0, mg: 0, p: 0, aa: 76, hco3: 0, heparin: 0 },
-  { id: "multamin", name: "マルタミン", defaultVol: 5, enabled: true, glu: 0, na: 0, k: 0, cl: 0, ca: 0, mg: 0, p: 0, aa: 0, hco3: 0, heparin: 0 },
-  { id: "elezect", name: "エレジェクト", defaultVol: 2, enabled: true, glu: 0, na: 0, k: 0, cl: 0, ca: 0, mg: 0, p: 0, aa: 0, hco3: 0, heparin: 0 },
-  { id: "calcicol", name: "カルチコール", defaultVol: 5, enabled: true, glu: 0, na: 0, k: 0, cl: 0, ca: 390, mg: 0, p: 0, aa: 0, hco3: 0, heparin: 0 },
-  { id: "napo4", name: "リン酸Na補正液", defaultVol: 5, enabled: true, glu: 0, na: 750, k: 0, cl: 0, ca: 0, mg: 0, p: 15500, aa: 0, hco3: 0, heparin: 0 },
-  { id: "mgso4", name: "硫酸Mg補正液", defaultVol: 5, enabled: true, glu: 0, na: 0, k: 0, cl: 0, ca: 0, mg: 1000, p: 0, aa: 0, hco3: 1000, heparin: 0 },
-  { id: "meylon", name: "メイロン静注7%", defaultVol: 20, enabled: true, glu: 0, na: 833, k: 0, cl: 0, ca: 0, mg: 0, p: 0, aa: 0, hco3: 833, heparin: 0 },
-  { id: "heparin", name: "ヘパリンNa 5千単位/5mL", defaultVol: 1, enabled: true, glu: 0, na: 68, k: 0, cl: 0, ca: 0, mg: 0, p: 0, aa: 0, hco3: 0, heparin: 1000 },
-  { id: "water", name: "注射用水", defaultVol: 100, enabled: true, glu: 0, na: 0, k: 0, cl: 0, ca: 0, mg: 0, p: 0, aa: 0, hco3: 0, heparin: 0 },
+  { id:"ns",        name:"生理食塩液",              defaultVol:500,  enabled:true, glu:0,   na:154,  k:0,    cl:154,  ca:0,   mg:0,    p:0,     aa:0,    fat:0,   hco3:0,     heparin:0 },
+  { id:"d5",        name:"5%ブドウ糖液",            defaultVol:500,  enabled:true, glu:50,  na:0,    k:0,    cl:0,    ca:0,   mg:0,    p:0,     aa:0,    fat:0,   hco3:0,     heparin:0 },
+  { id:"veend",     name:"ヴィーンD",               defaultVol:500,  enabled:true, glu:50,  na:130,  k:4,    cl:109,  ca:3,   mg:0,    p:0,     aa:0,    fat:0,   hco3:28,    heparin:0 },
+  { id:"solulyte",  name:"ソリューゲンF",           defaultVol:500,  enabled:true, glu:0,   na:130,  k:4,    cl:109,  ca:3,   mg:0,    p:0,     aa:0,    fat:0,   hco3:28,    heparin:0 },
+  { id:"soldem1",   name:"ソルデム1輸液",           defaultVol:500,  enabled:true, glu:26,  na:90,   k:0,    cl:70,   ca:0,   mg:0,    p:0,     aa:0,    fat:0,   hco3:20,    heparin:0 },
+  { id:"hartmann",  name:"ハルトマン",              defaultVol:500,  enabled:true, glu:43,  na:35,   k:20,   cl:35,   ca:0,   mg:0,    p:0,     aa:0,    fat:0,   hco3:20,    heparin:0 },
+  { id:"physio140", name:"フィジオ140",             defaultVol:500,  enabled:true, glu:10,  na:140,  k:4,    cl:115,  ca:3,   mg:2,    p:0,     aa:0,    fat:0,   hco3:34,    heparin:0 },
+  { id:"physio35",  name:"フィジオ35",              defaultVol:500,  enabled:true, glu:100, na:35,   k:20,   cl:28,   ca:5,   mg:3,    p:0,     aa:0,    fat:0,   hco3:25,    heparin:0 },
+  { id:"bfluid",    name:"ビーフリード",            defaultVol:500,  enabled:true, glu:75,  na:35,   k:20,   cl:35,   ca:5,   mg:5,    p:301,   aa:30,   fat:0,   hco3:42,    heparin:0 },
+  { id:"fulcaliq1", name:"フルカリック1号液(903ml)",defaultVol:903,  enabled:true, glu:133, na:55.4, k:33.2, cl:54.3, ca:9.4, mg:11.1, p:277,   aa:22.1, fat:0,   hco3:55.81, heparin:0 },
+  { id:"fulcaliq2", name:"フルカリック2号液(1003ml)",defaultVol:1003, enabled:true, glu:175, na:50,   k:30,   cl:49,   ca:8.5, mg:10,   p:250,   aa:30,   fat:0,   hco3:50.25, heparin:0 },
+  { id:"d50",       name:"50%ブドウ糖",            defaultVol:20,   enabled:true, glu:500, na:0,    k:0,    cl:0,    ca:0,   mg:0,    p:0,     aa:0,    fat:0,   hco3:0,     heparin:0 },
+  { id:"nacl10",    name:"10%NaCl",                 defaultVol:20,   enabled:true, glu:0,   na:1700, k:0,    cl:1700, ca:0,   mg:0,    p:0,     aa:0,    fat:0,   hco3:0,     heparin:0 },
+  { id:"kcl",       name:"KCl注20mEqキット",        defaultVol:20,   enabled:true, glu:0,   na:0,    k:1000, cl:1000, ca:0,   mg:0,    p:0,     aa:0,    fat:0,   hco3:0,     heparin:0 },
+  { id:"preamine",  name:"プレアミン",              defaultVol:200,  enabled:true, glu:0,   na:3,    k:0,    cl:0,    ca:0,   mg:0,    p:0,     aa:76,   fat:0,   hco3:0,     heparin:0 },
+  { id:"multamin",  name:"マルタミン",              defaultVol:5,    enabled:true, glu:0,   na:0,    k:0,    cl:0,    ca:0,   mg:0,    p:0,     aa:0,    fat:0,   hco3:0,     heparin:0 },
+  { id:"elezect",   name:"エレジェクト",            defaultVol:2,    enabled:true, glu:0,   na:0,    k:0,    cl:0,    ca:0,   mg:0,    p:0,     aa:0,    fat:0,   hco3:0,     heparin:0 },
+  { id:"calcicol",  name:"カルチコール",            defaultVol:5,    enabled:true, glu:0,   na:0,    k:0,    cl:0,    ca:390, mg:0,    p:0,     aa:0,    fat:0,   hco3:0,     heparin:0 },
+  { id:"napo4",     name:"リン酸Na補正液",          defaultVol:5,    enabled:true, glu:0,   na:750,  k:0,    cl:0,    ca:0,   mg:0,    p:15500, aa:0,    fat:0,   hco3:0,     heparin:0 },
+  { id:"mgso4",     name:"硫酸Mg補正液",            defaultVol:5,    enabled:true, glu:0,   na:0,    k:0,    cl:0,    ca:0,   mg:1000, p:0,     aa:0,    fat:0,   hco3:1000,  heparin:0 },
+  { id:"meylon",    name:"メイロン静注7%",          defaultVol:20,   enabled:true, glu:0,   na:833,  k:0,    cl:0,    ca:0,   mg:0,    p:0,     aa:0,    fat:0,   hco3:833,   heparin:0 },
+  { id:"heparin",   name:"ヘパリンNa 5千単位/5mL",  defaultVol:1,    enabled:true, glu:0,   na:68,   k:0,    cl:0,    ca:0,   mg:0,    p:0,     aa:0,    fat:0,   hco3:0,     heparin:1000 },
+  { id:"water",     name:"注射用水",                defaultVol:100,  enabled:true, glu:0,   na:0,    k:0,    cl:0,    ca:0,   mg:0,    p:0,     aa:0,    fat:0,   hco3:0,     heparin:0 },
+  { id:"intralipid",name:"20%イントラリポス",       defaultVol:100,  enabled:true, glu:0,   na:0,    k:0,    cl:0,    ca:0,   mg:0,    p:0,     aa:0,    fat:200, hco3:0,     heparin:0 },
 ];
 
 var fluids = JSON.parse(JSON.stringify(DEFAULT_FLUIDS));
@@ -685,29 +352,23 @@ function renderAllLines() {
     var colorClass = 'line-c' + (idx % LINE_COLORS);
     var card = document.createElement('div');
     card.className = 'card';
-    card.id = 'card-' + line.id;
-
-    var headerHtml = '<div class="card-header ' + colorClass + '">';
-    headerHtml += '<input class="line-name-input" value="' + escHtml(line.name) + '" oninput="renameLine(\'' + line.id + '\',this.value)">';
-    headerHtml += '<div class="line-header-actions">';
-    if (lines.length > 1) {
-      headerHtml += '<button class="btn-remove-line" onclick="removeLine(\'' + line.id + '\')" title="このラインを削除">&#10005; 削除</button>';
-    }
-    headerHtml += '</div></div>';
-
-    var bodyHtml = '<div class="card-body">';
-    bodyHtml += '<div class="fluid-list" id="flist-' + line.id + '"></div>';
-    bodyHtml += '<div class="flow-inputs">';
-    bodyHtml += '<label>流量 <input type="number" id="rate-' + line.id + '" value="' + (line.rate || '') + '" step="0.1" placeholder="ml/h" oninput="onRateChange(\'' + line.id + '\',this.value)"> <span class="unit">ml/h</span></label>';
-    bodyHtml += '<label>投与時間 <input type="number" id="hours-' + line.id + '" value="' + line.hours + '" step="1" oninput="onHoursChange(\'' + line.id + '\',this.value)"> <span class="unit">h</span></label>';
-    bodyHtml += '<button class="btn-24h" id="btn24-' + line.id + '" onclick="setHours(\'' + line.id + '\',24)">&#8592; 24hに戻す</button>';
-    bodyHtml += '<span class="calc-val" id="bag-' + line.id + '">1本あたり: — h</span>';
-    bodyHtml += '</div>';
-    bodyHtml += '<div class="line-summary"><span class="total" id="total-' + line.id + '">合計: 0 ml</span></div>';
-    bodyHtml += '<div class="line-comp"><div class="line-comp-title">ルート内組成</div><div class="comp-grid" id="comp-' + line.id + '"></div></div>';
-    bodyHtml += '</div>';
-
-    card.innerHTML = headerHtml + bodyHtml;
+    var h = '<div class="card-header ' + colorClass + '">';
+    h += '<input class="line-name-input" value="' + escHtml(line.name) + '" oninput="renameLine(\'' + line.id + '\',this.value)">';
+    h += '<div class="line-header-actions">';
+    if (lines.length > 1) h += '<button class="btn-remove-line" onclick="removeLine(\'' + line.id + '\')" title="このラインを削除">&#10005; 削除</button>';
+    h += '</div></div>';
+    h += '<div class="card-body">';
+    h += '<div class="fluid-list" id="flist-' + line.id + '"></div>';
+    h += '<div class="flow-inputs">';
+    h += '<label>流量 <input type="number" id="rate-' + line.id + '" value="' + (line.rate || '') + '" step="0.1" placeholder="ml/h" oninput="onRateChange(\'' + line.id + '\',this.value)"> <span class="unit">ml/h</span></label>';
+    h += '<label>投与時間 <input type="number" id="hours-' + line.id + '" value="' + line.hours + '" step="1" oninput="onHoursChange(\'' + line.id + '\',this.value)"> <span class="unit">h</span></label>';
+    h += '<button class="btn-24h" id="btn24-' + line.id + '" onclick="setHours(\'' + line.id + '\',24)">&#8592; 24hに戻す</button>';
+    h += '<span class="calc-val" id="bag-' + line.id + '">1本あたり: — h</span>';
+    h += '</div>';
+    h += '<div class="line-summary"><span class="total" id="total-' + line.id + '">合計: 0 ml</span></div>';
+    h += '<div class="line-comp"><div class="line-comp-title">ルート内組成</div><div class="comp-grid" id="comp-' + line.id + '"></div></div>';
+    h += '</div>';
+    card.innerHTML = h;
     container.appendChild(card);
     renderFluidList(line.id);
   });
@@ -720,106 +381,71 @@ function buildSelector(lid) {
   line.fluids.forEach(function(e){ used[e.id] = true; });
   var available = getEnabledFluids().filter(function(f){ return !used[f.id]; });
   if (available.length === 0) return '';
-  var html = '<div class="fluid-selector"><select onchange="onSelectFluid(\'' + lid + '\', this)">';
-  html += '<option value="">&#65291; 輸液を追加...</option>';
-  available.forEach(function(f){
-    html += '<option value="' + f.id + '">' + f.name + '</option>';
-  });
-  html += '</select></div>';
-  return html;
+  var h = '<div class="fluid-selector"><select onchange="onSelectFluid(\'' + lid + '\', this)">';
+  h += '<option value="">&#65291; 輸液を追加...</option>';
+  available.forEach(function(f){ h += '<option value="' + f.id + '">' + escHtml(f.name) + '</option>'; });
+  h += '</select></div>';
+  return h;
 }
 
 function onSelectFluid(lid, sel) {
-  var fid = sel.value;
-  if (!fid) return;
-  var fluid = getFluidById(fid);
-  var line = getLineById(lid);
+  var fid = sel.value; if (!fid) return;
+  var fluid = getFluidById(fid), line = getLineById(lid);
   if (!fluid || !line) return;
   line.fluids.push({ id: fid, volume: fluid.defaultVol });
-  renderFluidList(lid);
-  recalc();
+  renderFluidList(lid); recalc();
   var items = document.querySelectorAll('#flist-' + lid + ' .fluid-item');
-  if (items.length > 0) {
-    var lastInput = items[items.length - 1].querySelector('input');
-    if (lastInput) lastInput.select();
-  }
+  if (items.length > 0) { var inp = items[items.length-1].querySelector('input'); if (inp) inp.select(); }
 }
 
 function removeFluid(lid, fid) {
-  var line = getLineById(lid);
-  if (!line) return;
+  var line = getLineById(lid); if (!line) return;
   line.fluids = line.fluids.filter(function(e){ return e.id !== fid; });
-  renderFluidList(lid);
-  recalc();
+  renderFluidList(lid); recalc();
 }
 
 function renderFluidList(lid) {
-  var el = document.getElementById('flist-' + lid);
-  if (!el) return;
-  var line = getLineById(lid);
-  if (!line) return;
-  var html = '';
+  var el = document.getElementById('flist-' + lid); if (!el) return;
+  var line = getLineById(lid); if (!line) return;
+  var h = '';
   line.fluids.forEach(function(entry){
-    var fluid = getFluidById(entry.id);
-    if (!fluid) return;
-    html += '<div class="fluid-item">';
-    html += '<span class="fluid-name" title="' + escHtml(fluid.name) + '">' + escHtml(fluid.name) + '</span>';
-    html += '<input type="number" value="' + entry.volume + '" step="1" min="0" oninput="updateVolume(\'' + lid + '\',\'' + entry.id + '\',this.value)">';
-    html += '<span class="unit">ml</span>';
-    html += '<button class="btn btn-danger btn-sm" onclick="removeFluid(\'' + lid + '\',\'' + entry.id + '\')">&#10005;</button>';
-    html += '</div>';
+    var fluid = getFluidById(entry.id); if (!fluid) return;
+    h += '<div class="fluid-item">';
+    h += '<span class="fluid-name" title="' + escHtml(fluid.name) + '">' + escHtml(fluid.name) + '</span>';
+    h += '<input type="number" value="' + entry.volume + '" step="1" min="0" oninput="updateVolume(\'' + lid + '\',\'' + entry.id + '\',this.value)">';
+    h += '<span class="unit">ml</span>';
+    h += '<button class="btn btn-danger btn-sm" onclick="removeFluid(\'' + lid + '\',\'' + entry.id + '\')">&#10005;</button>';
+    h += '</div>';
   });
-  html += buildSelector(lid);
-  el.innerHTML = html;
+  h += buildSelector(lid);
+  el.innerHTML = h;
 }
 
 function updateVolume(lid, fid, val) {
-  var line = getLineById(lid);
-  if (!line) return;
+  var line = getLineById(lid); if (!line) return;
   var entry = line.fluids.find(function(e){ return e.id === fid; });
   if (entry) entry.volume = parseFloat(val) || 0;
   recalc();
 }
-
-function onRateChange(lid, val) {
-  var line = getLineById(lid);
-  if (line) line.rate = parseFloat(val) || 0;
-  recalc();
-}
-
-function onHoursChange(lid, val) {
-  var line = getLineById(lid);
-  if (line) line.hours = parseFloat(val) || 0;
-  recalc();
-}
-
-function setHours(lid, h) {
-  var line = getLineById(lid);
-  if (line) line.hours = h;
-  var el = document.getElementById('hours-' + lid);
-  if (el) el.value = h;
-  recalc();
-}
+function onRateChange(lid, val) { var l = getLineById(lid); if (l) l.rate = parseFloat(val) || 0; recalc(); }
+function onHoursChange(lid, val) { var l = getLineById(lid); if (l) l.hours = parseFloat(val) || 0; recalc(); }
+function setHours(lid, h) { var l = getLineById(lid); if (l) l.hours = h; var el = document.getElementById('hours-' + lid); if (el) el.value = h; recalc(); }
 
 function getLineTotal(lid) {
-  var line = getLineById(lid);
-  if (!line) return 0;
+  var line = getLineById(lid); if (!line) return 0;
   return line.fluids.reduce(function(s, e){ return s + e.volume; }, 0);
 }
 
 function getLineComp(lid) {
   var total = getLineTotal(lid);
-  var comp = { glu:0, na:0, k:0, cl:0, ca:0, mg:0, p:0, aa:0, hco3:0, heparin:0 };
+  var comp = {}; COMP_KEYS.forEach(function(k){ comp[k] = 0; });
   if (total === 0) return comp;
   var line = getLineById(lid);
   line.fluids.forEach(function(entry){
-    var f = getFluidById(entry.id);
-    if (!f) return;
-    var keys = Object.keys(comp);
-    for (var i = 0; i < keys.length; i++) comp[keys[i]] += entry.volume * f[keys[i]];
+    var f = getFluidById(entry.id); if (!f) return;
+    COMP_KEYS.forEach(function(k){ comp[k] += entry.volume * (f[k] || 0); });
   });
-  var keys = Object.keys(comp);
-  for (var i = 0; i < keys.length; i++) comp[keys[i]] /= total;
+  COMP_KEYS.forEach(function(k){ comp[k] /= total; });
   return comp;
 }
 
@@ -827,10 +453,7 @@ function fmt(v, d) {
   if (v === null || v === undefined || isNaN(v) || !isFinite(v)) return "—";
   return v.toFixed(d !== undefined ? d : 2);
 }
-
-function escHtml(s) {
-  return s.replace(/&/g,"&amp;").replace(/"/g,"&quot;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
-}
+function escHtml(s) { return s.replace(/&/g,"&amp;").replace(/"/g,"&quot;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
 
 function recalc() {
   var wt = parseFloat(document.getElementById("weight").value) || 0;
@@ -838,75 +461,58 @@ function recalc() {
   var bsa = ht > 0 && wt > 0 ? Math.sqrt(ht * wt / 3600) : 0;
   document.getElementById("bsa-display").textContent = bsa > 0 ? "体表面積: " + fmt(bsa, 4) + " ㎡" : "体表面積: — ㎡";
 
-  var totalWater = 0;
-  var girTotal = 0;
-  var aaTotal = 0;
-  var girKcalTotal = 0;
-  var compKeys = ["glu","na","k","cl","ca","mg","p","aa","hco3","heparin"];
+  var totalWater = 0, girTotal = 0, aaTotal = 0, fatTotal = 0, girKcalTotal = 0;
   var totalRateAll = 0;
-  var weightedComp = {};
-  compKeys.forEach(function(k){ weightedComp[k] = 0; });
-  var dayAmounts = {};
-  compKeys.forEach(function(k){ dayAmounts[k] = 0; });
+  var weightedComp = {}, dayAmounts = {};
+  COMP_KEYS.forEach(function(k){ weightedComp[k] = 0; dayAmounts[k] = 0; });
 
   lines.forEach(function(line) {
-    var lid = line.id;
-    var total = getLineTotal(lid);
-    var comp = getLineComp(lid);
-    var rate = line.rate;
-    var hours = line.hours;
-    var volPerDay = rate * hours;
+    var lid = line.id, total = getLineTotal(lid), comp = getLineComp(lid);
+    var rate = line.rate, hours = line.hours, volPerDay = rate * hours;
 
     document.getElementById("total-" + lid).textContent = "合計: " + total + " ml";
-
-    var bagHours = rate > 0 ? total / rate : 0;
-    updateBagHoursEl(lid, bagHours, hours);
+    updateBagHoursEl(lid, rate > 0 ? total / rate : 0, hours);
     renderLineComp(lid, comp, total, rate, wt);
 
     totalWater += volPerDay;
     totalRateAll += rate;
-    compKeys.forEach(function(k){ weightedComp[k] += comp[k] * rate; });
-    compKeys.forEach(function(k){ dayAmounts[k] += comp[k] * volPerDay; });
+    COMP_KEYS.forEach(function(k){ weightedComp[k] += comp[k] * rate; dayAmounts[k] += comp[k] * volPerDay; });
 
     var gir = total > 0 && wt > 0 ? comp.glu * rate / 60 / wt : 0;
     girTotal += gir;
     girKcalTotal += wt > 0 ? gir / 1000 * 60 * hours * 4 : 0;
     aaTotal += wt > 0 ? comp.aa / 1000 * volPerDay / wt : 0;
+    fatTotal += wt > 0 ? comp.fat / 1000 * volPerDay / wt : 0;
   });
 
-  var fatRate = parseFloat(document.getElementById("fat-rate").value) || 0;
-  var fatHours = parseFloat(document.getElementById("fat-hours").value) || 0;
-  var fatVol = fatRate * fatHours;
-  document.getElementById("fat-total").textContent = "投与量: " + fmt(fatVol, 0) + " ml";
-  totalWater += fatVol;
-
-  var fatGPerKgDay = wt > 0 ? fatVol * 0.2 / wt : 0;
-  var eqKcal = wt > 0 ? girKcalTotal + aaTotal * 4 + fatGPerKgDay * 9 : 0;
-  var totalKcal = eqKcal * wt;
   var gluGkgDay = wt > 0 ? girTotal * 60 * 24 / 1000 : 0;
+  var eqKcal = wt > 0 ? girKcalTotal + aaTotal * 4 + fatTotal * 9 : 0;
+  var totalKcal = eqKcal * wt;
   var protCalRatio = eqKcal > 0 ? aaTotal * 4 / eqKcal : 0;
-  var fatCalRatio = eqKcal > 0 ? fatGPerKgDay * 9 / eqKcal : 0;
+  var fatCalRatio = eqKcal > 0 ? fatTotal * 9 / eqKcal : 0;
   var gluCalRatio = eqKcal > 0 ? 1 - protCalRatio - fatCalRatio : 0;
+  var fatOverLimit = wt > 0 && fatTotal > 2;
 
   updateResultHeader();
 
+  var fatBoxClass = fatOverLimit ? 'result-box warn' : 'result-box';
   document.getElementById("result-summary").innerHTML =
-    '<div class="result-box highlight"><div class="r-title">水分量</div><div class="r-value">' + fmt(totalWater, 0) + ' <span class="r-unit">ml/day</span></div><div style="font-size:12px;color:var(--gray-500);margin-top:2px">' + (bsa > 0 ? fmt(totalWater / bsa, 0) + " ml/㎡/day" : "—") + '</div></div>' +
-    '<div class="result-box highlight"><div class="r-title">カロリー</div><div class="r-value">' + fmt(eqKcal, 1) + ' <span class="r-unit">kcal/kg/day</span></div><div style="font-size:12px;color:var(--gray-500);margin-top:2px">' + fmt(totalKcal, 0) + ' kcal/day</div></div>' +
+    '<div class="result-box highlight"><div class="r-title">水分量</div><div class="r-value">' + fmt(totalWater, 0) + ' <span class="r-unit">ml/day</span></div><div class="r-sub">' + (bsa > 0 ? fmt(totalWater / bsa, 0) + " ml/㎡/day" : "—") + '</div></div>' +
+    '<div class="result-box highlight"><div class="r-title">カロリー</div><div class="r-value">' + fmt(eqKcal, 1) + ' <span class="r-unit">kcal/kg/day</span></div><div class="r-sub">' + fmt(totalKcal, 0) + ' kcal/day</div></div>' +
     '<div class="result-box highlight"><div class="r-title">GIR</div><div class="r-value">' + fmt(girTotal, 2) + ' <span class="r-unit">mg/kg/min</span></div></div>' +
     '<div class="result-box"><div class="r-title">アミノ酸</div><div class="r-value">' + fmt(aaTotal, 2) + ' <span class="r-unit">g/kg/day</span></div></div>' +
-    '<div class="result-box"><div class="r-title">脂肪</div><div class="r-value">' + fmt(fatGPerKgDay, 2) + ' <span class="r-unit">g/kg/day</span></div></div>';
+    '<div class="' + fatBoxClass + '"><div class="r-title">脂肪</div><div class="r-value">' + fmt(fatTotal, 2) + ' <span class="r-unit">g/kg/day</span></div>' +
+    (fatOverLimit ? '<div class="r-sub" style="color:var(--danger)">&#9888; 上限 2 g/kg/day を超過</div>' : '') + '</div>';
 
   var elecItems = [
     { name:"Na", cu:"mEq/L", du:"mEq/day", ku:"mEq/kg/day", key:"na" },
-    { name:"K", cu:"mEq/L", du:"mEq/day", ku:"mEq/kg/day", key:"k" },
+    { name:"K",  cu:"mEq/L", du:"mEq/day", ku:"mEq/kg/day", key:"k" },
     { name:"Cl", cu:"mEq/L", du:"mEq/day", ku:"mEq/kg/day", key:"cl" },
     { name:"Ca", cu:"mEq/L", du:"mEq/day", ku:"mEq/kg/day", key:"ca" },
     { name:"Mg", cu:"mEq/L", du:"mEq/day", ku:"mEq/kg/day", key:"mg" },
-    { name:"P", cu:"mg/L", du:"mg/day", ku:"mg/kg/day", key:"p" },
+    { name:"P",  cu:"mg/L",  du:"mg/day",  ku:"mg/kg/day",  key:"p" },
     { name:"重炭酸", cu:"mEq/L", du:"mEq/day", ku:"mEq/kg/day", key:"hco3" },
   ];
-
   var eTbody = document.getElementById("electrolyte-tbody");
   eTbody.innerHTML = "";
   elecItems.forEach(function(item){
@@ -926,7 +532,7 @@ function recalc() {
 
   var nTbody = document.getElementById("nutrition-tbody");
   nTbody.innerHTML = "";
-  [{name:"タンパク+Aa",val:aaTotal,ratio:protCalRatio},{name:"脂質",val:fatGPerKgDay,ratio:fatCalRatio},{name:"糖質",val:gluGkgDay,ratio:gluCalRatio}].forEach(function(n){
+  [{name:"タンパク+Aa",val:aaTotal,ratio:protCalRatio},{name:"脂質",val:fatTotal,ratio:fatCalRatio},{name:"糖質",val:gluGkgDay,ratio:gluCalRatio}].forEach(function(n){
     var tr = document.createElement("tr");
     tr.innerHTML = '<td>' + n.name + '</td><td>' + fmt(n.val, 2) + '</td><td>' + (eqKcal > 0 ? fmt(n.ratio * 100, 1) + "%" : "—") + '</td>';
     nTbody.appendChild(tr);
@@ -958,50 +564,31 @@ function recalc() {
     tr.innerHTML = '<td colspan="2" style="color:var(--gray-400);text-align:center">補正液なし</td>';
     sTbody.appendChild(tr);
   }
-
   saveState();
 }
 
 function updateResultHeader() {
   var names = lines.map(function(l){ return l.name || 'ライン'; });
-  var label = names.length > 0 ? "輸液組成（" + names.join(" + ") + " + 脂肪）合計" : "輸液組成 合計";
-  document.getElementById("result-header").textContent = label;
+  document.getElementById("result-header").textContent = names.length > 0 ? "輸液組成（" + names.join(" + ") + "）合計" : "輸液組成 合計";
 }
 
 function updateBagHoursEl(lid, bagHours, currentHours) {
-  var el = document.getElementById("bag-" + lid);
-  var btn24 = document.getElementById("btn24-" + lid);
+  var el = document.getElementById("bag-" + lid), btn24 = document.getElementById("btn24-" + lid);
   if (!el || !btn24) return;
   btn24.style.display = Math.abs(currentHours - 24) < 0.05 ? "none" : "inline-block";
-  if (bagHours <= 0) {
-    el.textContent = "1本あたり: — h";
-    el.className = "calc-val";
-    el.onclick = null;
-    el.title = "";
-    return;
-  }
+  if (bagHours <= 0) { el.textContent = "1本あたり: — h"; el.className = "calc-val"; el.onclick = null; el.title = ""; return; }
   var rounded = Math.round(bagHours * 10) / 10;
-  var isSame = Math.abs(rounded - currentHours) < 0.05;
   el.textContent = "1本あたり: " + fmt(bagHours, 1) + " h";
-  if (isSame) {
-    el.className = "calc-val";
-    el.onclick = null;
-    el.title = "";
-  } else {
-    el.className = "calc-val clickable";
-    el.title = "クリックで投与時間を " + fmt(bagHours, 1) + " h に設定";
-    el.onclick = (function(id, h){ return function(){ setHours(id, h); }; })(lid, rounded);
-  }
+  if (Math.abs(rounded - currentHours) < 0.05) { el.className = "calc-val"; el.onclick = null; el.title = ""; }
+  else { el.className = "calc-val clickable"; el.title = "クリックで投与時間を " + fmt(bagHours, 1) + " h に設定"; el.onclick = (function(id,h){ return function(){ setHours(id,h); }; })(lid, rounded); }
 }
 
 function renderLineComp(lid, comp, total, rate, wt) {
-  var grid = document.getElementById("comp-" + lid);
-  if (!grid) return;
+  var grid = document.getElementById("comp-" + lid); if (!grid) return;
   if (total === 0) { grid.innerHTML = '<div style="color:var(--gray-400);font-size:12px;">—</div>'; return; }
-  var gluPct = comp.glu / 10;
   var gir = rate > 0 && wt > 0 ? comp.glu * rate / 60 / wt : 0;
   grid.innerHTML =
-    '<div class="comp-row"><span class="label">ブドウ糖濃度</span><span class="value">' + fmt(gluPct, 1) + '%</span></div>' +
+    '<div class="comp-row"><span class="label">ブドウ糖濃度</span><span class="value">' + fmt(comp.glu / 10, 1) + '%</span></div>' +
     '<div class="comp-row"><span class="label">GIR</span><span class="value">' + fmt(gir, 2) + ' mg/kg/min</span></div>' +
     '<div class="comp-row"><span class="label">Na</span><span class="value">' + fmt(comp.na, 1) + ' mEq/L</span></div>' +
     '<div class="comp-row"><span class="label">K</span><span class="value">' + fmt(comp.k, 1) + ' mEq/L</span></div>' +
@@ -1010,157 +597,105 @@ function renderLineComp(lid, comp, total, rate, wt) {
     '<div class="comp-row"><span class="label">Mg</span><span class="value">' + fmt(comp.mg, 1) + ' mEq/L</span></div>' +
     '<div class="comp-row"><span class="label">P</span><span class="value">' + fmt(comp.p, 0) + ' mg/L</span></div>' +
     '<div class="comp-row"><span class="label">アミノ酸</span><span class="value">' + fmt(comp.aa, 1) + ' g/L</span></div>' +
+    (comp.fat > 0 ? '<div class="comp-row"><span class="label">脂肪</span><span class="value">' + fmt(comp.fat, 1) + ' g/L</span></div>' : '') +
     '<div class="comp-row"><span class="label">重炭酸</span><span class="value">' + fmt(comp.hco3, 1) + ' mEq/L</span></div>' +
     (comp.heparin > 0 ? '<div class="comp-row"><span class="label">ヘパリン</span><span class="value">' + fmt(comp.heparin, 1) + ' 単位/mL</span></div>' : '');
 }
 
 // ===== Settings =====
-function openSettings() {
-  renderSettingsTable();
-  document.getElementById("settings-modal").classList.add("open");
-}
-
-function closeSettings() {
-  document.getElementById("settings-modal").classList.remove("open");
-  renderAllLines();
-  recalc();
-}
+function openSettings() { renderSettingsTable(); document.getElementById("settings-modal").classList.add("open"); }
+function closeSettings() { document.getElementById("settings-modal").classList.remove("open"); renderAllLines(); recalc(); }
 
 function renderSettingsTable() {
   var body = document.getElementById("settings-body");
-  var cols = ["Glu (g/L)","Na","K","Cl","Ca","Mg","P (mg/L)","アミノ酸 (g/L)","重炭酸","ヘパリン (単位/mL)"];
-  var keys = ["glu","na","k","cl","ca","mg","p","aa","hco3","heparin"];
-  var html = '<div class="settings-section">';
-  html += '<div class="settings-section-title">製剤リストと組成 <span style="font-weight:400;font-size:12px;color:var(--gray-500)">(★ = プルダウンに表示)</span></div>';
-  html += '<div style="overflow-x:auto;"><table class="fluid-edit-table"><thead><tr>';
-  html += '<th>★</th><th>製剤名</th><th>デフォルト量(ml)</th>';
-  cols.forEach(function(c){ html += '<th>' + c + '</th>'; });
-  html += '<th></th></tr></thead><tbody>';
+  var cols = ["Glu (g/L)","Na","K","Cl","Ca","Mg","P (mg/L)","アミノ酸 (g/L)","脂肪 (g/L)","重炭酸","ヘパリン (単位/mL)"];
+  var keys = ["glu","na","k","cl","ca","mg","p","aa","fat","hco3","heparin"];
+  var h = '<div class="settings-section">';
+  h += '<div class="settings-section-title">製剤リストと組成 <span style="font-weight:400;font-size:12px;color:var(--gray-500)">(★ = プルダウンに表示)</span></div>';
+  h += '<div style="overflow-x:auto;"><table class="fluid-edit-table"><thead><tr>';
+  h += '<th>★</th><th>製剤名</th><th>デフォルト量(ml)</th>';
+  cols.forEach(function(c){ h += '<th>' + c + '</th>'; });
+  h += '<th></th></tr></thead><tbody>';
   fluids.forEach(function(f, i){
-    html += '<tr>';
-    html += '<td><button class="toggle-btn ' + (f.enabled ? 'on' : 'off') + '" onclick="toggleFluid(' + i + ')">' + (f.enabled ? '★' : '☆') + '</button></td>';
-    html += '<td><input class="name-input" value="' + escHtml(f.name) + '" onchange="updateFluidProp(' + i + ',\'name\',this.value)"></td>';
-    html += '<td><input type="number" value="' + f.defaultVol + '" min="0" onchange="updateFluidProp(' + i + ',\'defaultVol\',parseFloat(this.value)||0)"></td>';
-    keys.forEach(function(k){
-      html += '<td><input type="number" value="' + f[k] + '" step="any" onchange="updateFluidProp(' + i + ',\'' + k + '\',parseFloat(this.value)||0)"></td>';
-    });
-    html += '<td><button class="del-btn" onclick="deleteFluid(' + i + ')" title="削除">&#10005;</button></td>';
-    html += '</tr>';
+    h += '<tr>';
+    h += '<td><button class="toggle-btn ' + (f.enabled ? 'on' : 'off') + '" onclick="toggleFluid(' + i + ')">' + (f.enabled ? '★' : '☆') + '</button></td>';
+    h += '<td><input class="name-input" value="' + escHtml(f.name) + '" onchange="updateFluidProp(' + i + ',\'name\',this.value)"></td>';
+    h += '<td><input type="number" value="' + f.defaultVol + '" min="0" onchange="updateFluidProp(' + i + ',\'defaultVol\',parseFloat(this.value)||0)"></td>';
+    keys.forEach(function(k){ h += '<td><input type="number" value="' + (f[k]||0) + '" step="any" onchange="updateFluidProp(' + i + ',\'' + k + '\',parseFloat(this.value)||0)"></td>'; });
+    h += '<td><button class="del-btn" onclick="deleteFluid(' + i + ')" title="削除">&#10005;</button></td></tr>';
   });
-  html += '</tbody></table></div>';
-  html += '<button class="btn-add-row" onclick="addNewFluid()">＋ 新しい製剤を追加</button></div>';
-  body.innerHTML = html;
+  h += '</tbody></table></div>';
+  h += '<button class="btn-add-row" onclick="addNewFluid()">＋ 新しい製剤を追加</button></div>';
+  body.innerHTML = h;
 }
 
 function toggleFluid(i) { fluids[i].enabled = !fluids[i].enabled; saveFluids(); renderSettingsTable(); }
 function updateFluidProp(i, prop, val) { fluids[i][prop] = val; saveFluids(); }
 function deleteFluid(i) {
-  var name = fluids[i].name;
-  if (!confirm('"' + name + '" を削除しますか？')) return;
-  var fid = fluids[i].id;
-  fluids.splice(i, 1);
+  if (!confirm('"' + fluids[i].name + '" を削除しますか？')) return;
+  var fid = fluids[i].id; fluids.splice(i, 1);
   lines.forEach(function(line){ line.fluids = line.fluids.filter(function(e){ return e.id !== fid; }); });
   saveFluids(); renderSettingsTable();
 }
 function addNewFluid() {
-  var newId = "custom_" + Date.now();
-  fluids.push({ id: newId, name: "新規製剤", defaultVol: 500, enabled: true, glu:0, na:0, k:0, cl:0, ca:0, mg:0, p:0, aa:0, hco3:0, heparin:0 });
-  saveFluids(); renderSettingsTable();
+  var o = { id: "custom_" + Date.now(), name: "新規製剤", defaultVol: 500, enabled: true };
+  COMP_KEYS.forEach(function(k){ o[k] = 0; });
+  fluids.push(o); saveFluids(); renderSettingsTable();
   var tbody = document.querySelector(".fluid-edit-table tbody");
-  if (tbody && tbody.lastElementChild) {
-    var nameInput = tbody.lastElementChild.querySelector(".name-input");
-    if (nameInput) { nameInput.focus(); nameInput.select(); }
-  }
+  if (tbody && tbody.lastElementChild) { var inp = tbody.lastElementChild.querySelector(".name-input"); if (inp) { inp.focus(); inp.select(); } }
 }
 function resetFluidsToDefault() {
   if (!confirm("製剤リストをデフォルトに戻しますか？カスタム製剤も削除されます。")) return;
-  fluids = JSON.parse(JSON.stringify(DEFAULT_FLUIDS));
-  saveFluids();
-  lines.forEach(function(l){ l.fluids = []; });
-  renderSettingsTable(); renderAllLines(); recalc();
+  fluids = JSON.parse(JSON.stringify(DEFAULT_FLUIDS)); saveFluids();
+  lines.forEach(function(l){ l.fluids = []; }); renderSettingsTable(); renderAllLines(); recalc();
 }
 function exportSettings() {
-  var data = JSON.stringify(fluids, null, 2);
-  var blob = new Blob([data], { type: "application/json" });
-  var url = URL.createObjectURL(blob);
-  var a = document.createElement("a"); a.href = url; a.download = "iv-calc-fluids.json"; a.click();
-  URL.revokeObjectURL(url);
+  var blob = new Blob([JSON.stringify(fluids, null, 2)], { type: "application/json" });
+  var url = URL.createObjectURL(blob); var a = document.createElement("a"); a.href = url; a.download = "iv-calc-fluids.json"; a.click(); URL.revokeObjectURL(url);
 }
 function importSettings(event) {
-  var file = event.target.files[0];
-  if (!file) return;
+  var file = event.target.files[0]; if (!file) return;
   var reader = new FileReader();
   reader.onload = function(e) {
-    try {
-      var imported = JSON.parse(e.target.result);
-      if (!Array.isArray(imported)) throw new Error("invalid");
-      fluids = imported; saveFluids(); renderSettingsTable(); renderAllLines(); recalc();
-      alert("インポート完了");
-    } catch(err) { alert("ファイルの形式が正しくありません。"); }
+    try { var imp = JSON.parse(e.target.result); if (!Array.isArray(imp)) throw 0; fluids = imp; saveFluids(); renderSettingsTable(); renderAllLines(); recalc(); alert("インポート完了"); }
+    catch(err) { alert("ファイルの形式が正しくありません。"); }
   };
-  reader.readAsText(file);
-  event.target.value = "";
+  reader.readAsText(file); event.target.value = "";
 }
 
 // ===== Persistence =====
-function saveFluids() {
-  try { localStorage.setItem("iv-calc-fluids", JSON.stringify(fluids)); } catch(e) {}
-}
-function loadFluids() {
-  try { var raw = localStorage.getItem("iv-calc-fluids"); if (raw) fluids = JSON.parse(raw); } catch(e) {}
-}
+function saveFluids() { try { localStorage.setItem("iv-calc-fluids", JSON.stringify(fluids)); } catch(e) {} }
+function loadFluids() { try { var r = localStorage.getItem("iv-calc-fluids"); if (r) { var p = JSON.parse(r); p.forEach(function(f){ if (f.fat === undefined) f.fat = 0; }); fluids = p; } } catch(e) {} }
 function saveState() {
   try {
-    var linesData = lines.map(function(l){
-      return { id: l.id, name: l.name, fluids: l.fluids, rate: l.rate, hours: l.hours };
-    });
     localStorage.setItem("iv-calc-state", JSON.stringify({
       height: document.getElementById("height").value,
       weight: document.getElementById("weight").value,
-      lines: linesData,
+      lines: lines.map(function(l){ return { id:l.id, name:l.name, fluids:l.fluids, rate:l.rate, hours:l.hours }; }),
       nextLineId: nextLineId,
-      fatRate: document.getElementById("fat-rate").value,
-      fatHours: document.getElementById("fat-hours").value,
     }));
   } catch(e) {}
 }
 function loadState() {
   try {
-    var raw = localStorage.getItem("iv-calc-state");
-    if (!raw) return false;
-    var d = JSON.parse(raw);
+    var r = localStorage.getItem("iv-calc-state"); if (!r) return false;
+    var d = JSON.parse(r);
     if (d.height) document.getElementById("height").value = d.height;
     if (d.weight) document.getElementById("weight").value = d.weight;
-    if (d.fatRate) document.getElementById("fat-rate").value = d.fatRate;
-    if (d.fatHours) document.getElementById("fat-hours").value = d.fatHours;
     if (d.nextLineId) nextLineId = d.nextLineId;
     if (d.lines && d.lines.length > 0) {
       lines = d.lines.map(function(l){
-        return {
-          id: l.id,
-          name: l.name || ('ライン ' + (l.id.replace('line_',''))),
-          fluids: l.fluids.filter(function(e){ return getFluidById(e.id); }),
-          rate: l.rate || 0,
-          hours: l.hours != null ? l.hours : 24,
-        };
+        return { id:l.id, name:l.name||('ライン '+(l.id.replace('line_',''))), fluids:l.fluids.filter(function(e){return getFluidById(e.id);}), rate:l.rate||0, hours:l.hours!=null?l.hours:24 };
       });
       return true;
     }
-  } catch(e) {}
-  return false;
+  } catch(e) {} return false;
 }
 
 // ===== Init =====
 document.getElementById("height").addEventListener("input", recalc);
 document.getElementById("weight").addEventListener("input", recalc);
-document.getElementById("fat-rate").addEventListener("input", recalc);
-document.getElementById("fat-hours").addEventListener("input", recalc);
-
-loadFluids();
-var hasState = loadState();
-if (!hasState) addLine();
-renderAllLines();
-recalc();
+loadFluids(); var hasState = loadState(); if (!hasState) addLine(); renderAllLines(); recalc();
 </script>
 </body>
 </html>

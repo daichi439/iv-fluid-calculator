@@ -48,10 +48,11 @@ body {
 }
 .btn-header:hover { background: rgba(255,255,255,.3); }
 .container { max-width: 1200px; margin: 0 auto; padding: 16px; }
+.patient-card { background: #fff; border-radius: var(--radius); box-shadow: var(--shadow); overflow: hidden; margin-bottom: 16px; }
+.patient-card-header { padding: 8px 16px; background: var(--gray-100); font-size: 13px; font-weight: 700; color: var(--gray-600); border-bottom: 1px solid var(--gray-200); }
 .patient-bar {
   display: flex; align-items: center; gap: 16px; flex-wrap: wrap;
-  background: #fff; border-radius: var(--radius); padding: 12px 16px;
-  box-shadow: var(--shadow); margin-bottom: 16px;
+  padding: 12px 16px;
 }
 .patient-bar label { font-size: 13px; font-weight: 600; color: var(--gray-600); display: flex; align-items: center; gap: 6px; }
 .patient-bar input {
@@ -117,6 +118,9 @@ body {
 .comp-row { display: flex; justify-content: space-between; padding: 1px 0; }
 .comp-row .label { color: var(--gray-500); }
 .comp-row .value { font-weight: 600; font-variant-numeric: tabular-nums; }
+.comp-row.alert-warn .label, .comp-row.alert-warn .value { color: var(--danger); font-weight: 700; }
+.alert-row { background: var(--danger-light) !important; }
+.alert-row td { color: var(--danger) !important; font-weight: 700 !important; }
 .flow-inputs { margin-top: 8px; display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
 .flow-inputs label { font-size: 12px; color: var(--gray-600); font-weight: 600; display: flex; align-items: center; gap: 4px; }
 .flow-inputs input {
@@ -225,10 +229,13 @@ body {
 </div>
 
 <div class="container">
-  <div class="patient-bar">
-    <label>身長 <input type="number" id="height" value="" step="0.1" placeholder="cm"> <span class="unit">cm</span></label>
-    <label>体重 <input type="number" id="weight" value="" step="0.1" placeholder="kg"> <span class="unit">kg</span></label>
-    <span class="bsa-display" id="bsa-display">体表面積: — ㎡</span>
+  <div class="patient-card">
+    <div class="patient-card-header">患者情報</div>
+    <div class="patient-bar">
+      <label>身長 <input type="number" id="height" value="" step="0.1" placeholder="cm"> <span class="unit">cm</span></label>
+      <label>体重 <input type="number" id="weight" value="" step="0.1" placeholder="kg"> <span class="unit">kg</span></label>
+      <span class="bsa-display" id="bsa-display">体表面積: — ㎡</span>
+    </div>
   </div>
 
   <div class="lines-grid" id="lines-container"></div>
@@ -323,9 +330,20 @@ function getEnabledFluids() { return fluids.filter(function(f){ return f.enabled
 function getFluidById(id) { return fluids.find(function(f){ return f.id === id; }); }
 function getLineById(lid) { return lines.find(function(l){ return l.id === lid; }); }
 
+function getNextLineName() {
+  var usedNums = {};
+  lines.forEach(function(l) {
+    var m = l.name.match(/^ライン\s*(\d+)$/);
+    if (m) usedNums[parseInt(m[1])] = true;
+  });
+  var n = 1;
+  while (usedNums[n]) n++;
+  return 'ライン ' + n;
+}
+
 function addLine() {
   var lid = 'line_' + nextLineId;
-  lines.push({ id: lid, name: 'ライン ' + nextLineId, fluids: [], rate: 0, hours: 24 });
+  lines.push({ id: lid, name: getNextLineName(), fluids: [], rate: 0, hours: 24 });
   nextLineId++;
   renderAllLines();
   recalc();
@@ -519,14 +537,18 @@ function recalc() {
     var conc = totalRateAll > 0 ? weightedComp[item.key] / totalRateAll : 0;
     var day = dayAmounts[item.key] / 1000;
     var kg = wt > 0 ? day / wt : 0;
+    var isAlert = false;
+    if (item.key === "k") isAlert = conc > 40 || day > 100;
     var tr = document.createElement("tr");
-    tr.innerHTML = '<td>' + item.name + '</td><td>' + fmt(conc) + ' ' + item.cu + '</td><td>' + fmt(day) + ' ' + item.du + '</td><td>' + fmt(kg) + ' ' + item.ku + '</td>';
+    if (isAlert) tr.className = "alert-row";
+    tr.innerHTML = '<td>' + item.name + (isAlert ? ' &#9888;' : '') + '</td><td>' + fmt(conc) + ' ' + item.cu + '</td><td>' + fmt(day) + ' ' + item.du + '</td><td>' + fmt(kg) + ' ' + item.ku + '</td>';
     eTbody.appendChild(tr);
   });
   var hepConc = totalRateAll > 0 ? weightedComp.heparin / totalRateAll : 0;
   if (hepConc > 0) {
     var tr = document.createElement("tr");
-    tr.innerHTML = '<td>ヘパリン</td><td>' + fmt(hepConc) + ' 単位/mL</td><td>—</td><td>—</td>';
+    if (hepConc > 1.1) tr.className = "alert-row";
+    tr.innerHTML = '<td>ヘパリン' + (hepConc > 1.1 ? ' &#9888;' : '') + '</td><td>' + fmt(hepConc) + ' 単位/mL</td><td>—</td><td>—</td>';
     eTbody.appendChild(tr);
   }
 
@@ -591,7 +613,7 @@ function renderLineComp(lid, comp, total, rate, wt) {
     '<div class="comp-row"><span class="label">ブドウ糖濃度</span><span class="value">' + fmt(comp.glu / 10, 1) + '%</span></div>' +
     '<div class="comp-row"><span class="label">GIR</span><span class="value">' + fmt(gir, 2) + ' mg/kg/min</span></div>' +
     '<div class="comp-row"><span class="label">Na</span><span class="value">' + fmt(comp.na, 1) + ' mEq/L</span></div>' +
-    '<div class="comp-row"><span class="label">K</span><span class="value">' + fmt(comp.k, 1) + ' mEq/L</span></div>' +
+    '<div class="comp-row' + (comp.k > 40 ? ' alert-warn' : '') + '"><span class="label">K</span><span class="value">' + fmt(comp.k, 1) + ' mEq/L' + (comp.k > 40 ? ' &#9888;' : '') + '</span></div>' +
     '<div class="comp-row"><span class="label">Cl</span><span class="value">' + fmt(comp.cl, 1) + ' mEq/L</span></div>' +
     '<div class="comp-row"><span class="label">Ca</span><span class="value">' + fmt(comp.ca, 1) + ' mEq/L</span></div>' +
     '<div class="comp-row"><span class="label">Mg</span><span class="value">' + fmt(comp.mg, 1) + ' mEq/L</span></div>' +
@@ -599,7 +621,7 @@ function renderLineComp(lid, comp, total, rate, wt) {
     '<div class="comp-row"><span class="label">アミノ酸</span><span class="value">' + fmt(comp.aa, 1) + ' g/L</span></div>' +
     (comp.fat > 0 ? '<div class="comp-row"><span class="label">脂肪</span><span class="value">' + fmt(comp.fat, 1) + ' g/L</span></div>' : '') +
     '<div class="comp-row"><span class="label">重炭酸</span><span class="value">' + fmt(comp.hco3, 1) + ' mEq/L</span></div>' +
-    (comp.heparin > 0 ? '<div class="comp-row"><span class="label">ヘパリン</span><span class="value">' + fmt(comp.heparin, 1) + ' 単位/mL</span></div>' : '');
+    (comp.heparin > 0 ? '<div class="comp-row' + (comp.heparin > 1.1 ? ' alert-warn' : '') + '"><span class="label">ヘパリン</span><span class="value">' + fmt(comp.heparin, 1) + ' 単位/mL' + (comp.heparin > 1.1 ? ' &#9888;' : '') + '</span></div>' : '');
 }
 
 // ===== Settings =====
@@ -665,7 +687,21 @@ function importSettings(event) {
 
 // ===== Persistence =====
 function saveFluids() { try { localStorage.setItem("iv-calc-fluids", JSON.stringify(fluids)); } catch(e) {} }
-function loadFluids() { try { var r = localStorage.getItem("iv-calc-fluids"); if (r) { var p = JSON.parse(r); p.forEach(function(f){ if (f.fat === undefined) f.fat = 0; }); fluids = p; } } catch(e) {} }
+function loadFluids() {
+  try {
+    var r = localStorage.getItem("iv-calc-fluids");
+    if (r) {
+      var p = JSON.parse(r);
+      p.forEach(function(f){ COMP_KEYS.forEach(function(k){ if (f[k] === undefined) f[k] = 0; }); });
+      var savedIds = {};
+      p.forEach(function(f){ savedIds[f.id] = true; });
+      DEFAULT_FLUIDS.forEach(function(df){
+        if (!savedIds[df.id]) p.push(JSON.parse(JSON.stringify(df)));
+      });
+      fluids = p;
+    }
+  } catch(e) {}
+}
 function saveState() {
   try {
     localStorage.setItem("iv-calc-state", JSON.stringify({

@@ -71,8 +71,7 @@ body {
 .btn-header:hover { background: rgba(255,255,255,.25); border-color: rgba(255,255,255,.45); box-shadow: 0 2px 12px rgba(255,255,255,.1); }
 .container { max-width: 1200px; margin: 0 auto; padding: 16px; }
 .patient-card { background: #fff; border-radius: var(--radius-lg); box-shadow: var(--shadow-md); overflow: hidden; margin-bottom: 20px; border: none; position: relative; }
-.patient-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, #0891b2, #22d3ee, #06b6d4); border-radius: var(--radius-lg) var(--radius-lg) 0 0; }
-.patient-card-header { padding: 14px 20px; font-size: 15px; font-weight: 700; color: #0e7490; border-bottom: 2px solid var(--gray-100); background: linear-gradient(135deg, #f0f9ff, #ecfeff); border-left: 4px solid #06b6d4; }
+.patient-card-header { padding: 14px 20px; font-size: 15px; font-weight: 700; color: #fff; border-bottom: 2px solid var(--gray-100); background: linear-gradient(135deg, #0c4a6e, #0e7490); border-left: none; }
 .patient-bar { display: flex; align-items: center; gap: 24px; flex-wrap: wrap; padding: 16px 24px; }
 .patient-bar label { font-size: 13px; font-weight: 600; color: var(--gray-600); display: flex; align-items: center; gap: 6px; }
 .patient-bar input { width: 70px; padding: 6px 10px; border: 1.5px solid var(--gray-200); border-radius: var(--radius-sm); font-size: 14px; text-align: right; background: #fff; transition: border-color .2s, box-shadow .2s; }
@@ -132,7 +131,7 @@ body {
 .mode-toggle button.active { background: linear-gradient(135deg, #0891b2, #06b6d4); color: #fff; }
 .flow-row { margin-top: 12px; display: flex; gap: 14px; align-items: center; flex-wrap: wrap; }
 .flow-row label { font-size: 13px; color: var(--gray-600); font-weight: 600; display: flex; align-items: center; gap: 4px; }
-.flow-row input { width: 50px; padding: 5px 7px; border: 1.5px solid var(--gray-200); border-radius: var(--radius-sm); font-size: 13px; text-align: right; background: #fff; transition: border-color .2s, box-shadow .2s; }
+.flow-row input { width: 65px; padding: 5px 7px; border: 1.5px solid var(--gray-200); border-radius: var(--radius-sm); font-size: 13px; text-align: right; background: #fff; transition: border-color .2s, box-shadow .2s; }
 .flow-row input:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(8,145,178,.12); }
 .flow-row .unit { font-size: 11px; color: var(--gray-500); }
 .flow-row .calc-val { font-size: 12px; color: var(--gray-600); background: var(--gray-100); padding: 2px 8px; border-radius: 4px; }
@@ -192,11 +191,11 @@ body {
 .result-detail { margin-top: 16px; }
 .result-detail-title { font-size: 14px; font-weight: 700; color: var(--gray-700); margin-bottom: 10px; padding-bottom: 6px; border-bottom: 2px solid var(--iv); display: inline-block; }
 .detail-table { width: 100%; border-collapse: collapse; font-size: 13px; }
-.detail-table th, .detail-table td { padding: 8px 12px; text-align: left; border-bottom: 1px solid var(--gray-200); }
+.detail-table th, .detail-table td { padding: 8px 4px; text-align: left; border-bottom: 1px solid var(--gray-200); }
 .detail-table th { font-weight: 600; color: var(--gray-500); font-size: 13px; background: var(--gray-50); }
 .detail-table td { font-variant-numeric: tabular-nums; }
-.detail-table td:not(:first-child) { text-align: right; }
-.detail-table th:not(:first-child) { text-align: right; }
+.detail-table td.val { text-align: right; padding-right: 2px; width: 70px; }
+.detail-table td.unit { text-align: left; padding-left: 4px; color: var(--gray-500); font-size: 12px; width: 90px; }
 .nutrition-table { width: 100%; border-collapse: collapse; font-size: 13px; margin-top: 8px; }
 .nutrition-table th, .nutrition-table td { padding: 8px 12px; border-bottom: 1px solid var(--gray-200); }
 .nutrition-table th { text-align: left; font-weight: 600; color: var(--gray-500); font-size: 13px; background: var(--gray-50); }
@@ -317,14 +316,14 @@ body {
       <div class="result-grid" id="result-summary"></div>
       <div class="summary-grid">
         <div class="result-detail"><div class="result-detail-title">電解質・成分 詳細</div>
-          <table class="detail-table"><thead><tr><th>成分</th><th>1日投与量</th><th>投与量/kg/day</th></tr></thead><tbody id="electrolyte-tbody"></tbody></table></div>
+          <table class="detail-table"><thead><tr><th>成分</th><th colspan="2" style="text-align:center">1日投与量</th><th colspan="2" style="text-align:center">投与量/kg/day</th></tr></thead><tbody id="electrolyte-tbody"></tbody></table></div>
         <div class="result-detail" id="nutrition-section"><div class="result-detail-title">栄養組成</div>
           <table class="nutrition-table"><thead><tr><th>成分</th><th>投与量 (g/kg/day)</th><th>カロリー比</th></tr></thead><tbody id="nutrition-tbody"></tbody></table></div>
       </div>
     </div>
   </div>
 </div>
-<div class="footer">輸液・経腸栄養 組成計算シート — 臨床参考用（処方は必ず医師の判断に基づいてください）</div>
+<div class="footer">輸液・経腸栄養 組成計算シート — Department of Pediatrics, Graduate School of Medicine, Gifu University</div>
 <div class="modal-overlay" id="settings-modal">
   <div class="modal">
     <div class="modal-header"><h2>製剤リスト設定</h2><button class="modal-close" onclick="closeSettings()">&#10005;</button></div>
@@ -708,7 +707,7 @@ function recalc(){
   var wt=parseFloat(document.getElementById('weight').value)||0;
   var ht=parseFloat(document.getElementById('height').value)||0;
   var bsa=ht>0&&wt>0?Math.sqrt(ht*wt/3600):0;
-  document.getElementById('bsa-display').textContent=bsa>0?'体表面積: '+fmt(bsa,4)+' ㎡':'体表面積: — ㎡';
+  document.getElementById('bsa-display').textContent=bsa>0?'体表面積: '+fmt(bsa,2)+' ㎡':'体表面積: — ㎡';
 
   var totalFreeWater=0,ivWater=0,enFreeWater=0,enTotalVol=0,dayAmt={},ivDayGlu=0,enKcal=0,ivKcal=0;
   COMP_KEYS.forEach(function(k){dayAmt[k]=0});
@@ -831,7 +830,7 @@ function recalc(){
 
   ivKcal=tK-enKcal;
   var waterSub=wt>0?fmt(totalFreeWater/wt,1)+' ml/kg/day':'—';
-  if(bsa>0)waterSub+=' / '+fmt(totalFreeWater/bsa,0)+' ml/㎡/day';
+  if(bsa>0)waterSub+='&emsp;&emsp;'+fmt(totalFreeWater/bsa,0)+' ml/㎡/day';
   if(hasIV&&hasEN)waterSub+='<br>IV: '+fmt(ivWater,0)+' mL / 経腸(自由水): '+fmt(enFreeWater,0)+' mL';
 
   var calSub=fmt(tK,0)+' kcal/day';
@@ -854,9 +853,9 @@ function recalc(){
   eItems.forEach(function(i){
     var day=dayAmt[i.k]/1000,kg=wt>0?day/wt:0;
     var tr=document.createElement('tr');
-    tr.innerHTML='<td>'+i.n+'</td><td>'+fmt(day)+' '+i.du+'</td><td>'+fmt(kg)+' '+i.ku+'</td>';eT.appendChild(tr)});
+    tr.innerHTML='<td>'+i.n+'</td><td class="val">'+fmt(day)+'</td><td class="unit">'+i.du+'</td><td class="val">'+fmt(kg)+'</td><td class="unit">'+i.ku+'</td>';eT.appendChild(tr)});
   var hDay=dayAmt.heparin/1000;
-  if(hDay>0){var tr=document.createElement('tr');tr.innerHTML='<td>ヘパリン</td><td>'+fmt(hDay,0)+' 単位/day</td><td>'+(wt>0?fmt(hDay/wt,1)+' 単位/kg/day':'—')+'</td>';eT.appendChild(tr)}
+  if(hDay>0){var tr=document.createElement('tr');tr.innerHTML='<td>ヘパリン</td><td class="val">'+fmt(hDay,0)+'</td><td class="unit">単位/day</td><td class="val">'+(wt>0?fmt(hDay/wt,1):'—')+'</td><td class="unit">単位/kg/day</td>';eT.appendChild(tr)}
 
   // Nutrition
   var nSec=document.getElementById('nutrition-section'),nT=document.getElementById('nutrition-tbody');

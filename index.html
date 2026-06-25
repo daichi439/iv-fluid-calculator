@@ -558,6 +558,20 @@ function recalc() {
     tr.innerHTML = '<td>ヘパリン' + (hepConc > 1.1 ? ' &#9888;' : '') + '</td><td>' + fmt(hepConc) + ' 単位/mL</td><td>—</td><td>—</td>';
     eTbody.appendChild(tr);
   }
+  if (totalRateAll > 0) {
+    var totalComp = {};
+    COMP_KEYS.forEach(function(k){ totalComp[k] = weightedComp[k] / totalRateAll; });
+    var totalOsm = calcOsm(totalComp);
+    var totalCaP = calcCaP(totalComp);
+    var trOsm = document.createElement("tr");
+    if (totalOsm > 900) trOsm.className = "alert-row";
+    trOsm.innerHTML = '<td>浸透圧（推定）' + (totalOsm > 900 ? ' &#9888;' : '') + '</td><td>' + fmt(totalOsm, 0) + ' mOsm/L</td><td colspan="2" style="color:var(--gray-400);text-align:right">' + (totalOsm > 900 ? '末梢静脈の上限超過' : '') + '</td>';
+    eTbody.appendChild(trOsm);
+    var trCaP = document.createElement("tr");
+    if (totalCaP > 72) trCaP.className = "alert-row";
+    trCaP.innerHTML = '<td>Ca×P積' + (totalCaP > 72 ? ' &#9888;' : '') + '</td><td>' + fmt(totalCaP, 1) + '</td><td colspan="2" style="color:var(--gray-400);text-align:right">' + (totalCaP > 72 ? '沈殿リスク（>72）' : '') + '</td>';
+    eTbody.appendChild(trCaP);
+  }
 
   var nTbody = document.getElementById("nutrition-tbody");
   nTbody.innerHTML = "";
@@ -618,6 +632,16 @@ function compRow(label, value, alertLevel) {
   return '<div class="comp-row' + cls + '"><span class="label">' + label + '</span><span class="value">' + value + icon + '</span></div>';
 }
 
+function calcOsm(comp) {
+  return comp.na + comp.k + comp.cl + comp.ca / 2 + comp.mg / 2 + comp.hco3 + comp.glu * 5.56 + (comp.aa || 0) * 10 + (comp.fat || 0) * 0.7;
+}
+
+function calcCaP(comp) {
+  var caMmol = comp.ca / 2;
+  var pMmol = comp.p / 31;
+  return caMmol * pMmol;
+}
+
 function renderLineComp(lid, comp, total, rate, wt) {
   var grid = document.getElementById("comp-" + lid); if (!grid) return;
   if (total === 0) { grid.innerHTML = '<div style="color:var(--gray-400);font-size:12px;">—</div>'; return; }
@@ -626,6 +650,9 @@ function renderLineComp(lid, comp, total, rate, wt) {
   if (comp.fat > 0) extraItems.push(compRow('脂肪', fmt(comp.fat, 1) + ' g/L'));
   if (comp.heparin > 0) extraItems.push(compRow('ヘパリン', fmt(comp.heparin, 1) + ' 単位/mL', comp.heparin > 1.1 ? 'warn' : null));
   var gluPct = comp.glu / 10;
+  var osm = calcOsm(comp);
+  var caP = calcCaP(comp);
+  var caPAlert = caP > 72 ? 'warn' : null;
   grid.innerHTML =
     '<div class="comp-row-group cols-3">' +
       compRow('ブドウ糖濃度', fmt(gluPct, 1) + '%', gluPct > 12.5 ? 'info' : null) +
@@ -647,7 +674,12 @@ function renderLineComp(lid, comp, total, rate, wt) {
       compRow('重炭酸', fmt(comp.hco3, 1) + ' mEq/L') +
       '<div></div>' +
     '</div>' +
-    (extraItems.length > 0 ? '<div class="comp-row-group cols-3">' + extraItems.join('') + '<div></div>'.repeat(3 - extraItems.length) + '</div>' : '');
+    (extraItems.length > 0 ? '<div class="comp-row-group cols-3">' + extraItems.join('') + '<div></div>'.repeat(3 - extraItems.length) + '</div>' : '') +
+    '<div class="comp-row-group cols-3">' +
+      compRow('浸透圧', fmt(osm, 0) + ' mOsm/L', osm > 900 ? 'info' : null) +
+      compRow('Ca×P積', fmt(caP, 1), caPAlert) +
+      '<div></div>' +
+    '</div>';
 }
 
 // ===== Settings =====

@@ -1,0 +1,1124 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>輸液組成計算シート</title>
+<style>
+:root {
+  --primary: #2563eb;
+  --primary-light: #dbeafe;
+  --primary-dark: #1d4ed8;
+  --success: #059669;
+  --success-light: #d1fae5;
+  --warning: #d97706;
+  --warning-light: #fef3c7;
+  --danger: #dc2626;
+  --danger-light: #fee2e2;
+  --gray-50: #f8fafc;
+  --gray-100: #f1f5f9;
+  --gray-200: #e2e8f0;
+  --gray-300: #cbd5e1;
+  --gray-400: #94a3b8;
+  --gray-500: #64748b;
+  --gray-600: #475569;
+  --gray-700: #334155;
+  --gray-800: #1e293b;
+  --radius: 8px;
+  --shadow: 0 1px 3px rgba(0,0,0,.1), 0 1px 2px rgba(0,0,0,.06);
+  --shadow-md: 0 4px 6px rgba(0,0,0,.07), 0 2px 4px rgba(0,0,0,.06);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Hiragino Sans', 'Noto Sans JP', sans-serif;
+  background: var(--gray-100);
+  color: var(--gray-800);
+  line-height: 1.5;
+  min-height: 100vh;
+}
+.header {
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  color: #fff;
+  padding: 16px 24px;
+  box-shadow: var(--shadow-md);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.header-left h1 { font-size: 20px; font-weight: 700; }
+.header-left p { font-size: 13px; opacity: .85; margin-top: 2px; }
+.header-right { display: flex; gap: 8px; }
+.btn-header {
+  padding: 6px 14px;
+  border: 1px solid rgba(255,255,255,.4);
+  border-radius: 4px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  background: rgba(255,255,255,.15);
+  color: #fff;
+  transition: background .15s;
+}
+.btn-header:hover { background: rgba(255,255,255,.3); }
+.container { max-width: 1200px; margin: 0 auto; padding: 16px; }
+.patient-bar {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  background: #fff;
+  border-radius: var(--radius);
+  padding: 12px 16px;
+  box-shadow: var(--shadow);
+  margin-bottom: 16px;
+}
+.patient-bar label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--gray-600);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.patient-bar input {
+  width: 70px;
+  padding: 4px 8px;
+  border: 1px solid var(--gray-300);
+  border-radius: 4px;
+  font-size: 14px;
+  text-align: right;
+  background: var(--warning-light);
+}
+.patient-bar input:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 2px var(--primary-light); }
+.patient-bar .unit { font-size: 13px; color: var(--gray-500); }
+.patient-bar .bsa-display {
+  font-size: 13px;
+  color: var(--gray-600);
+  background: var(--gray-100);
+  padding: 4px 10px;
+  border-radius: 4px;
+}
+.lines-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+@media (max-width: 860px) {
+  .lines-grid { grid-template-columns: 1fr; }
+}
+.card {
+  background: #fff;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+.card-header {
+  padding: 10px 16px;
+  font-weight: 700;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.card-header.tpn1 { background: var(--primary-light); color: var(--primary-dark); }
+.card-header.tpn2 { background: var(--success-light); color: var(--success); }
+.card-header.fat { background: var(--warning-light); color: var(--warning); }
+.card-header.result { background: var(--gray-800); color: #fff; }
+.card-body { padding: 12px 16px; }
+
+.fluid-list { display: flex; flex-direction: column; gap: 6px; }
+.fluid-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 8px;
+  background: var(--gray-50);
+  border-radius: 4px;
+  border: 1px solid var(--gray-200);
+}
+.fluid-item .fluid-name {
+  flex: 1;
+  font-size: 13px;
+  font-weight: 500;
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.fluid-item input {
+  width: 65px;
+  padding: 3px 6px;
+  border: 1px solid var(--gray-300);
+  border-radius: 4px;
+  font-size: 13px;
+  text-align: right;
+  background: var(--warning-light);
+}
+.fluid-item input:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 2px var(--primary-light); }
+.fluid-item .unit { font-size: 12px; color: var(--gray-500); min-width: 20px; }
+
+.fluid-selector {
+  margin-top: 4px;
+}
+.fluid-selector select {
+  width: 100%;
+  padding: 6px 8px;
+  border: 1px dashed var(--gray-300);
+  border-radius: 4px;
+  font-size: 13px;
+  background: #fff;
+  color: var(--gray-500);
+  cursor: pointer;
+}
+.fluid-selector select:focus { outline: none; border-color: var(--primary); border-style: solid; }
+
+.btn {
+  padding: 6px 14px;
+  border: none;
+  border-radius: 4px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background .15s;
+}
+.btn-primary { background: var(--primary); color: #fff; }
+.btn-primary:hover { background: var(--primary-dark); }
+.btn-danger { background: var(--danger-light); color: var(--danger); }
+.btn-danger:hover { background: #fecaca; }
+.btn-sm { padding: 2px 8px; font-size: 12px; }
+
+.line-summary {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid var(--gray-200);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 13px;
+}
+.line-summary .total { font-weight: 700; }
+.line-comp {
+  margin-top: 8px;
+  padding: 8px;
+  background: var(--gray-50);
+  border-radius: 4px;
+  font-size: 12px;
+}
+.line-comp-title {
+  font-weight: 700;
+  font-size: 13px;
+  margin-bottom: 4px;
+  color: var(--gray-700);
+}
+.comp-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 2px 12px;
+}
+.comp-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 1px 0;
+}
+.comp-row .label { color: var(--gray-500); }
+.comp-row .value { font-weight: 600; font-variant-numeric: tabular-nums; }
+.flow-inputs {
+  margin-top: 8px;
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.flow-inputs label {
+  font-size: 12px;
+  color: var(--gray-600);
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.flow-inputs input {
+  width: 55px;
+  padding: 3px 6px;
+  border: 1px solid var(--gray-300);
+  border-radius: 4px;
+  font-size: 13px;
+  text-align: right;
+  background: var(--warning-light);
+}
+.flow-inputs input:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 2px var(--primary-light); }
+.flow-inputs .unit { font-size: 12px; color: var(--gray-500); }
+.flow-inputs .calc-val {
+  font-size: 12px;
+  color: var(--gray-600);
+  background: var(--gray-100);
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+.result-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 8px;
+}
+.result-box {
+  padding: 10px 12px;
+  background: var(--gray-50);
+  border-radius: 6px;
+  border: 1px solid var(--gray-200);
+}
+.result-box .r-title {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--gray-500);
+  text-transform: uppercase;
+  letter-spacing: .3px;
+  margin-bottom: 4px;
+}
+.result-box .r-value {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--gray-800);
+  font-variant-numeric: tabular-nums;
+}
+.result-box .r-unit {
+  font-size: 12px;
+  color: var(--gray-500);
+  font-weight: 400;
+}
+.result-box.highlight { border-color: var(--primary); background: var(--primary-light); }
+.result-box.highlight .r-value { color: var(--primary-dark); }
+.result-detail { margin-top: 12px; }
+.result-detail-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--gray-700);
+  margin-bottom: 8px;
+}
+.detail-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+.detail-table th, .detail-table td {
+  padding: 6px 10px;
+  text-align: left;
+  border-bottom: 1px solid var(--gray-200);
+}
+.detail-table th {
+  font-weight: 600;
+  color: var(--gray-500);
+  font-size: 12px;
+  background: var(--gray-50);
+}
+.detail-table td { font-variant-numeric: tabular-nums; }
+.detail-table td:not(:first-child) { text-align: right; }
+.detail-table th:not(:first-child) { text-align: right; }
+.fat-inputs {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.fat-inputs label {
+  font-size: 12px;
+  color: var(--gray-600);
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.fat-inputs input {
+  width: 55px;
+  padding: 3px 6px;
+  border: 1px solid var(--gray-300);
+  border-radius: 4px;
+  font-size: 13px;
+  text-align: right;
+  background: var(--warning-light);
+}
+.fat-inputs input:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 2px var(--primary-light); }
+.fat-inputs .unit { font-size: 12px; color: var(--gray-500); }
+.fat-note {
+  font-size: 12px;
+  color: var(--gray-500);
+  margin-top: 6px;
+}
+.nutrition-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  margin-top: 8px;
+}
+.nutrition-table th, .nutrition-table td {
+  padding: 5px 10px;
+  border-bottom: 1px solid var(--gray-200);
+}
+.nutrition-table th {
+  text-align: left;
+  font-weight: 600;
+  color: var(--gray-500);
+  font-size: 12px;
+  background: var(--gray-50);
+}
+.nutrition-table td { font-variant-numeric: tabular-nums; }
+.nutrition-table td:not(:first-child) { text-align: right; }
+.nutrition-table th:not(:first-child) { text-align: right; }
+.footer {
+  text-align: center;
+  padding: 16px;
+  font-size: 12px;
+  color: var(--gray-400);
+}
+
+/* Modal */
+.modal-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.5);
+  z-index: 1000;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 40px 16px;
+  overflow-y: auto;
+}
+.modal-overlay.open { display: flex; }
+.modal {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 20px 60px rgba(0,0,0,.2);
+  width: 100%;
+  max-width: 800px;
+  max-height: calc(100vh - 80px);
+  display: flex;
+  flex-direction: column;
+}
+.modal-header {
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--gray-200);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-shrink: 0;
+}
+.modal-header h2 { font-size: 16px; font-weight: 700; }
+.modal-close {
+  width: 28px;
+  height: 28px;
+  border: none;
+  background: var(--gray-100);
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  color: var(--gray-500);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.modal-close:hover { background: var(--gray-200); }
+.modal-body {
+  padding: 16px 20px;
+  overflow-y: auto;
+  flex: 1;
+}
+.modal-footer {
+  padding: 12px 20px;
+  border-top: 1px solid var(--gray-200);
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.settings-section {
+  margin-bottom: 20px;
+}
+.settings-section-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--gray-700);
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.fluid-edit-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+}
+.fluid-edit-table th, .fluid-edit-table td {
+  padding: 4px 4px;
+  border: 1px solid var(--gray-200);
+  text-align: center;
+}
+.fluid-edit-table th {
+  background: var(--gray-100);
+  font-weight: 600;
+  color: var(--gray-600);
+  font-size: 11px;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+.fluid-edit-table td:first-child { text-align: left; font-weight: 500; }
+.fluid-edit-table input {
+  width: 100%;
+  min-width: 45px;
+  padding: 2px 4px;
+  border: 1px solid var(--gray-200);
+  border-radius: 3px;
+  font-size: 12px;
+  text-align: right;
+  background: #fff;
+}
+.fluid-edit-table input:focus { outline: none; border-color: var(--primary); }
+.fluid-edit-table input.name-input { text-align: left; min-width: 100px; }
+.fluid-edit-table .del-btn {
+  width: 22px;
+  height: 22px;
+  border: none;
+  background: var(--danger-light);
+  color: var(--danger);
+  border-radius: 3px;
+  cursor: pointer;
+  font-size: 11px;
+}
+.fluid-edit-table .del-btn:hover { background: #fecaca; }
+.fluid-edit-table .toggle-btn {
+  width: 22px;
+  height: 22px;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  font-size: 13px;
+  line-height: 1;
+}
+.fluid-edit-table .toggle-btn.on { background: var(--success-light); color: var(--success); }
+.fluid-edit-table .toggle-btn.off { background: var(--gray-200); color: var(--gray-400); }
+
+.btn-add-row {
+  margin-top: 8px;
+  padding: 6px 12px;
+  border: 1px dashed var(--gray-300);
+  border-radius: 4px;
+  background: #fff;
+  color: var(--gray-500);
+  font-size: 13px;
+  cursor: pointer;
+  width: 100%;
+}
+.btn-add-row:hover { border-color: var(--primary); color: var(--primary); }
+
+.settings-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 12px;
+}
+.btn-outline {
+  padding: 6px 14px;
+  border: 1px solid var(--gray-300);
+  border-radius: 4px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  background: #fff;
+  color: var(--gray-600);
+}
+.btn-outline:hover { border-color: var(--gray-400); }
+.btn-outline.danger { border-color: var(--danger); color: var(--danger); }
+.btn-outline.danger:hover { background: var(--danger-light); }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-left">
+    <h1>輸液組成計算シート</h1>
+    <p>輸液を選択すると自動で追加されます。量を調整して組成を確認できます。</p>
+  </div>
+  <div class="header-right">
+    <button class="btn-header" onclick="openSettings()">&#9881; 製剤設定</button>
+  </div>
+</div>
+
+<div class="container">
+  <div class="patient-bar">
+    <label>身長 <input type="number" id="height" value="" step="0.1" placeholder="cm"> <span class="unit">cm</span></label>
+    <label>体重 <input type="number" id="weight" value="" step="0.1" placeholder="kg"> <span class="unit">kg</span></label>
+    <span class="bsa-display" id="bsa-display">体表面積: — ㎡</span>
+  </div>
+
+  <div class="lines-grid">
+    <div class="card">
+      <div class="card-header tpn1"><span>TPN1（メインライン）</span></div>
+      <div class="card-body">
+        <div class="fluid-list" id="list-tpn1"></div>
+        <div class="flow-inputs">
+          <label>流量 <input type="number" id="rate-tpn1" value="" step="0.1" placeholder="ml/h"> <span class="unit">ml/h</span></label>
+          <label>投与時間 <input type="number" id="hours-tpn1" value="24" step="1"> <span class="unit">h</span></label>
+          <span class="calc-val" id="bag-hours-tpn1">1本あたり: — h</span>
+        </div>
+        <div class="line-summary">
+          <span class="total" id="total-tpn1">合計: 0 ml</span>
+        </div>
+        <div class="line-comp" id="comp-tpn1">
+          <div class="line-comp-title">ルート内組成</div>
+          <div class="comp-grid" id="comp-grid-tpn1"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header tpn2"><span>TPN2（側管・サブライン）</span></div>
+      <div class="card-body">
+        <div class="fluid-list" id="list-tpn2"></div>
+        <div class="flow-inputs">
+          <label>流量 <input type="number" id="rate-tpn2" value="" step="0.1" placeholder="ml/h"> <span class="unit">ml/h</span></label>
+          <label>投与時間 <input type="number" id="hours-tpn2" value="24" step="1"> <span class="unit">h</span></label>
+          <span class="calc-val" id="bag-hours-tpn2">1本あたり: — h</span>
+        </div>
+        <div class="line-summary">
+          <span class="total" id="total-tpn2">合計: 0 ml</span>
+        </div>
+        <div class="line-comp" id="comp-tpn2">
+          <div class="line-comp-title">ルート内組成</div>
+          <div class="comp-grid" id="comp-grid-tpn2"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-bottom: 16px;">
+    <div class="card-header fat">脂肪乳剤</div>
+    <div class="card-body">
+      <div class="fat-inputs">
+        <label>20%イントラリポス</label>
+        <label>投与速度 <input type="number" id="fat-rate" value="" step="0.1" placeholder="ml/h"> <span class="unit">ml/h</span></label>
+        <label>投与時間 <input type="number" id="fat-hours" value="" step="0.5" placeholder="h"> <span class="unit">h</span></label>
+        <span class="calc-val" id="fat-total">投与量: 0 ml</span>
+      </div>
+      <div class="fat-note">20g/100ml（約200kcal/100ml） — 体重1kgあたり1日脂肪として2g（本剤10ml）以内を投与</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header result">輸液組成（TPN1 + TPN2 + 脂肪）合計</div>
+    <div class="card-body">
+      <div class="result-grid" id="result-summary"></div>
+      <div class="result-detail">
+        <div class="result-detail-title">電解質・成分 詳細</div>
+        <table class="detail-table">
+          <thead><tr><th>成分</th><th>ルート内濃度</th><th>1日投与量</th><th>投与量/kg/day</th></tr></thead>
+          <tbody id="electrolyte-tbody"></tbody>
+        </table>
+      </div>
+      <div class="result-detail" style="margin-top: 16px;">
+        <div class="result-detail-title">栄養組成</div>
+        <table class="nutrition-table">
+          <thead><tr><th>成分</th><th>投与量 (g/kg/day)</th><th>カロリー比</th></tr></thead>
+          <tbody id="nutrition-tbody"></tbody>
+        </table>
+      </div>
+      <div class="result-detail" style="margin-top: 16px;">
+        <div class="result-detail-title">補正液 投与量</div>
+        <table class="detail-table">
+          <thead><tr><th>薬剤</th><th>投与量 (ml/kg/day)</th></tr></thead>
+          <tbody id="supplement-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="footer">輸液組成計算シート — 臨床参考用（処方は必ず医師の判断に基づいてください）</div>
+
+<!-- Settings Modal -->
+<div class="modal-overlay" id="settings-modal">
+  <div class="modal">
+    <div class="modal-header">
+      <h2>製剤リスト設定</h2>
+      <button class="modal-close" onclick="closeSettings()">&#10005;</button>
+    </div>
+    <div class="modal-body" id="settings-body"></div>
+    <div class="modal-footer">
+      <div class="settings-actions" style="margin-top:0;flex:1;">
+        <button class="btn-outline danger" onclick="resetFluidsToDefault()">デフォルトに戻す</button>
+        <button class="btn-outline" onclick="exportSettings()">設定をエクスポート</button>
+        <button class="btn-outline" onclick="document.getElementById('import-file').click()">設定をインポート</button>
+        <input type="file" id="import-file" accept=".json" style="display:none" onchange="importSettings(event)">
+      </div>
+      <button class="btn btn-primary" onclick="closeSettings()">閉じる</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const DEFAULT_FLUIDS = [
+  { id: "ns", name: "生理食塩液", defaultVol: 500, enabled: true, glu: 0, na: 154, k: 0, cl: 154, ca: 0, mg: 0, p: 0, aa: 0, hco3: 0, heparin: 0 },
+  { id: "d5", name: "5%ブドウ糖液", defaultVol: 500, enabled: true, glu: 50, na: 0, k: 0, cl: 0, ca: 0, mg: 0, p: 0, aa: 0, hco3: 0, heparin: 0 },
+  { id: "veend", name: "ヴィーンD", defaultVol: 500, enabled: true, glu: 50, na: 130, k: 4, cl: 109, ca: 3, mg: 0, p: 0, aa: 0, hco3: 28, heparin: 0 },
+  { id: "solulyte", name: "ソリューゲンF", defaultVol: 500, enabled: true, glu: 0, na: 130, k: 4, cl: 109, ca: 3, mg: 0, p: 0, aa: 0, hco3: 28, heparin: 0 },
+  { id: "soldem1", name: "ソルデム1輸液", defaultVol: 500, enabled: true, glu: 26, na: 90, k: 0, cl: 70, ca: 0, mg: 0, p: 0, aa: 0, hco3: 20, heparin: 0 },
+  { id: "hartmann", name: "ハルトマン", defaultVol: 500, enabled: true, glu: 43, na: 35, k: 20, cl: 35, ca: 0, mg: 0, p: 0, aa: 0, hco3: 20, heparin: 0 },
+  { id: "physio140", name: "フィジオ140", defaultVol: 500, enabled: true, glu: 10, na: 140, k: 4, cl: 115, ca: 3, mg: 2, p: 0, aa: 0, hco3: 34, heparin: 0 },
+  { id: "physio35", name: "フィジオ35", defaultVol: 500, enabled: true, glu: 100, na: 35, k: 20, cl: 28, ca: 5, mg: 3, p: 0, aa: 0, hco3: 25, heparin: 0 },
+  { id: "bfluid", name: "ビーフリード", defaultVol: 500, enabled: true, glu: 75, na: 35, k: 20, cl: 35, ca: 5, mg: 5, p: 301, aa: 30, hco3: 42, heparin: 0 },
+  { id: "fulcaliq1", name: "フルカリック1号液(903ml)", defaultVol: 903, enabled: true, glu: 133, na: 55.4, k: 33.2, cl: 54.3, ca: 9.4, mg: 11.1, p: 277, aa: 22.1, hco3: 55.81, heparin: 0 },
+  { id: "fulcaliq2", name: "フルカリック2号液(1003ml)", defaultVol: 1003, enabled: true, glu: 175, na: 50, k: 30, cl: 49, ca: 8.5, mg: 10, p: 250, aa: 30, hco3: 50.25, heparin: 0 },
+  { id: "d50", name: "50%ブドウ糖", defaultVol: 20, enabled: true, glu: 500, na: 0, k: 0, cl: 0, ca: 0, mg: 0, p: 0, aa: 0, hco3: 0, heparin: 0 },
+  { id: "nacl10", name: "10%NaCl", defaultVol: 20, enabled: true, glu: 0, na: 1700, k: 0, cl: 1700, ca: 0, mg: 0, p: 0, aa: 0, hco3: 0, heparin: 0 },
+  { id: "kcl", name: "KCl注20mEqキット", defaultVol: 20, enabled: true, glu: 0, na: 0, k: 1000, cl: 1000, ca: 0, mg: 0, p: 0, aa: 0, hco3: 0, heparin: 0 },
+  { id: "preamine", name: "プレアミン", defaultVol: 200, enabled: true, glu: 0, na: 3, k: 0, cl: 0, ca: 0, mg: 0, p: 0, aa: 76, hco3: 0, heparin: 0 },
+  { id: "multamin", name: "マルタミン", defaultVol: 5, enabled: true, glu: 0, na: 0, k: 0, cl: 0, ca: 0, mg: 0, p: 0, aa: 0, hco3: 0, heparin: 0 },
+  { id: "elezect", name: "エレジェクト", defaultVol: 2, enabled: true, glu: 0, na: 0, k: 0, cl: 0, ca: 0, mg: 0, p: 0, aa: 0, hco3: 0, heparin: 0 },
+  { id: "calcicol", name: "カルチコール", defaultVol: 5, enabled: true, glu: 0, na: 0, k: 0, cl: 0, ca: 390, mg: 0, p: 0, aa: 0, hco3: 0, heparin: 0 },
+  { id: "napo4", name: "リン酸Na補正液", defaultVol: 5, enabled: true, glu: 0, na: 750, k: 0, cl: 0, ca: 0, mg: 0, p: 15500, aa: 0, hco3: 0, heparin: 0 },
+  { id: "mgso4", name: "硫酸Mg補正液", defaultVol: 5, enabled: true, glu: 0, na: 0, k: 0, cl: 0, ca: 0, mg: 1000, p: 0, aa: 0, hco3: 1000, heparin: 0 },
+  { id: "meylon", name: "メイロン静注7%", defaultVol: 20, enabled: true, glu: 0, na: 833, k: 0, cl: 0, ca: 0, mg: 0, p: 0, aa: 0, hco3: 833, heparin: 0 },
+  { id: "heparin", name: "ヘパリンNa 5千単位/5mL", defaultVol: 1, enabled: true, glu: 0, na: 68, k: 0, cl: 0, ca: 0, mg: 0, p: 0, aa: 0, hco3: 0, heparin: 1000 },
+  { id: "water", name: "注射用水", defaultVol: 100, enabled: true, glu: 0, na: 0, k: 0, cl: 0, ca: 0, mg: 0, p: 0, aa: 0, hco3: 0, heparin: 0 },
+];
+
+let fluids = JSON.parse(JSON.stringify(DEFAULT_FLUIDS));
+
+const state = { tpn1: [], tpn2: [] };
+
+function getEnabledFluids() {
+  return fluids.filter(f => f.enabled);
+}
+
+function getFluidById(id) {
+  return fluids.find(f => f.id === id);
+}
+
+function buildSelector(line) {
+  const used = new Set(state[line].map(e => e.id));
+  const available = getEnabledFluids().filter(f => !used.has(f.id));
+  if (available.length === 0) return "";
+  let html = '<div class="fluid-selector"><select onchange="onSelectFluid(\'' + line + '\', this)">';
+  html += '<option value="">＋ 輸液を追加...</option>';
+  available.forEach(f => {
+    html += '<option value="' + f.id + '">' + f.name + '</option>';
+  });
+  html += '</select></div>';
+  return html;
+}
+
+function onSelectFluid(line, sel) {
+  const id = sel.value;
+  if (!id) return;
+  const fluid = getFluidById(id);
+  if (!fluid) return;
+  state[line].push({ id, volume: fluid.defaultVol });
+  renderLine(line);
+  recalc();
+  const items = document.querySelectorAll('#list-' + line + ' .fluid-item');
+  if (items.length > 0) {
+    const lastInput = items[items.length - 1].querySelector('input');
+    if (lastInput) {
+      lastInput.select();
+    }
+  }
+}
+
+function removeFluid(line, id) {
+  state[line] = state[line].filter(e => e.id !== id);
+  renderLine(line);
+  recalc();
+}
+
+function renderLine(line) {
+  const list = document.getElementById('list-' + line);
+  let html = '';
+  state[line].forEach(entry => {
+    const fluid = getFluidById(entry.id);
+    if (!fluid) return;
+    html += '<div class="fluid-item">';
+    html += '<span class="fluid-name" title="' + fluid.name + '">' + fluid.name + '</span>';
+    html += '<input type="number" value="' + entry.volume + '" step="1" min="0" oninput="updateVolume(\'' + line + '\',\'' + entry.id + '\',this.value)">';
+    html += '<span class="unit">ml</span>';
+    html += '<button class="btn btn-danger btn-sm" onclick="removeFluid(\'' + line + '\',\'' + entry.id + '\')">&#10005;</button>';
+    html += '</div>';
+  });
+  html += buildSelector(line);
+  list.innerHTML = html;
+}
+
+function updateVolume(line, id, val) {
+  const entry = state[line].find(e => e.id === id);
+  if (entry) entry.volume = parseFloat(val) || 0;
+  recalc();
+}
+
+function getLineTotal(line) {
+  return state[line].reduce((s, e) => s + e.volume, 0);
+}
+
+function getLineComposition(line) {
+  const total = getLineTotal(line);
+  const comp = { glu: 0, na: 0, k: 0, cl: 0, ca: 0, mg: 0, p: 0, aa: 0, hco3: 0, heparin: 0 };
+  if (total === 0) return comp;
+  state[line].forEach(entry => {
+    const f = getFluidById(entry.id);
+    if (!f) return;
+    Object.keys(comp).forEach(key => { comp[key] += entry.volume * f[key]; });
+  });
+  Object.keys(comp).forEach(key => { comp[key] /= total; });
+  return comp;
+}
+
+function fmt(v, d) {
+  if (v === null || v === undefined || isNaN(v) || !isFinite(v)) return "—";
+  return v.toFixed(d !== undefined ? d : 2);
+}
+
+function recalc() {
+  const wt = parseFloat(document.getElementById("weight").value) || 0;
+  const ht = parseFloat(document.getElementById("height").value) || 0;
+  const bsa = ht > 0 && wt > 0 ? Math.sqrt(ht * wt / 3600) : 0;
+  document.getElementById("bsa-display").textContent = bsa > 0 ? "体表面積: " + fmt(bsa, 4) + " ㎡" : "体表面積: — ㎡";
+
+  const rateTpn1 = parseFloat(document.getElementById("rate-tpn1").value) || 0;
+  const hoursTpn1 = parseFloat(document.getElementById("hours-tpn1").value) || 0;
+  const rateTpn2 = parseFloat(document.getElementById("rate-tpn2").value) || 0;
+  const hoursTpn2 = parseFloat(document.getElementById("hours-tpn2").value) || 0;
+
+  const totalTpn1 = getLineTotal("tpn1");
+  const totalTpn2 = getLineTotal("tpn2");
+  const compTpn1 = getLineComposition("tpn1");
+  const compTpn2 = getLineComposition("tpn2");
+
+  document.getElementById("total-tpn1").textContent = "合計: " + totalTpn1 + " ml";
+  document.getElementById("total-tpn2").textContent = "合計: " + totalTpn2 + " ml";
+
+  const bagHours1 = rateTpn1 > 0 ? totalTpn1 / rateTpn1 : 0;
+  const bagHours2 = rateTpn2 > 0 ? totalTpn2 / rateTpn2 : 0;
+  document.getElementById("bag-hours-tpn1").textContent = bagHours1 > 0 ? "1本あたり: " + fmt(bagHours1, 1) + " h" : "1本あたり: — h";
+  document.getElementById("bag-hours-tpn2").textContent = bagHours2 > 0 ? "1本あたり: " + fmt(bagHours2, 1) + " h" : "1本あたり: — h";
+
+  renderLineComp("tpn1", compTpn1, totalTpn1, rateTpn1, hoursTpn1);
+  renderLineComp("tpn2", compTpn2, totalTpn2, rateTpn2, hoursTpn2);
+
+  const fatRate = parseFloat(document.getElementById("fat-rate").value) || 0;
+  const fatHours = parseFloat(document.getElementById("fat-hours").value) || 0;
+  const fatVol = fatRate * fatHours;
+  document.getElementById("fat-total").textContent = "投与量: " + fmt(fatVol, 0) + " ml";
+
+  const vol1PerDay = rateTpn1 * hoursTpn1;
+  const vol2PerDay = rateTpn2 * hoursTpn2;
+  const totalWater = vol1PerDay + vol2PerDay + fatVol;
+
+  const gir1 = totalTpn1 > 0 ? compTpn1.glu * rateTpn1 / 60 / (wt || 1) : 0;
+  const gir2 = totalTpn2 > 0 ? compTpn2.glu * rateTpn2 / 60 / (wt || 1) : 0;
+  const girTotal = gir1 + gir2;
+
+  const aaPerKgDay = wt > 0 ? (compTpn1.aa / 1000 * vol1PerDay + compTpn2.aa / 1000 * vol2PerDay) / wt : 0;
+  const fatGPerKgDay = wt > 0 ? fatVol * 0.2 / wt : 0;
+  const gluGkgDay = wt > 0 ? girTotal * 60 * 24 / 1000 : 0;
+
+  const eqKcal = wt > 0
+    ? (gir1 / 1000 * 60 * hoursTpn1 * 4 + gir2 / 1000 * 60 * hoursTpn2 * 4 + aaPerKgDay * 4 + fatGPerKgDay * 9)
+    : 0;
+  const totalKcal = eqKcal * wt;
+
+  const protCalRatio = eqKcal > 0 ? aaPerKgDay * 4 / eqKcal : 0;
+  const fatCalRatio = eqKcal > 0 ? fatGPerKgDay * 9 / eqKcal : 0;
+  const gluCalRatio = eqKcal > 0 ? 1 - protCalRatio - fatCalRatio : 0;
+
+  document.getElementById("result-summary").innerHTML =
+    '<div class="result-box highlight"><div class="r-title">水分量</div><div class="r-value">' + fmt(totalWater, 0) + ' <span class="r-unit">ml/day</span></div><div style="font-size:12px;color:var(--gray-500);margin-top:2px">' + (bsa > 0 ? fmt(totalWater / bsa, 0) + " ml/㎡/day" : "—") + '</div></div>' +
+    '<div class="result-box highlight"><div class="r-title">カロリー</div><div class="r-value">' + fmt(eqKcal, 1) + ' <span class="r-unit">kcal/kg/day</span></div><div style="font-size:12px;color:var(--gray-500);margin-top:2px">' + fmt(totalKcal, 0) + ' kcal/day</div></div>' +
+    '<div class="result-box highlight"><div class="r-title">GIR</div><div class="r-value">' + fmt(girTotal, 2) + ' <span class="r-unit">mg/kg/min</span></div></div>' +
+    '<div class="result-box"><div class="r-title">アミノ酸</div><div class="r-value">' + fmt(aaPerKgDay, 2) + ' <span class="r-unit">g/kg/day</span></div></div>' +
+    '<div class="result-box"><div class="r-title">脂肪</div><div class="r-value">' + fmt(fatGPerKgDay, 2) + ' <span class="r-unit">g/kg/day</span></div></div>';
+
+  const elecItems = [
+    { name: "Na", cu: "mEq/L", du: "mEq/day", ku: "mEq/kg/day", key: "na" },
+    { name: "K", cu: "mEq/L", du: "mEq/day", ku: "mEq/kg/day", key: "k" },
+    { name: "Cl", cu: "mEq/L", du: "mEq/day", ku: "mEq/kg/day", key: "cl" },
+    { name: "Ca", cu: "mEq/L", du: "mEq/day", ku: "mEq/kg/day", key: "ca" },
+    { name: "Mg", cu: "mEq/L", du: "mEq/day", ku: "mEq/kg/day", key: "mg" },
+    { name: "P", cu: "mg/L", du: "mg/day", ku: "mg/kg/day", key: "p" },
+    { name: "重炭酸", cu: "mEq/L", du: "mEq/day", ku: "mEq/kg/day", key: "hco3" },
+  ];
+
+  const eTbody = document.getElementById("electrolyte-tbody");
+  eTbody.innerHTML = "";
+  elecItems.forEach(item => {
+    const conc = calcMixedConc(item.key, compTpn1, compTpn2, rateTpn1, rateTpn2);
+    const day = calcDayAmount(item.key, compTpn1, compTpn2, vol1PerDay, vol2PerDay, 1000);
+    const kg = wt > 0 ? day / wt : 0;
+    const tr = document.createElement("tr");
+    tr.innerHTML = '<td>' + item.name + '</td><td>' + fmt(conc) + ' ' + item.cu + '</td><td>' + fmt(day) + ' ' + item.du + '</td><td>' + fmt(kg) + ' ' + item.ku + '</td>';
+    eTbody.appendChild(tr);
+  });
+  const hepConc = calcMixedConc("heparin", compTpn1, compTpn2, rateTpn1, rateTpn2);
+  if (hepConc > 0) {
+    const tr = document.createElement("tr");
+    tr.innerHTML = '<td>ヘパリン</td><td>' + fmt(hepConc) + ' 単位/mL</td><td>—</td><td>—</td>';
+    eTbody.appendChild(tr);
+  }
+
+  const nTbody = document.getElementById("nutrition-tbody");
+  nTbody.innerHTML = "";
+  [{name:"タンパク+Aa",val:aaPerKgDay,ratio:protCalRatio},{name:"脂質",val:fatGPerKgDay,ratio:fatCalRatio},{name:"糖質",val:gluGkgDay,ratio:gluCalRatio}].forEach(n => {
+    const tr = document.createElement("tr");
+    tr.innerHTML = '<td>' + n.name + '</td><td>' + fmt(n.val, 2) + '</td><td>' + (eqKcal > 0 ? fmt(n.ratio * 100, 1) + "%" : "—") + '</td>';
+    nTbody.appendChild(tr);
+  });
+
+  const sTbody = document.getElementById("supplement-tbody");
+  sTbody.innerHTML = "";
+  const supIds = ["multamin","elezect","calcicol","napo4","mgso4"];
+  let hasSup = false;
+  supIds.forEach(sid => {
+    let mlKgDay = 0;
+    ["tpn1","tpn2"].forEach(line => {
+      const entry = state[line].find(e => e.id === sid);
+      if (entry && wt > 0) {
+        const total = getLineTotal(line);
+        const rate = parseFloat(document.getElementById("rate-" + line).value) || 0;
+        const hours = parseFloat(document.getElementById("hours-" + line).value) || 0;
+        if (total > 0) mlKgDay += entry.volume / total * rate * hours / wt;
+      }
+    });
+    if (mlKgDay > 0) {
+      hasSup = true;
+      const f = getFluidById(sid);
+      const tr = document.createElement("tr");
+      tr.innerHTML = '<td>' + (f ? f.name : sid) + '</td><td>' + fmt(mlKgDay, 2) + ' ml/kg/day</td>';
+      sTbody.appendChild(tr);
+    }
+  });
+  if (!hasSup) {
+    const tr = document.createElement("tr");
+    tr.innerHTML = '<td colspan="2" style="color:var(--gray-400);text-align:center">補正液なし</td>';
+    sTbody.appendChild(tr);
+  }
+
+  saveState();
+}
+
+function calcMixedConc(key, c1, c2, r1, r2) {
+  const t = r1 + r2;
+  return t === 0 ? 0 : (c1[key] * r1 + c2[key] * r2) / t;
+}
+
+function calcDayAmount(key, c1, c2, v1, v2, div) {
+  return (c1[key] * v1 + c2[key] * v2) / div;
+}
+
+function renderLineComp(line, comp, total, rate, hours) {
+  const grid = document.getElementById("comp-grid-" + line);
+  if (total === 0) { grid.innerHTML = '<div style="color:var(--gray-400);font-size:12px;">—</div>'; return; }
+  const gluPct = comp.glu / 10;
+  const wt = parseFloat(document.getElementById("weight").value) || 0;
+  const gir = rate > 0 && wt > 0 ? comp.glu * rate / 60 / wt : 0;
+  grid.innerHTML =
+    '<div class="comp-row"><span class="label">ブドウ糖濃度</span><span class="value">' + fmt(gluPct, 1) + '%</span></div>' +
+    '<div class="comp-row"><span class="label">GIR</span><span class="value">' + fmt(gir, 2) + ' mg/kg/min</span></div>' +
+    '<div class="comp-row"><span class="label">Na</span><span class="value">' + fmt(comp.na, 1) + ' mEq/L</span></div>' +
+    '<div class="comp-row"><span class="label">K</span><span class="value">' + fmt(comp.k, 1) + ' mEq/L</span></div>' +
+    '<div class="comp-row"><span class="label">Cl</span><span class="value">' + fmt(comp.cl, 1) + ' mEq/L</span></div>' +
+    '<div class="comp-row"><span class="label">Ca</span><span class="value">' + fmt(comp.ca, 1) + ' mEq/L</span></div>' +
+    '<div class="comp-row"><span class="label">Mg</span><span class="value">' + fmt(comp.mg, 1) + ' mEq/L</span></div>' +
+    '<div class="comp-row"><span class="label">P</span><span class="value">' + fmt(comp.p, 0) + ' mg/L</span></div>' +
+    '<div class="comp-row"><span class="label">アミノ酸</span><span class="value">' + fmt(comp.aa, 1) + ' g/L</span></div>' +
+    '<div class="comp-row"><span class="label">重炭酸</span><span class="value">' + fmt(comp.hco3, 1) + ' mEq/L</span></div>' +
+    (comp.heparin > 0 ? '<div class="comp-row"><span class="label">ヘパリン</span><span class="value">' + fmt(comp.heparin, 1) + ' 単位/mL</span></div>' : '');
+}
+
+// ===== Settings =====
+function openSettings() {
+  renderSettingsTable();
+  document.getElementById("settings-modal").classList.add("open");
+}
+
+function closeSettings() {
+  document.getElementById("settings-modal").classList.remove("open");
+  renderLine("tpn1");
+  renderLine("tpn2");
+  recalc();
+}
+
+function renderSettingsTable() {
+  const body = document.getElementById("settings-body");
+  const cols = ["Glu (g/L)","Na","K","Cl","Ca","Mg","P (mg/L)","アミノ酸 (g/L)","重炭酸","ヘパリン (単位/mL)"];
+  const keys = ["glu","na","k","cl","ca","mg","p","aa","hco3","heparin"];
+
+  let html = '<div class="settings-section">';
+  html += '<div class="settings-section-title">製剤リストと組成 <span style="font-weight:400;font-size:12px;color:var(--gray-500)">(★ = プルダウンに表示)</span></div>';
+  html += '<div style="overflow-x:auto;">';
+  html += '<table class="fluid-edit-table"><thead><tr>';
+  html += '<th>★</th><th>製剤名</th><th>デフォルト量(ml)</th>';
+  cols.forEach(c => { html += '<th>' + c + '</th>'; });
+  html += '<th></th></tr></thead><tbody>';
+
+  fluids.forEach((f, i) => {
+    html += '<tr>';
+    html += '<td><button class="toggle-btn ' + (f.enabled ? 'on' : 'off') + '" onclick="toggleFluid(' + i + ')">' + (f.enabled ? '★' : '☆') + '</button></td>';
+    html += '<td><input class="name-input" value="' + escHtml(f.name) + '" onchange="updateFluidProp(' + i + ',\'name\',this.value)"></td>';
+    html += '<td><input type="number" value="' + f.defaultVol + '" min="0" onchange="updateFluidProp(' + i + ',\'defaultVol\',parseFloat(this.value)||0)"></td>';
+    keys.forEach(k => {
+      html += '<td><input type="number" value="' + f[k] + '" step="any" onchange="updateFluidProp(' + i + ',\'' + k + '\',parseFloat(this.value)||0)"></td>';
+    });
+    html += '<td><button class="del-btn" onclick="deleteFluid(' + i + ')" title="削除">&#10005;</button></td>';
+    html += '</tr>';
+  });
+
+  html += '</tbody></table></div>';
+  html += '<button class="btn-add-row" onclick="addNewFluid()">＋ 新しい製剤を追加</button>';
+  html += '</div>';
+
+  body.innerHTML = html;
+}
+
+function escHtml(s) {
+  return s.replace(/&/g,"&amp;").replace(/"/g,"&quot;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+}
+
+function toggleFluid(i) {
+  fluids[i].enabled = !fluids[i].enabled;
+  saveFluids();
+  renderSettingsTable();
+}
+
+function updateFluidProp(i, prop, val) {
+  fluids[i][prop] = val;
+  saveFluids();
+}
+
+function deleteFluid(i) {
+  const name = fluids[i].name;
+  if (!confirm('"' + name + '" を削除しますか？')) return;
+  const id = fluids[i].id;
+  fluids.splice(i, 1);
+  state.tpn1 = state.tpn1.filter(e => e.id !== id);
+  state.tpn2 = state.tpn2.filter(e => e.id !== id);
+  saveFluids();
+  renderSettingsTable();
+}
+
+function addNewFluid() {
+  const newId = "custom_" + Date.now();
+  fluids.push({
+    id: newId, name: "新規製剤", defaultVol: 500, enabled: true,
+    glu: 0, na: 0, k: 0, cl: 0, ca: 0, mg: 0, p: 0, aa: 0, hco3: 0, heparin: 0
+  });
+  saveFluids();
+  renderSettingsTable();
+  const tbody = document.querySelector(".fluid-edit-table tbody");
+  if (tbody && tbody.lastElementChild) {
+    const nameInput = tbody.lastElementChild.querySelector(".name-input");
+    if (nameInput) { nameInput.focus(); nameInput.select(); }
+  }
+}
+
+function resetFluidsToDefault() {
+  if (!confirm("製剤リストをデフォルトに戻しますか？カスタム製剤も削除されます。")) return;
+  fluids = JSON.parse(JSON.stringify(DEFAULT_FLUIDS));
+  saveFluids();
+  state.tpn1 = [];
+  state.tpn2 = [];
+  renderSettingsTable();
+  renderLine("tpn1");
+  renderLine("tpn2");
+  recalc();
+}
+
+function exportSettings() {
+  const data = JSON.stringify(fluids, null, 2);
+  const blob = new Blob([data], { type: "application/json" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "iv-calc-fluids.json";
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+function importSettings(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    try {
+      const imported = JSON.parse(e.target.result);
+      if (!Array.isArray(imported)) throw new Error("invalid");
+      fluids = imported;
+      saveFluids();
+      renderSettingsTable();
+      renderLine("tpn1");
+      renderLine("tpn2");
+      recalc();
+      alert("インポート完了");
+    } catch(err) {
+      alert("ファイルの形式が正しくありません。");
+    }
+  };
+  reader.readAsText(file);
+  event.target.value = "";
+}
+
+// ===== Persistence =====
+function saveFluids() {
+  try { localStorage.setItem("iv-calc-fluids", JSON.stringify(fluids)); } catch(e) {}
+}
+
+function loadFluids() {
+  try {
+    const raw = localStorage.getItem("iv-calc-fluids");
+    if (raw) fluids = JSON.parse(raw);
+  } catch(e) {}
+}
+
+function saveState() {
+  try {
+    localStorage.setItem("iv-calc-state", JSON.stringify({
+      height: document.getElementById("height").value,
+      weight: document.getElementById("weight").value,
+      tpn1: state.tpn1, tpn2: state.tpn2,
+      rateTpn1: document.getElementById("rate-tpn1").value,
+      hoursTpn1: document.getElementById("hours-tpn1").value,
+      rateTpn2: document.getElementById("rate-tpn2").value,
+      hoursTpn2: document.getElementById("hours-tpn2").value,
+      fatRate: document.getElementById("fat-rate").value,
+      fatHours: document.getElementById("fat-hours").value,
+    }));
+  } catch(e) {}
+}
+
+function loadState() {
+  try {
+    const raw = localStorage.getItem("iv-calc-state");
+    if (!raw) return;
+    const d = JSON.parse(raw);
+    if (d.height) document.getElementById("height").value = d.height;
+    if (d.weight) document.getElementById("weight").value = d.weight;
+    if (d.rateTpn1) document.getElementById("rate-tpn1").value = d.rateTpn1;
+    if (d.hoursTpn1) document.getElementById("hours-tpn1").value = d.hoursTpn1;
+    if (d.rateTpn2) document.getElementById("rate-tpn2").value = d.rateTpn2;
+    if (d.hoursTpn2) document.getElementById("hours-tpn2").value = d.hoursTpn2;
+    if (d.fatRate) document.getElementById("fat-rate").value = d.fatRate;
+    if (d.fatHours) document.getElementById("fat-hours").value = d.fatHours;
+    if (d.tpn1) state.tpn1 = d.tpn1.filter(e => getFluidById(e.id));
+    if (d.tpn2) state.tpn2 = d.tpn2.filter(e => getFluidById(e.id));
+  } catch(e) {}
+}
+
+// ===== Init =====
+document.querySelectorAll(".patient-bar input, .flow-inputs input, .fat-inputs input").forEach(inp => {
+  inp.addEventListener("input", recalc);
+});
+
+loadFluids();
+loadState();
+renderLine("tpn1");
+renderLine("tpn2");
+recalc();
+</script>
+</body>
+</html>

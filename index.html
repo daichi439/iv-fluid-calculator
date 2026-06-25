@@ -114,11 +114,15 @@ body {
 .line-summary .total { font-weight: 700; }
 .line-comp { margin-top: 8px; padding: 8px; background: var(--gray-50); border-radius: 4px; font-size: 12px; }
 .line-comp-title { font-weight: 700; font-size: 13px; margin-bottom: 4px; color: var(--gray-700); }
-.comp-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 2px 12px; }
+.comp-grid { display: flex; flex-direction: column; gap: 2px; }
+.comp-row-group { display: grid; gap: 2px 16px; }
+.comp-row-group.cols-2 { grid-template-columns: 1fr 1fr; }
+.comp-row-group.cols-3 { grid-template-columns: 1fr 1fr 1fr; }
 .comp-row { display: flex; justify-content: space-between; padding: 1px 0; }
 .comp-row .label { color: var(--gray-500); }
 .comp-row .value { font-weight: 600; font-variant-numeric: tabular-nums; }
 .comp-row.alert-warn .label, .comp-row.alert-warn .value { color: var(--danger); font-weight: 700; }
+.comp-row.alert-info .label, .comp-row.alert-info .value { color: var(--warning); font-weight: 700; }
 .alert-row { background: var(--danger-light) !important; }
 .alert-row td { color: var(--danger) !important; font-weight: 700 !important; }
 .flow-inputs { margin-top: 8px; display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
@@ -430,7 +434,8 @@ function renderFluidList(lid) {
     var fluid = getFluidById(entry.id); if (!fluid) return;
     h += '<div class="fluid-item">';
     h += '<span class="fluid-name" title="' + escHtml(fluid.name) + '">' + escHtml(fluid.name) + '</span>';
-    h += '<input type="number" value="' + entry.volume + '" step="1" min="0" oninput="updateVolume(\'' + lid + '\',\'' + entry.id + '\',this.value)">';
+    var step = entry.id === 'heparin' ? '0.1' : '1';
+    h += '<input type="number" value="' + entry.volume + '" step="' + step + '" min="0" oninput="updateVolume(\'' + lid + '\',\'' + entry.id + '\',this.value)">';
     h += '<span class="unit">ml</span>';
     h += '<button class="btn btn-danger btn-sm" onclick="removeFluid(\'' + lid + '\',\'' + entry.id + '\')">&#10005;</button>';
     h += '</div>';
@@ -514,10 +519,12 @@ function recalc() {
   updateResultHeader();
 
   var fatBoxClass = fatOverLimit ? 'result-box warn' : 'result-box';
+  var girBoxClass = girTotal > 12 ? 'result-box warn' : 'result-box highlight';
   document.getElementById("result-summary").innerHTML =
     '<div class="result-box highlight"><div class="r-title">水分量</div><div class="r-value">' + fmt(totalWater, 0) + ' <span class="r-unit">ml/day</span></div><div class="r-sub">' + (bsa > 0 ? fmt(totalWater / bsa, 0) + " ml/㎡/day" : "—") + '</div></div>' +
     '<div class="result-box highlight"><div class="r-title">カロリー</div><div class="r-value">' + fmt(eqKcal, 1) + ' <span class="r-unit">kcal/kg/day</span></div><div class="r-sub">' + fmt(totalKcal, 0) + ' kcal/day</div></div>' +
-    '<div class="result-box highlight"><div class="r-title">GIR</div><div class="r-value">' + fmt(girTotal, 2) + ' <span class="r-unit">mg/kg/min</span></div></div>' +
+    '<div class="' + girBoxClass + '"><div class="r-title">GIR</div><div class="r-value">' + fmt(girTotal, 2) + ' <span class="r-unit">mg/kg/min</span></div>' +
+    (girTotal > 12 ? '<div class="r-sub" style="color:var(--danger)">&#9888; 高血糖リスク（>12）</div>' : '') + '</div>' +
     '<div class="result-box"><div class="r-title">アミノ酸</div><div class="r-value">' + fmt(aaTotal, 2) + ' <span class="r-unit">g/kg/day</span></div></div>' +
     '<div class="' + fatBoxClass + '"><div class="r-title">脂肪</div><div class="r-value">' + fmt(fatTotal, 2) + ' <span class="r-unit">g/kg/day</span></div>' +
     (fatOverLimit ? '<div class="r-sub" style="color:var(--danger)">&#9888; 上限 2 g/kg/day を超過</div>' : '') + '</div>';
@@ -605,23 +612,42 @@ function updateBagHoursEl(lid, bagHours, currentHours) {
   else { el.className = "calc-val clickable"; el.title = "クリックで投与時間を " + fmt(bagHours, 1) + " h に設定"; el.onclick = (function(id,h){ return function(){ setHours(id,h); }; })(lid, rounded); }
 }
 
+function compRow(label, value, alertLevel) {
+  var cls = alertLevel === 'warn' ? ' alert-warn' : alertLevel === 'info' ? ' alert-info' : '';
+  var icon = alertLevel ? ' &#9888;' : '';
+  return '<div class="comp-row' + cls + '"><span class="label">' + label + '</span><span class="value">' + value + icon + '</span></div>';
+}
+
 function renderLineComp(lid, comp, total, rate, wt) {
   var grid = document.getElementById("comp-" + lid); if (!grid) return;
   if (total === 0) { grid.innerHTML = '<div style="color:var(--gray-400);font-size:12px;">—</div>'; return; }
   var gir = rate > 0 && wt > 0 ? comp.glu * rate / 60 / wt : 0;
+  var extraItems = [];
+  if (comp.fat > 0) extraItems.push(compRow('脂肪', fmt(comp.fat, 1) + ' g/L'));
+  if (comp.heparin > 0) extraItems.push(compRow('ヘパリン', fmt(comp.heparin, 1) + ' 単位/mL', comp.heparin > 1.1 ? 'warn' : null));
+  var gluPct = comp.glu / 10;
   grid.innerHTML =
-    '<div class="comp-row"><span class="label">ブドウ糖濃度</span><span class="value">' + fmt(comp.glu / 10, 1) + '%</span></div>' +
-    '<div class="comp-row"><span class="label">GIR</span><span class="value">' + fmt(gir, 2) + ' mg/kg/min</span></div>' +
-    '<div class="comp-row"><span class="label">Na</span><span class="value">' + fmt(comp.na, 1) + ' mEq/L</span></div>' +
-    '<div class="comp-row' + (comp.k > 40 ? ' alert-warn' : '') + '"><span class="label">K</span><span class="value">' + fmt(comp.k, 1) + ' mEq/L' + (comp.k > 40 ? ' &#9888;' : '') + '</span></div>' +
-    '<div class="comp-row"><span class="label">Cl</span><span class="value">' + fmt(comp.cl, 1) + ' mEq/L</span></div>' +
-    '<div class="comp-row"><span class="label">Ca</span><span class="value">' + fmt(comp.ca, 1) + ' mEq/L</span></div>' +
-    '<div class="comp-row"><span class="label">Mg</span><span class="value">' + fmt(comp.mg, 1) + ' mEq/L</span></div>' +
-    '<div class="comp-row"><span class="label">P</span><span class="value">' + fmt(comp.p, 0) + ' mg/L</span></div>' +
-    '<div class="comp-row"><span class="label">アミノ酸</span><span class="value">' + fmt(comp.aa, 1) + ' g/L</span></div>' +
-    (comp.fat > 0 ? '<div class="comp-row"><span class="label">脂肪</span><span class="value">' + fmt(comp.fat, 1) + ' g/L</span></div>' : '') +
-    '<div class="comp-row"><span class="label">重炭酸</span><span class="value">' + fmt(comp.hco3, 1) + ' mEq/L</span></div>' +
-    (comp.heparin > 0 ? '<div class="comp-row' + (comp.heparin > 1.1 ? ' alert-warn' : '') + '"><span class="label">ヘパリン</span><span class="value">' + fmt(comp.heparin, 1) + ' 単位/mL' + (comp.heparin > 1.1 ? ' &#9888;' : '') + '</span></div>' : '');
+    '<div class="comp-row-group cols-3">' +
+      compRow('ブドウ糖濃度', fmt(gluPct, 1) + '%', gluPct > 12.5 ? 'info' : null) +
+      compRow('GIR', fmt(gir, 2) + ' mg/kg/min', gir > 12 ? 'warn' : null) +
+      '<div></div>' +
+    '</div>' +
+    '<div class="comp-row-group cols-3">' +
+      compRow('Na', fmt(comp.na, 1) + ' mEq/L') +
+      compRow('K', fmt(comp.k, 1) + ' mEq/L', comp.k > 40 ? 'warn' : null) +
+      compRow('Cl', fmt(comp.cl, 1) + ' mEq/L') +
+    '</div>' +
+    '<div class="comp-row-group cols-3">' +
+      compRow('Ca', fmt(comp.ca, 1) + ' mEq/L') +
+      compRow('Mg', fmt(comp.mg, 1) + ' mEq/L') +
+      compRow('P', fmt(comp.p, 0) + ' mg/L') +
+    '</div>' +
+    '<div class="comp-row-group cols-3">' +
+      compRow('アミノ酸', fmt(comp.aa, 1) + ' g/L') +
+      compRow('重炭酸', fmt(comp.hco3, 1) + ' mEq/L') +
+      '<div></div>' +
+    '</div>' +
+    (extraItems.length > 0 ? '<div class="comp-row-group cols-3">' + extraItems.join('') + '<div></div>'.repeat(3 - extraItems.length) + '</div>' : '');
 }
 
 // ===== Settings =====

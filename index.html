@@ -6,17 +6,30 @@
 <title>輸液・経腸栄養 組成計算シート</title>
 <style>
 :root {
+  /* インタラクション */
   --primary: #2563eb;
-  --primary-light: #eef4ff;
-  --primary-dark: #1d4ed8;
+  --primary-light: #eff6ff;
+  --primary-dark: #1e40af;
+  /* IV (静脈投与) */
+  --iv: #2563eb;
+  --iv-light: #eff6ff;
+  --iv-dark: #1e40af;
+  --iv-border: #93c5fd;
+  /* 経腸栄養 */
+  --en: #059669;
+  --en-light: #ecfdf5;
+  --en-dark: #065f46;
+  --en-border: #6ee7b7;
+  /* セマンティック */
   --success: #059669;
   --success-light: #d1fae5;
   --warning: #d97706;
   --warning-light: #fef3c7;
   --danger: #dc2626;
   --danger-light: #fee2e2;
-  --gray-50: #fafbfc;
-  --gray-100: #f5f6f8;
+  /* ニュートラル */
+  --gray-50: #f8fafc;
+  --gray-100: #f1f5f9;
   --gray-200: #e2e8f0;
   --gray-300: #cbd5e1;
   --gray-400: #94a3b8;
@@ -24,13 +37,15 @@
   --gray-600: #475569;
   --gray-700: #334155;
   --gray-800: #1e293b;
+  --gray-900: #0f172a;
   --radius: 8px;
   --radius-sm: 6px;
   --radius-lg: 12px;
   --radius-xl: 16px;
-  --shadow-xs: 0 1px 2px rgba(0,0,0,.03);
-  --shadow: 0 1px 3px rgba(0,0,0,.06), 0 1px 2px rgba(0,0,0,.04);
-  --shadow-md: 0 4px 12px rgba(0,0,0,.05), 0 2px 4px rgba(0,0,0,.04);
+  --shadow-xs: 0 1px 2px rgba(0,0,0,.04);
+  --shadow: 0 1px 3px rgba(0,0,0,.07), 0 1px 2px rgba(0,0,0,.04);
+  --shadow-md: 0 4px 12px rgba(0,0,0,.06), 0 2px 4px rgba(0,0,0,.04);
+  --shadow-lg: 0 10px 25px rgba(0,0,0,.08), 0 4px 10px rgba(0,0,0,.04);
 }
 html { scroll-behavior: smooth; }
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; scroll-behavior: auto !important; } }
@@ -41,21 +56,22 @@ body {
   -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; text-rendering: optimizeLegibility;
 }
 .header {
-  background: #fff; color: var(--gray-800); padding: 20px 28px;
-  border-bottom: 1px solid var(--gray-200);
+  background: linear-gradient(135deg, #0f172a 0%, #1a3352 100%);
+  color: #fff; padding: 20px 28px;
+  border-bottom: none;
   display: flex; align-items: center; justify-content: space-between;
 }
-.header-left h1 { font-size: 22px; font-weight: 700; letter-spacing: -.3px; }
-.header-left p { font-size: 14px; color: var(--gray-500); margin-top: 2px; }
+.header-left h1 { font-size: 22px; font-weight: 700; letter-spacing: -.3px; color: #fff; }
+.header-left p { font-size: 14px; color: rgba(255,255,255,.55); margin-top: 2px; }
 .header-right { display: flex; gap: 8px; }
 .btn-header {
-  padding: 8px 16px; border: 1px solid var(--gray-200); border-radius: var(--radius-sm);
+  padding: 8px 16px; border: 1px solid rgba(255,255,255,.2); border-radius: var(--radius-sm);
   font-size: 13px; font-weight: 600; cursor: pointer;
-  background: var(--gray-50); color: var(--gray-600); transition: background .15s;
+  background: rgba(255,255,255,.08); color: rgba(255,255,255,.85); transition: all .15s;
 }
-.btn-header:hover { background: var(--gray-100); }
+.btn-header:hover { background: rgba(255,255,255,.18); border-color: rgba(255,255,255,.35); }
 .container { max-width: 1200px; margin: 0 auto; padding: 16px; }
-.patient-card { background: #fff; border-radius: var(--radius-lg); box-shadow: var(--shadow); overflow: hidden; margin-bottom: 20px; border: 1px solid var(--gray-200); }
+.patient-card { background: #fff; border-radius: var(--radius-lg); box-shadow: var(--shadow); overflow: hidden; margin-bottom: 20px; border: 1px solid var(--gray-200); border-top: 3px solid var(--iv); }
 .patient-card-header { padding: 10px 20px; background: transparent; font-size: 14px; font-weight: 700; color: var(--gray-600); border-bottom: 2px solid var(--gray-100); }
 .patient-bar { display: flex; align-items: center; gap: 24px; flex-wrap: wrap; padding: 16px 24px; }
 .patient-bar label { font-size: 13px; font-weight: 600; color: var(--gray-600); display: flex; align-items: center; gap: 6px; }
@@ -65,8 +81,8 @@ body {
 .patient-bar .bsa-display { font-size: 13px; color: var(--gray-600); background: var(--gray-100); padding: 6px 16px; border-radius: 20px; font-weight: 600; }
 .routes-list { display: flex; flex-direction: column; gap: 20px; margin-bottom: 20px; }
 .card { background: #fff; border-radius: var(--radius-lg); box-shadow: var(--shadow); overflow: hidden; border: 1px solid var(--gray-200); }
-.card-header { padding: 12px 20px; font-weight: 700; font-size: 15px; display: flex; align-items: center; justify-content: space-between; border-left: 4px solid transparent; }
-.card-header.result { background: var(--gray-800); color: #fff; border-left: none; border-bottom: 3px solid var(--primary); }
+.card-header { padding: 12px 20px; font-weight: 700; font-size: 15px; display: flex; align-items: center; justify-content: space-between; border-left: 4px solid transparent; transition: background .15s; }
+.card-header.result { background: linear-gradient(135deg, #0f172a 0%, #1a3352 100%); color: #fff; border-left: none; border-bottom: 3px solid var(--iv); }
 .card-body { padding: 20px 24px; }
 .line-name-input { border: none; background: transparent; font-size: 14px; font-weight: 700; color: inherit; padding: 0; min-width: 60px; width: auto; max-width: 200px; outline: none; border-bottom: 1px solid transparent; }
 .line-name-input:hover, .line-name-input:focus { border-bottom-color: currentColor; }
@@ -102,15 +118,15 @@ body {
 .ch-section:first-child { margin-top: 0; padding-top: 0; border-top: none; }
 .ch-header { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
 .ch-label { font-size: 12px; font-weight: 700; padding: 3px 12px; border-radius: 12px; }
-.ch-label.main-l { background: var(--primary-light); color: var(--primary-dark); }
-.ch-label.side-l { background: var(--warning-light); color: var(--warning); }
+.ch-label.main-l { background: var(--iv-light); color: var(--iv-dark); }
+.ch-label.side-l { background: #fff7ed; color: #c2410c; }
 .side-name-input { border: none; background: transparent; font-size: 12px; font-weight: 700; color: var(--gray-600); padding: 0; outline: none; border-bottom: 1px solid transparent; min-width: 50px; max-width: 120px; }
 .side-name-input:hover, .side-name-input:focus { border-bottom-color: var(--gray-400); }
 .btn-remove-side { padding: 1px 6px; border: 1px solid var(--gray-200); border-radius: 3px; background: #fff; font-size: 11px; cursor: pointer; color: var(--gray-400); margin-left: auto; }
 .btn-remove-side:hover { color: var(--danger); border-color: var(--danger); }
 .mode-toggle { display: inline-flex; border: 1px solid var(--gray-300); border-radius: 4px; overflow: hidden; }
 .mode-toggle button { padding: 2px 10px; border: none; cursor: pointer; font-size: 11px; font-weight: 600; background: #fff; color: var(--gray-500); }
-.mode-toggle button.active { background: var(--primary); color: #fff; }
+.mode-toggle button.active { background: var(--iv); color: #fff; }
 .flow-row { margin-top: 12px; display: flex; gap: 14px; align-items: center; flex-wrap: wrap; }
 .flow-row label { font-size: 13px; color: var(--gray-600); font-weight: 600; display: flex; align-items: center; gap: 4px; }
 .flow-row input { width: 50px; padding: 5px 7px; border: 1.5px solid var(--gray-200); border-radius: var(--radius-sm); font-size: 13px; text-align: right; background: #fff; transition: border-color .2s, box-shadow .2s; }
@@ -125,8 +141,8 @@ body {
 .ch-summary .val { font-weight: 700; }
 .ch-summary .eff { color: var(--warning); font-weight: 600; }
 .comp-box { margin-top: 12px; padding: 14px 16px; background: var(--gray-50); border-radius: var(--radius); font-size: 13px; border: 1px solid var(--gray-200); }
-.comp-box.route-comp-norm { background: var(--success-light); border: 1px solid #a7f3d0; border-left: 3px solid var(--success); }
-.comp-box.route-comp-int { background: var(--warning-light); border: 1px solid #fde68a; border-left: 3px solid var(--warning); }
+.comp-box.route-comp-norm { background: #eff6ff; border: 1px solid #bfdbfe; border-left: 3px solid var(--iv); }
+.comp-box.route-comp-int { background: #fff7ed; border: 1px solid #fed7aa; border-left: 3px solid #f97316; }
 .comp-title { font-weight: 700; font-size: 13px; margin-bottom: 8px; color: var(--gray-700); }
 .comp-grid { display: flex; flex-direction: column; gap: 4px; }
 .comp-row-group { display: grid; gap: 4px 16px; }
@@ -139,9 +155,9 @@ body {
 .alert-row { background: var(--danger-light) !important; }
 .alert-row td { color: var(--danger) !important; font-weight: 700 !important; }
 .btn-add-side { margin-top: 14px; padding: 10px; border: 1px dashed var(--gray-300); border-radius: var(--radius-sm); background: #fff; color: var(--gray-400); font-size: 13px; cursor: pointer; width: 100%; transition: all .15s; }
-.btn-add-side:hover { border-color: var(--primary); color: var(--primary); background: var(--primary-light); }
-.btn-add-route { width: 100%; padding: 16px; border: 2px dashed var(--gray-200); border-radius: var(--radius-lg); background: #fff; color: var(--gray-500); font-size: 14px; font-weight: 600; cursor: pointer; transition: all .2s; margin-bottom: 20px; }
-.btn-add-route:hover { border-color: var(--primary); color: var(--primary); background: var(--primary-light); box-shadow: var(--shadow-xs); }
+.btn-add-side:hover { border-color: #c2410c; color: #c2410c; background: #fff7ed; }
+.btn-add-route { width: 100%; padding: 16px; border: 2px dashed var(--iv-border); border-radius: var(--radius-lg); background: #fff; color: var(--iv); font-size: 14px; font-weight: 600; cursor: pointer; transition: all .2s; margin-bottom: 20px; }
+.btn-add-route:hover { border-color: var(--iv); color: var(--iv-dark); background: var(--iv-light); box-shadow: var(--shadow-xs); }
 .result-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
 .result-box { padding: 16px 18px; background: var(--gray-50); border-radius: var(--radius); border: 1px solid var(--gray-200); transition: transform .15s, box-shadow .15s; }
 .result-box:hover { transform: translateY(-1px); box-shadow: var(--shadow-md); }
@@ -149,12 +165,29 @@ body {
 .result-box .r-value { font-size: 24px; font-weight: 700; color: var(--gray-800); font-variant-numeric: tabular-nums; }
 .result-box .r-unit { font-size: 12px; color: var(--gray-500); font-weight: 400; }
 .result-box .r-sub { font-size: 12px; color: var(--gray-500); margin-top: 4px; }
-.result-box.highlight { border-color: var(--primary); background: var(--primary-light); }
-.result-box.highlight .r-value { color: var(--primary-dark); }
-.result-box.warn { border-color: var(--danger); }
+.result-box.res-water { background: #eff6ff; border-color: #bfdbfe; border-left: 3px solid #3b82f6; }
+.result-box.res-water .r-title { color: #1d4ed8; }
+.result-box.res-water .r-value { color: #1e40af; }
+.result-box.res-kcal { background: #fffbeb; border-color: #fde68a; border-left: 3px solid #f59e0b; }
+.result-box.res-kcal .r-title { color: #92400e; }
+.result-box.res-kcal .r-value { color: #78350f; }
+.result-box.res-gir { background: #f5f3ff; border-color: #c4b5fd; border-left: 3px solid #8b5cf6; }
+.result-box.res-gir .r-title { color: #5b21b6; }
+.result-box.res-gir .r-value { color: #4c1d95; }
+.result-box.res-protein { background: #fef2f2; border-color: #fecaca; border-left: 3px solid #ef4444; }
+.result-box.res-protein .r-title { color: #991b1b; }
+.result-box.res-protein .r-value { color: #7f1d1d; }
+.result-box.res-fat { background: #fff7ed; border-color: #fed7aa; border-left: 3px solid #f97316; }
+.result-box.res-fat .r-title { color: #9a3412; }
+.result-box.res-fat .r-value { color: #7c2d12; }
+.result-box.res-fiber { background: var(--en-light); border-color: var(--en-border); border-left: 3px solid var(--en); }
+.result-box.res-fiber .r-title { color: var(--en-dark); }
+.result-box.res-fiber .r-value { color: var(--en-dark); }
+.result-box.warn { border-color: var(--danger); border-left-color: var(--danger); background: #fef2f2; }
 .result-box.warn .r-value { color: var(--danger); }
+.result-box.warn .r-title { color: var(--danger); }
 .result-detail { margin-top: 16px; }
-.result-detail-title { font-size: 14px; font-weight: 700; color: var(--gray-700); margin-bottom: 10px; padding-bottom: 6px; border-bottom: 2px solid var(--primary); display: inline-block; }
+.result-detail-title { font-size: 14px; font-weight: 700; color: var(--gray-700); margin-bottom: 10px; padding-bottom: 6px; border-bottom: 2px solid var(--iv); display: inline-block; }
 .detail-table { width: 100%; border-collapse: collapse; font-size: 13px; }
 .detail-table th, .detail-table td { padding: 8px 12px; text-align: left; border-bottom: 1px solid var(--gray-200); }
 .detail-table th { font-weight: 600; color: var(--gray-500); font-size: 13px; background: var(--gray-50); }
@@ -187,7 +220,7 @@ body {
   .result-box .r-value { font-size: 20px; }
   .patient-bar { gap: 10px; padding: 12px 16px; }
 }
-.footer { text-align: center; padding: 24px; font-size: 13px; color: var(--gray-500); border-top: 1px solid var(--gray-200); background: #fff; margin-top: 8px; }
+.footer { text-align: center; padding: 24px; font-size: 13px; color: rgba(255,255,255,.45); border-top: none; background: linear-gradient(135deg, #0f172a 0%, #1a3352 100%); margin-top: 8px; }
 .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(15,23,42,.5); backdrop-filter: blur(4px); z-index: 1000; justify-content: center; align-items: flex-start; padding: 40px 16px; overflow-y: auto; }
 .modal-overlay.open { display: flex; }
 .modal { background: #fff; border-radius: var(--radius-xl); box-shadow: 0 24px 80px rgba(0,0,0,.15), 0 8px 24px rgba(0,0,0,.1); width: 100%; max-width: 1100px; max-height: calc(100vh - 80px); display: flex; flex-direction: column; }
@@ -210,7 +243,9 @@ body {
 .fluid-edit-table .toggle-btn { width: 22px; height: 22px; border: none; border-radius: 3px; cursor: pointer; font-size: 13px; line-height: 1; }
 .fluid-edit-table .toggle-btn.on { background: var(--success-light); color: var(--success); }
 .fluid-edit-table .toggle-btn.off { background: var(--gray-200); color: var(--gray-400); }
-.fluid-edit-table .section-row td { background: var(--primary-dark); color: #fff; font-weight: 700; font-size: 13px; padding: 8px 12px; text-align: left; border: none; position: sticky; top: 26px; z-index: 2; letter-spacing: .5px; }
+.fluid-edit-table .section-row td { color: #fff; font-weight: 700; font-size: 13px; padding: 8px 12px; text-align: left; border: none; position: sticky; top: 26px; z-index: 2; letter-spacing: .5px; }
+.fluid-edit-table .section-row.iv-section td { background: var(--iv-dark); }
+.fluid-edit-table .section-row.en-section td { background: var(--en-dark); }
 .fluid-edit-table .cat-row td { background: var(--gray-700); color: #fff; font-weight: 700; font-size: 12px; padding: 5px 8px; text-align: left; border: none; position: sticky; top: 54px; z-index: 1; }
 .fluid-edit-table .move-btns { display: flex; flex-direction: column; gap: 1px; }
 .fluid-edit-table .move-btn { width: 20px; height: 14px; border: 1px solid var(--gray-200); background: #fff; color: var(--gray-500); border-radius: 2px; cursor: pointer; font-size: 9px; line-height: 1; padding: 0; display: flex; align-items: center; justify-content: center; }
@@ -223,18 +258,18 @@ body {
 .btn-outline:hover { border-color: var(--gray-400); }
 .btn-outline.danger { border-color: var(--danger); color: var(--danger); }
 .btn-outline.danger:hover { background: var(--danger-light); }
-.line-c0 { background: #dbeafe; color: #1d4ed8; }
-.line-c1 { background: #d1fae5; color: #059669; }
-.line-c2 { background: #fef3c7; color: #d97706; }
-.line-c3 { background: #ede9fe; color: #7c3aed; }
-.line-c4 { background: #fce7f3; color: #db2777; }
-.line-c5 { background: #ccfbf1; color: #0d9488; }
+.line-c0 { background: #eff6ff; color: #1e40af; border-left-color: #3b82f6; }
+.line-c1 { background: #ecfeff; color: #155e75; border-left-color: #06b6d4; }
+.line-c2 { background: #eef2ff; color: #3730a3; border-left-color: #6366f1; }
+.line-c3 { background: #f5f3ff; color: #5b21b6; border-left-color: #8b5cf6; }
+.line-c4 { background: #f0fdfa; color: #134e4a; border-left-color: #14b8a6; }
+.line-c5 { background: #faf5ff; color: #6b21a8; border-left-color: #a855f7; }
 .no-int-msg { color: var(--gray-400); font-size: 12px; padding: 8px 0; text-align: center; }
 .route-add-group { display: flex; gap: 16px; margin-bottom: 20px; }
 .route-add-group .btn-add-route { flex: 1; }
-.btn-add-route.enteral { border-color: #059669; color: #059669; }
-.btn-add-route.enteral:hover { background: #d1fae5; border-color: #059669; }
-.line-en { background: #d1fae5; color: #065f46; }
+.btn-add-route.enteral { border-color: var(--en-border); color: var(--en); }
+.btn-add-route.enteral:hover { background: var(--en-light); border-color: var(--en); color: var(--en-dark); }
+.line-en { background: var(--en-light); color: var(--en-dark); border-left-color: var(--en); }
 .en-vol-row { margin-top: 8px; display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
 .en-vol-row label { font-size: 13px; color: var(--gray-600); font-weight: 600; display: flex; align-items: center; gap: 4px; }
 .en-vol-row input { width: 70px; padding: 6px 10px; border: 1.5px solid var(--gray-200); border-radius: var(--radius-sm); font-size: 14px; text-align: right; background: #fff; transition: border-color .2s, box-shadow .2s; }
@@ -242,7 +277,7 @@ body {
 .en-vol-row .sync-indicator { font-size: 12px; color: var(--gray-400); }
 .en-summary { margin-top: 12px; font-size: 13px; display: flex; gap: 12px; flex-wrap: wrap; color: var(--gray-600); padding: 8px 14px; background: var(--gray-50); border-radius: var(--radius-sm); }
 .en-summary .val { font-weight: 700; }
-.comp-box.en-comp { background: #ecfdf5; border: 1px solid #a7f3d0; border-left: 3px solid var(--success); }
+.comp-box.en-comp { background: var(--en-light); border: 1px solid var(--en-border); border-left: 3px solid var(--en); }
 </style>
 </head>
 <body>
@@ -779,15 +814,15 @@ function recalc(){
   var calSub=fmt(tK,0)+' kcal/day';
   if(hasIV&&hasEN)calSub+='<br>IV: '+fmt(ivKcal,0)+' kcal / 経腸: '+fmt(enKcal,0)+' kcal';
 
-  var fC=fOver?'result-box warn':'result-box',gC=girAvg>12?'result-box warn':'result-box highlight';
+  var fC=fOver?'result-box res-fat warn':'result-box res-fat',gC=girAvg>12?'result-box res-gir warn':'result-box res-gir';
   var girLabel=hasEN?'GIR（静脈のみ）':'GIR（平均）';
   var rsHtml=
-    '<div class="result-box highlight"><div class="r-title">水分量（自由水）</div><div class="r-value">'+fmt(totalFreeWater,0)+' <span class="r-unit">ml/day</span></div><div class="r-sub">'+waterSub+'</div></div>'+
-    '<div class="result-box highlight"><div class="r-title">カロリー</div><div class="r-value">'+fmt(eqK,1)+' <span class="r-unit">kcal/kg/day</span></div><div class="r-sub">'+calSub+'</div></div>'+
+    '<div class="result-box res-water"><div class="r-title">水分量（自由水）</div><div class="r-value">'+fmt(totalFreeWater,0)+' <span class="r-unit">ml/day</span></div><div class="r-sub">'+waterSub+'</div></div>'+
+    '<div class="result-box res-kcal"><div class="r-title">カロリー</div><div class="r-value">'+fmt(eqK,1)+' <span class="r-unit">kcal/kg/day</span></div><div class="r-sub">'+calSub+'</div></div>'+
     '<div class="'+gC+'"><div class="r-title">'+girLabel+'</div><div class="r-value">'+fmt(girAvg,2)+' <span class="r-unit">mg/kg/min</span></div>'+(girAvg>12?'<div class="r-sub" style="color:var(--danger)">&#9888; 高血糖リスク</div>':'')+'</div>'+
-    (tAa>0?'<div class="result-box"><div class="r-title">タンパク質</div><div class="r-value">'+fmt(aKg,2)+' <span class="r-unit">g/kg/day</span></div></div>':'')+
+    (tAa>0?'<div class="result-box res-protein"><div class="r-title">タンパク質</div><div class="r-value">'+fmt(aKg,2)+' <span class="r-unit">g/kg/day</span></div></div>':'')+
     (tFat>0?'<div class="'+fC+'"><div class="r-title">脂肪</div><div class="r-value">'+fmt(fKg,2)+' <span class="r-unit">g/kg/day</span></div>'+(fOver?'<div class="r-sub" style="color:var(--danger)">&#9888; 上限 2 g/kg/day 超過</div>':'')+'</div>':'')+
-    (hasEN?'<div class="result-box"><div class="r-title">食物繊維</div><div class="r-value">'+fmt(tFiber,1)+' <span class="r-unit">g/day</span></div></div>':'');
+    (hasEN?'<div class="result-box res-fiber"><div class="r-title">食物繊維</div><div class="r-value">'+fmt(tFiber,1)+' <span class="r-unit">g/day</span></div></div>':'');
   document.getElementById('result-summary').innerHTML=rsHtml;
 
   // Electrolyte table
@@ -836,8 +871,8 @@ function renderSettingsTable(){
   FLUID_CATS.forEach(function(cat){
     var items=[];fluids.forEach(function(f,i){if((f.cat||'other')===cat.key)items.push({f:f,i:i})});
     var isEN=isEnteralCat(cat.key);
-    if(!prevEnteral&&isEN){h+='<tr class="section-row"><td colspan="'+ncol+'">経腸栄養製剤</td></tr>';prevEnteral=true}
-    if(!prevEnteral&&cat.key==='ecf'){h+='<tr class="section-row"><td colspan="'+ncol+'">輸液製剤</td></tr>'}
+    if(!prevEnteral&&isEN){h+='<tr class="section-row en-section"><td colspan="'+ncol+'">経腸栄養製剤</td></tr>';prevEnteral=true}
+    if(!prevEnteral&&cat.key==='ecf'){h+='<tr class="section-row iv-section"><td colspan="'+ncol+'">輸液製剤</td></tr>'}
     if(items.length===0)return;
     h+='<tr class="cat-row"><td colspan="'+ncol+'">'+esc(cat.label)+'</td></tr>';
     items.forEach(function(item,pos){var f=item.f,i=item.i;
